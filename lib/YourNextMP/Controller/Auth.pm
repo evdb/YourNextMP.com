@@ -44,39 +44,20 @@ sub login : Local {
 
         $c->return_from_diversion(
             {
-                fallback => $c->uri_for( '/user', $user->id )    #
+                fallback => $c->uri_for( '/users', $user->id )    #
             }
         );
     }
 
 }
 
-=head2 end
+sub logout : Local {
+    my ( $self, $c ) = @_;
 
-Make sure that any user we have is logged into the default realm
+    # only actually do the logout if the form was posted
+    $c->logout if $c->req->method eq 'POST';
 
-=cut
-
-# sub end : Private {
-#     my ( $self, $c ) = @_;
-#
-#     # If we have a user and they are not in the 'default' realm then
-#     # re-authenticate them into the default realm
-#     if ( $c->user_exists && !$c->user_in_realm('default') ) {
-#         my $user_id = $c->user->id;
-#
-#         eval { $c->authenticate( { id => $user_id } ) };
-#
-#         if ($@) {
-#
-#             # We have a user that we can't auth - get rid of it
-#             $c->logout;
-#             die "Could not authenticate user '$user_id' into default realm";
-#         }
-#     }
-#
-#     $c->forward('/end');
-# }
+}
 
 =head1 AUTHOR
 

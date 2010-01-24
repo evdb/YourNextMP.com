@@ -1,0 +1,17 @@
+[% PROCESS 'chrome/header.html', title => 'Logout' %]
+
+    [% IF c.user %]
+
+    <h1>Confirm logging out:</h1>
+
+    <form method="post" action="[% c.uri_for('logout') %]">
+        <input type="submit" value="Log out"/>
+    </form>
+
+    [% ELSE %]
+    
+    <h1>You are now logged out.</h1>
+    
+    [% END %]
+
+[% PROCESS 'chrome/footer.html' %]

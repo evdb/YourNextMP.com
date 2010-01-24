@@ -92,6 +92,17 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.04006 @ 2010-01-21 13:04:36
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:sJRdl6GDKm5SpVl9eWu1eg
+
+=head2 screen_name
+
+    $screen_name = $user->screen_name(  );
+
+Returns either the user's name or 'Anonymous User'.
+
+=cut
+
+sub screen_name {
+    return $_[0]->name || 'Anonymous User';
+}
 
 1;

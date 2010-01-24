@@ -16,7 +16,7 @@
 
     <ul>
     [% IF c.user %]
-        <li>[% c.user.name || c.user.email || 'Anonymous User' %]</li>
+        <li><a href="/users/[% c.user.id %]">[% c.user.name || c.user.email || 'Anonymous User' %]</a></li>
         <li><a href="/auth/logout">Log Out</a></li>
     [% ELSE %]
         <li><a href="/auth/login">Sign In</a></li>
