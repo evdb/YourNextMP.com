@@ -1,0 +1,207 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Georgia;
+    width: 960px;
+    margin: 0 auto;
+    background-color: #888;
+}
+
+a img {
+    border-width: 0;
+}
+
+li {
+    list-style-type: none;
+}
+
+#topbar {
+    text-align: center;
+    background-color: #f88;
+    padding: 0.5em;
+    border: 1px solid #f00;
+    border-top: none;
+
+    -moz-border-radius-bottomleft : 10px;
+    -moz-border-radius-bottomright: 10px;
+}
+
+#toptext {
+    font-family: Helvetica;
+    font-size: 90%;
+    padding: 1px 0 0 0;
+    color: #fff;
+    text-align: right;
+}
+
+#toptext a {
+    color: inherit;
+}
+
+#toptext li {
+    display: inline;
+    padding: 0 0.4em;
+}
+
+
+#header {
+    margin-top: 20px;
+    background: #000 url('/static/parliament.jpg') top left;
+    -moz-border-radius-topleft : 10px;
+    -moz-border-radius-topright: 10px;
+}
+
+#header h1 {
+    color: white;
+    font-variant: small-caps;
+    padding: 0.3em;
+    opacity: 0.8;
+}
+
+#tabs {
+    margin: 0 auto;
+    text-align: center;
+    padding: 0.2em 0;
+    border-bottom: 1px solid #444;
+}
+
+#tabs li {
+    display: inline;
+
+    border: 1px solid #444;
+    border-bottom: 1px solid #444;
+
+    background-color: #bbb;
+    opacity: 0.8;
+    padding: inherit;
+    margin: 0 0.2em;
+
+    -moz-border-radius-topleft : 6px;
+    -moz-border-radius-topright: 6px;
+
+}
+
+#tabs li.active {
+    border: 1px solid #444;
+    border-bottom: 1px solid white;
+    background: white;
+    opacity: 1;
+}
+
+#tabs li a {
+    color: black;
+    text-decoration: none;
+    padding: 0.2em 1em;
+}
+
+#tabs li a:hover {
+    color: blue;
+}
+
+#content_wrapper {
+    background-color: #fff;
+}
+
+#content {
+    margin: 0 auto;
+    width: 720px;
+    padding: 1em;
+}
+
+#footer {
+    clear: both;
+    border-top: 1px solid #888;
+    min-height: 30px;
+    padding: 0.5em;
+    font-size: 80%;
+    background-color: #ddd;
+    text-align: center;
+}
+
+#footer li {
+    display: inline;
+    padding: 0 0.4em;
+}
+
+
+#sidebar {
+    float: right;
+    width: 200px;
+    margin: 0 0 0 1em;
+
+    text-align: center;
+
+    font-family: arial, sans-serif;
+    color: #333;
+    font-size: 90%;
+}
+
+div.sidebar {
+    border: 1px solid #ddd;
+    margin-bottom: 1em;
+    
+}
+
+div.sidebar h2 {
+    background-color: #ddd;
+}
+
+ul.link_list li a {
+/*    padding-left: 18px;*/
+    text-decoration: none;
+    color: inherit;
+}
+
+ul.link_list li a:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+/*ul.link_list li.link_wikipedia a {
+    background: url('/static/icons/wikipedia.ico') top left no-repeat;
+}
+*/
+
+ul.search_results {
+    border-top: 1px solid #ccc;
+}
+
+ul.search_results li {
+    border-bottom: 1px solid #ccc;
+}
+
+ul.search_results li a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    overflow: hidden;
+    min-height: 45px;
+    padding: 4px;
+}
+
+ul.search_results li a:hover {
+    background-color: #DBF1F9;/* light blue */
+}
+
+ul.search_results li div.image {
+    float: right;
+    width: 42px;
+    text-align: center;
+}
+
+ul.search_results li img {
+    border: 1px solid #bbb;
+}
+
+ul.search_results p.name {
+    font-size: 130%;
+}
+
+ul.search_results p.extra {
+    padding-left: 2em;
+    color: #666;
+}
+

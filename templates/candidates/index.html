@@ -1,0 +1,55 @@
+[% PROCESS 'chrome/header.html', title => 'Candidates' %]
+
+    <h1>Candidates</h1>
+
+    <div>
+        <form method="GET" action="[% c.uri_for() %]">
+            <label for="query">Candidate's name:</label>
+            <input name="query" id="query" type="text" value="[% query %]"/>
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+    [% IF view_all || query %]
+
+        [% count = candidates.count %]
+        [% IF count %]
+    
+            [% WRAPPER 'stubs/search_results.html',
+                title => "Found $count matches:"
+            %]
+        
+            [% WHILE (candidate = candidates.next ) %]
+
+                [% extra = BLOCK %]
+                    [% candidate.party.name %]
+                    [%  FOREACH seat = candidate.seats %]
+                        [% ' - ' IF loop.first %]
+                        [% seat.name %]
+                        [% ',' UNLESS loop.last %]
+                    [% END %]
+                [% END %]
+
+                [% query_regex = query.replace( '\s+', '|' ) %]
+                [% PROCESS 'stubs/search_result.html',
+                    name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
+                    image => candidate.original_photo,
+                    href  => c.uri_for( candidate.code ),
+                    extra => extra,
+                %]        
+            [% END %]
+            [% END %]
+            
+        [% ELSE %]
+        
+            <p>Nothing matched your search for '[% query | html %]'.</p>
+        
+        [% END %]
+
+
+    [% ELSE %]
+
+        <p>Please search for a candidate or <a href="[% c.uri_for('',{view_all=>1} ) %]">view them all</a>.</p>
+
+    [% END %]
+
+[% PROCESS 'chrome/footer.html' %]

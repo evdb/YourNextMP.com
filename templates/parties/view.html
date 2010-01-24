@@ -1,0 +1,48 @@
+[% PROCESS 'chrome/header.html', title => party.name %]
+
+<div id="sidebar">
+[% PROCESS 'stubs/link_list.html', links => party.links %]
+</div>
+
+<h1>[% party.name %]</h1>
+
+[% IF party.emblem %]
+    <img src="[% c.uri_for('/files', party.original_emblem.md5 ) %]" />
+[% END %]
+
+<h2>Candidates</h2>
+
+[% candidates = party.candidates_rs %]
+[% count = candidates.count %]
+[% IF count %]
+
+    [% WRAPPER 'stubs/search_results.html',
+        title => "Found $count matches:"
+    %]
+
+    [% WHILE (candidate = candidates.next ) %]
+
+        [% extra = BLOCK %]
+            [%  FOREACH seat = candidate.seats %]
+                [% seat.name %]
+                [% ',' UNLESS loop.last %]
+            [% END %]
+        [% END %]
+
+        [% query_regex = query.replace( '\s+', '|' ) %]
+        [% PROCESS 'stubs/search_result.html',
+            name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
+            image => candidate.original_photo,
+            href  => c.uri_for( '/candidates', candidate.code ),
+            extra => extra,
+        %]        
+    [% END %]
+    [% END %]
+    
+[% ELSE %]
+
+    <p>Nothing matched your search for '[% query | html %]'.</p>
+
+[% END %]
+
+[% PROCESS 'chrome/footer.html' %]

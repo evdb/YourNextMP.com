@@ -1,0 +1,15 @@
+<div class="sidebar">
+    
+<h2>Links</h2>
+
+[% FOREACH link IN links %]
+
+    [% '<ul class="link_list">' IF loop.first %]
+
+    <li><a href="[% link.url | html %]">[% link.title | html %]</a></li>
+
+    [% '</ul>' IF loop.last %]
+
+[% END %]
+
+</div>

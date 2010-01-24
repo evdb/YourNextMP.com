@@ -1,0 +1,21 @@
+<div class="sidebar">
+    
+<h2>Candidate Details</h2>
+
+[% IF candidate.email %]
+<p><a href="mailto:[% candidate.email %]">[% candidate.email %]</a></p>
+[% END %]
+
+[% IF candidate.phone %]
+<p>Tel: [% candidate.phone %]</p>
+[% END %]
+
+[% IF candidate.fax %]
+<p>Fax: [% candidate.fax %]</p>
+[% END %]
+
+[% IF candidate.address %]
+<p>Address: [% candidate.address %]</p>
+[% END %]
+
+</div>

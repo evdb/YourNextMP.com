@@ -1,0 +1,17 @@
+[% PROCESS 'chrome/header.html', title => seat.name %]
+
+    <div id="sidebar">
+    [% PROCESS 'stubs/link_list.html', links => seat.links %]
+    </div>
+
+    <h1>[% seat.name %]</h1>
+
+    <h2>Candidates</h2>
+
+    [% FOREACH can IN seat.candidates %]
+
+    <p><a href="[% c.uri_for( '/candidates', can.code ) %]">[% can.name | html %]</a></p>
+
+    [% END %]
+
+[% PROCESS 'chrome/footer.html' %]

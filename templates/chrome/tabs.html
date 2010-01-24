@@ -1,0 +1,17 @@
+[%
+  menu_items = [
+    { url => '/',               name => 'Home' },
+    { url => '/candidates',     name => 'Candidates' },
+    { url => '/seats', name => 'Seats' },
+    { url => '/parties',        name => 'Parties' },
+  ];
+
+  path_root = c.req.uri.path.match('/[^/]*', 1).0;
+
+%]
+
+<ul id="tabs">
+    [% FOREACH item IN menu_items %]
+        <li[% ' class="active"' IF item.url == path_root %]><a href="[% item.url %]">[% item.name %]</a></li>
+    [% END %]
+</ul>

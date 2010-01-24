@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+    <head>
+        <title>[% title %] :: YourNextMP</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/main.css">
+        <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+    </head>
+    <body>
+
+<div id="topbar">
+    Warning - this is the development and testing site. Please go to <a href="http://www.YourNextMP.com">http://www.YourNextMP.com</a> for the real site.
+</div>
+
+<div id="toptext">
+
+    <ul>
+    [% IF c.user %]
+        <li>[% c.user.name || c.user.email || 'Anonymous User' %]</li>
+        <li><a href="/auth/logout">Log Out</a></li>
+    [% ELSE %]
+        <li><a href="/auth/login">Sign In</a></li>
+    [% END %]
+    </ul>
+</div>
+
+<div id="header">
+    <h1>YourNext<strong>MP</strong></h1>
+    [% PROCESS 'chrome/tabs.html' %]
+</div>
+
+<div id="content_wrapper">
+<div id="content">

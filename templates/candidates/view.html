@@ -1,0 +1,31 @@
+[% PROCESS 'chrome/header.html', title => candidate.name %]
+
+
+<div id="sidebar">
+    [% PROCESS 'candidates/candidate_sidebar.html', candidate => candidate %]
+    [% PROCESS 'stubs/link_list.html', links => candidate.links %]
+</div>
+
+    [% IF candidate.original_photo %]
+        <img src="[% c.uri_for('/files', candidate.original_photo.md5 ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
+    [% END %]
+
+    <h1>[% candidate.name %]</h1>
+
+
+    <h2>Candidacies</h2>
+
+    [% FOREACH con IN candidate.seats %]
+
+    <p><a href="[% c.uri_for( '/seats', con.code )%]">[% con.name %]</a></p>
+
+    [% END %]
+
+    <h2>Bio</h2>
+
+    <p>[% candidate.bio | html_para %]</p>
+
+    
+
+
+[% PROCESS 'chrome/footer.html' %]

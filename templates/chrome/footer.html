@@ -1,0 +1,34 @@
+[%# hack to clear the floated candidate image %]
+<div style="clear:both">&nbsp;</div>
+
+</div>
+</div>
+
+<div id="footer">
+
+    <a  rel="license"
+        href="http://creativecommons.org/licenses/by-nc-sa/2.0/uk/"
+        style="float: right"
+    ><img   title="Creative Commons License: Attribution, Non-Commercial, Share Alike"
+            src="/static/by-nc-sa-88x31.png"
+    /></a>
+
+    <ul>
+        <li>&copy; 2010 YourNextMP.com</li>
+        <li>
+            <a  href="http://blog.yournextmp.com/"
+                title="Discussion about this site, the election and democracy in general"
+            >Blog</a>
+        </li>
+
+    [% FOREACH format = available_output_formats %]
+        <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>
+    [% END %]
+
+    </ul>
+    
+    
+</div>
+
+    </body>
+</html>
