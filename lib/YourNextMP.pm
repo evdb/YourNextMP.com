@@ -75,6 +75,20 @@ __PACKAGE__->config(
 # Start the application
 __PACKAGE__->setup();
 
+=head2 db
+
+    $result_set = $c->db( 'result_set_name' );
+
+Conveniance method - the same as calling
+
+  $c->model('DB')->resultset('result_set_name');
+
+=cut
+
+sub db {
+    return $_[0]->model('DB')->resultset( $_[1] );
+}
+
 =head2 can_do_output
 
     $c->can_do_output( 'json', ... );
@@ -101,6 +115,27 @@ sub output_is {
 
     my $requested = $c->req->param('output') || 'html';
     return $format eq $requested;
+}
+
+=head2 divert_to
+
+    $c->divert_to( $uri );
+
+Divert the user to the given URI. Will also store the current URI so that the
+user can be returned here after the diversion.
+
+=cut
+
+sub divert_to {
+    my $c   = shift;
+    my $uri = shift;
+
+    # store where we currently are
+    $c->session->{post_diversion_url} = $c->req->uri;
+
+    # redirect to the requested place
+    $c->res->redirect($uri);
+    $c->detach;
 }
 
 =head2 return_from_diversion
