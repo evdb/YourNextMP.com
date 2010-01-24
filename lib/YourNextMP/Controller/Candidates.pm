@@ -7,10 +7,7 @@ use parent 'Catalyst::Controller';
 sub index : Path : Args(0) {
     my ( $self, $c ) = @_;
 
-    my $candidates     #
-      = $c             #
-      ->model('DB')    #
-      ->resultset('Candidates');
+    my $candidates = $c->db('Candidates');
 
     my $query = lc( $c->req->param('query') || '' );
     $query =~ s{\s+}{ }g;
@@ -32,11 +29,7 @@ sub index : Path : Args(0) {
 sub view : Path : Args(1) {
     my ( $self, $c, $code ) = @_;
 
-    $c->stash->{candidate}         #
-      = $c                         #
-      ->model('DB')                #
-      ->resultset('Candidates')    #
-      ->find($code)
+    $c->stash->{candidate} = $c->db('Candidates')->find($code)
       || $c->detach('/page_not_found');
 
 }

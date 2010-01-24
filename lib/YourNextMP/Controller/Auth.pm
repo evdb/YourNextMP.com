@@ -32,10 +32,7 @@ sub login : Local {
 
     if ($reauth_user_args) {
 
-        my $user = $c             #
-          ->model('DB')           #
-          ->resultset('Users')    #
-          ->find_or_create($reauth_user_args)
+        my $user = $c->db('Users')->find_or_create($reauth_user_args)
           || "Could not find/create user after openid login";
 
         # re-auth using default realm

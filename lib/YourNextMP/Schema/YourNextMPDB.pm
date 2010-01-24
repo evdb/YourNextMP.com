@@ -12,7 +12,7 @@ __PACKAGE__->load_namespaces;
 
 __PACKAGE__->connection(    #
     "dbi:mysql:yournextmp",    #
-    "root",                   #
+    "root",                    #
     '',
     { AutoCommit => 1, mysql_enable_utf8 => 1, }
 );

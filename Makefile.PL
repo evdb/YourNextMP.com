@@ -39,6 +39,7 @@ requires 'File::Temp';
 requires 'FindBin';
 requires 'Geo::Postcode';
 requires 'Getopt::Long';
+requires 'HTML::FormHandler::Model::DBIC';
 requires 'HTTP::Date';
 requires 'Image::Imlib2';
 requires 'JSON';
