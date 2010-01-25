@@ -1,0 +1,53 @@
+[ NOW ]
+
+Enable JSON output for certain pages
+
+Get the bios and contact details for the labour candidates
+
+scrape plaid: http://www.plaidcymru.org/content.php?nID=564;lID=1
+
+Allow users to add candidates
+
+fix conservative numbers where several are given: http://www.conservatives.com/People/Members_of_Parliament/Bone_Peter.aspx
+
+get the larger photos for the conservative bigwigs
+
+Strip off silly bits from the conservative names
+
+set correct realm for openid logins
+
+[ NEXT ]
+
+sane way to serve images (s3)
+
+google analytics
+
+break out (party/seat/candid) page to index/search/all pages
+
+crawl http://ukpollingreport.co.uk/guide/seats-a-d and create links for all the seats
+
+add current mps as candidates and link them to the constituency. Might need to change the queries so that only current candidates show up in the search
+
+login via facebook
+
+Add comments so that candidates that have stepped down can have a note added to them.
+
+Add news/blog/web searches as tabs under the candidates using >>"Joe Blogs" Party Name <<<
+  http://news.google.co.uk/news/search?q=%22david+jack%22+Liberal+Democrat
+  http://code.google.com/apis/ajaxsearch/documentation/#SearchControlCallbacks
+For search results allow the to be included in main system as links etc
+
+[ LATER ]
+
+test in IE6 etc
+
+List nearby constituencies on the seats page
+
+Scrape maps for constituencies from http://www.election-maps.co.uk/index.jsp
+
+wrap address details in hcard microformat
+
+provide the candidate's address as a vcard
+
+Integrate with dods ( http://www.dodonline.co.uk/engine.asp?lev1=6&lev2=401&menu=401&biog=y&group=6&id=25618 ) ?????
+
