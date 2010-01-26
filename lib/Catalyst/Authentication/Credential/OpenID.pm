@@ -80,6 +80,11 @@ sub authenticate : method {
     {
         my $current = $c->uri_for($c->req->uri->path); # clear query/fragment...
 
+        my $trust_root =
+            $self->_config->{trust_root_path}
+          ? $c->uri_for( $self->_config->{trust_root_path})
+          : $current;
+
         my $identity = $csr->claimed_identity($claimed_uri);
         unless ( $identity )
         {
@@ -99,7 +104,7 @@ sub authenticate : method {
 
         my $check_url = $identity->check_url(
             return_to  => $current . '?openid-check=1',
-            trust_root => $current,
+            trust_root => $trust_root,
             delayed_return => 1,
         );
         $c->res->redirect($check_url);

@@ -54,7 +54,8 @@ __PACKAGE__->config(
             openid => {
                 credential => {
                     debug => 1,          # FIXME - should not be on by default
-                    class => "OpenID",
+                    class => 'OpenID',
+                    trust_root_path => '/',
 
                     # extensions => [
                     #     'http://openid.net/srv/ax/1.0' => {
