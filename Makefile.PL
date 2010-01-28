@@ -15,7 +15,7 @@ requires 'Catalyst::Model::Adaptor';
 requires 'Catalyst::Model::DBIC::Schema';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
-requires 'Catalyst::Runtime' => '5.80013';
+requires 'Catalyst::Runtime';# => '5.80013';
 requires 'Catalyst::Test';
 requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
