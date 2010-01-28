@@ -2,14 +2,14 @@
     <a href="[% href %]">
 
         [% IF image %]
-        <div class="image">
             <img src="[% c.uri_for( '/files', image.md5, '40x40' ) %]" />
-        </div>        
         [% END %]
 
-        <p class="name">[% name %]</p>
+        <span class="name">[% name %]</span>
+        
+        <br />
 
-        [% IF extra %]<p class="extra">[% extra %]</p>[% END %]
+        [% IF extra %]<span class="extra">[% extra %]</span>[% END %]
 
     </a>
 </li>

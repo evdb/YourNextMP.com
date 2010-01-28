@@ -18,6 +18,10 @@ li {
     list-style-type: none;
 }
 
+p {
+    margin-bottom: 1em;
+}
+
 #topbar {
     text-align: center;
     background-color: #f88;
@@ -186,21 +190,16 @@ ul.search_results li a:hover {
     background-color: #DBF1F9;/* light blue */
 }
 
-ul.search_results li div.image {
-    float: right;
-    width: 42px;
-    text-align: center;
-}
-
 ul.search_results li img {
+    float: right;
     border: 1px solid #bbb;
 }
 
-ul.search_results p.name {
+ul.search_results .name {
     font-size: 130%;
 }
 
-ul.search_results p.extra {
+ul.search_results .extra {
     padding-left: 2em;
     color: #666;
 }
