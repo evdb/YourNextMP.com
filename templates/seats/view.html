@@ -6,12 +6,29 @@
 
     <h1>[% seat.name %]</h1>
 
-    <h2>Candidates</h2>
+    [% candidates = seat.candidates_rs %]
+    [% count = candidates.count %]
+    [% IF count %]
 
-    [% FOREACH can IN seat.candidates %]
+        [% WRAPPER 'stubs/search_results.html',
+            title => "Found $count candidates:"
+        %]
+    
+        [% WHILE (candidate = candidates.next ) %]
 
-    <p><a href="[% c.uri_for( '/candidates', can.code ) %]">[% can.name | html %]</a></p>
-
+            [% PROCESS 'stubs/search_result.html',
+                name  => candidate.name,
+                image => candidate.original_photo,
+                href  => c.uri_for( '/candidates', candidate.code ),
+                extra => candidate.party.name,
+            %]        
+        [% END %]
+        [% END %]
+        
+    [% ELSE %]
+    
+        <p>There are no candidates yet - please <a href="/candidates/add">add any you know</a>.</p>
+    
     [% END %]
 
 [% PROCESS 'chrome/footer.html' %]
