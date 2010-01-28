@@ -14,6 +14,10 @@
 
 <h1>Login</h1>
 
+[% IF reason %]
+<h2>[% reason %]</h2>
+[% END %]
+
 
 [% IF auth_error %]
     <div>ERROR: [% auth_error %]</div>

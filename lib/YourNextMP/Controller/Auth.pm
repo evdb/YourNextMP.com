@@ -41,10 +41,13 @@ sub login : Local {
 
         $c->return_from_diversion(
             {
-                fallback => $c->uri_for( '/users', $user->id )    #
+                fallback_return_url => $c->uri_for( '/users', $user->id )    #
             }
         );
     }
+
+    # FIXME - abstract this slightly
+    $c->stash->{reason} = $c->session->{__diversion}{reason};
 
 }
 

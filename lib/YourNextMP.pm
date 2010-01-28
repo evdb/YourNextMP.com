@@ -120,7 +120,13 @@ sub output_is {
 
 =head2 divert_to
 
-    $c->divert_to( $uri );
+    $c->divert_to(
+        $diversion_url,
+        {
+            return_url => $url, # defaults to current url
+            reason     => 'Need to be an admin',
+        }
+    );
 
 Divert the user to the given URI. Will also store the current URI so that the
 user can be returned here after the diversion.
@@ -128,11 +134,13 @@ user can be returned here after the diversion.
 =cut
 
 sub divert_to {
-    my $c   = shift;
-    my $uri = shift;
+    my $c    = shift;
+    my $uri  = shift;
+    my $args = shift || {};
 
-    # store where we currently are
-    $c->session->{post_diversion_url} = $c->req->uri;
+    # store args and where we currently are
+    $c->session->{__diversion} = $args;
+    $c->session->{__diversion}{return_url} ||= $c->req->uri;
 
     # redirect to the requested place
     $c->res->redirect($uri);
@@ -141,7 +149,7 @@ sub divert_to {
 
 =head2 return_from_diversion
 
-    $c->return_from_diversion( { fallback => c.uri_for('/foo/bar') } );
+    $c->return_from_diversion( { fallback_return_url => c.uri_for('/foo/bar') } );
 
 Sometimes the user get diverted - eg because they need to in.
 
@@ -153,15 +161,41 @@ sub return_from_diversion {
     my $c = shift;
     my $args = shift || {};
 
+    # diversion is over - clean up the session
+    my $stored_args = delete $c->session->{__diversion};
+
     # get the url to return to
     my $url =
-         delete( $c->session->{post_diversion_url} )
-      || $args->{fallback}
+         $args->{return_url}
+      || $stored_args->{return_url}
+      || $args->{fallback_return_url}
       || $c->uri_for('/');
 
     $c->res->redirect($url);
-
     $c->detach;
+}
+
+=head2 require_user
+
+    $c->require_user( "Reason user is required - passed to login template" );
+
+Some actions need a user and this method will divert to the login page if needed.
+
+=cut
+
+sub require_user {
+    my $c      = shift;
+    my $reason = shift;
+
+    # If we have a user return
+    return 1 if $c->user_exists;
+
+    # no user - divert to login
+    $c->divert_to(
+        $c->uri_for('/auth/login'),    #
+        { reason => $reason }
+    );
+
 }
 
 =head1 NAME
