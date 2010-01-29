@@ -139,4 +139,19 @@ sub original_photo {
     return $self->photos( { format => 'original' } )->first;
 }
 
+sub insert {
+    my $self = shift;
+
+    unless ( $self->code ) {
+        $self->code(
+            $self->result_source->resultset->name_to_code( $self->name ) );
+    }
+
+    # my $now = DateTime->now();
+    # $self->created($now);
+    # $self->updated($now);
+
+    return $self->next::method(@_);
+}
+
 1;

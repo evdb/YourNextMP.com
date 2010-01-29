@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use parent 'Catalyst::Controller';
 
+use YourNextMP::Form::Candidate;
+
 sub index : Path : Args(0) {
     my ( $self, $c ) = @_;
 
@@ -26,11 +28,42 @@ sub index : Path : Args(0) {
 
 }
 
-sub view : Path : Args(1) {
+sub add : Local {
+    my ( $self, $c ) = @_;
+
+    # Add an empty candidate to the results
+    $c->stash->{candidate} = $c->db('Candidates')->new_result( {} );
+    $c->stash->{template} = 'candidates/edit.html';
+    $c->forward('edit');
+}
+
+sub candidate_base : PathPart('candidates') Chained('/') CaptureArgs(1) {
     my ( $self, $c, $code ) = @_;
 
-    $c->stash->{candidate} = $c->db('Candidates')->find($code)
+    my $candidate = $c->db('Candidates')->find($code)
       || $c->detach('/page_not_found');
+
+    $c->stash->{candidate} = $candidate;
+}
+
+sub view : PathPart('') Chained('candidate_base') Args(0) {
+    my ( $self, $c ) = @_;
+
+}
+
+sub edit : PathPart('edit') Chained('candidate_base') Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->require_user("You must be logged in to add or edit candidates");
+
+    # create a form and stick it on the stash
+    my $form =
+      YourNextMP::Form::Candidate->new( item => $c->stash->{candidate} );
+    $c->stash->{form} = $form;
+
+    return unless $form->process( params => $c->req->params );
+
+    $c->res->redirect( $c->uri_for( '', $c->stash->{candidate}->code ) );
 
 }
 

@@ -10,18 +10,17 @@
         <img src="[% c.uri_for('/files', candidate.original_photo.md5 ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
     [% END %]
 
-    <h1>[% candidate.name %]</h1>
+    <h1>[% candidate.name | html %]</h1>
 
-
-    <h2>Candidacies</h2>
-
-    [% FOREACH con IN candidate.seats %]
-
-    <p><a href="[% c.uri_for( '/seats', con.code )%]">[% con.name %]</a></p>
-
+    <h2>[% candidate.party.name | html %]</h2>
+    
+    [% FOREACH seat IN candidate.seats %]
+        [% "<ul>" IF loop.first %]
+        <li><a href="[% c.uri_for( '/seats', seat.code )%]">[% seat.name %]</a></li>
+        [% "</ul>" IF loop.last %]
     [% END %]
 
-    <h2>Bio</h2>
+    <h2>Biography</h2>
 
     <p>[% candidate.bio | html_para %]</p>
 

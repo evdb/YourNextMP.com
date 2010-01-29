@@ -1,6 +1,9 @@
 <div class="sidebar">
     
-<h2>Candidate Details</h2>
+<h2>
+    Details
+    <a href="[% c.uri_for( '', candidate.code, 'edit' ) %]"><img src="/static/icons/pencil.png" alt="edit"/></a>
+</h2>
 
 [% IF candidate.email %]
 <div><a href="mailto:[% candidate.email %]">[% candidate.email %]</a></div>

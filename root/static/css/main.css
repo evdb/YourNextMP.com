@@ -153,6 +153,10 @@ div.sidebar h2 {
     background-color: #ddd;
 }
 
+div.sidebar h2 a {
+    float: right;
+}
+
 ul.link_list li a {
 /*    padding-left: 18px;*/
     text-decoration: none;
