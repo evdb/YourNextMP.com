@@ -30,7 +30,7 @@ __PACKAGE__->config(
 
     'Plugin::Session' => {
         dbic_class => 'DB::Sessions',
-        expires    => 3600,
+        expires    => 3600 * 24 * 365, # one year
     },
 
     authentication => {
