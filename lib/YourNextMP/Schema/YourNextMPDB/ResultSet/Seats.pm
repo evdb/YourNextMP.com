@@ -16,6 +16,8 @@ sub name_to_code {
     $code =~ s{\&}{and}g;
     $code =~ s{[^[:alpha:]]+}{_}g;
     $code =~ s{ô}{o}g;
+    $code =~ s{^_*}{};
+    $code =~ s{_*$}{};
 
     die "bad chars in '$code'" if $code =~ m{[^a-z_]};
 
