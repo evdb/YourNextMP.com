@@ -12,7 +12,7 @@ get the larger photos for the conservative bigwigs
 
 Strip off silly bits from the conservative names
 
-set correct realm for openid logins
+Contact Francis Davey - barrister with interest in intelectual property and copyright to clarify copyright issues.
 
 [ NEXT ]
 
@@ -48,4 +48,7 @@ wrap address details in hcard microformat
 provide the candidate's address as a vcard
 
 Integrate with dods ( http://www.dodonline.co.uk/engine.asp?lev1=6&lev2=401&menu=401&biog=y&group=6&id=25618 ) ?????
+
+
+
 
