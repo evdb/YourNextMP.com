@@ -1,5 +1,7 @@
 [ NOW ]
 
+Combine all the name_to_code methods so that they are standard
+
 Enable JSON output for certain pages
 
 Get the bios and contact details for the labour candidates
@@ -13,6 +15,12 @@ get the larger photos for the conservative bigwigs
 Strip off silly bits from the conservative names
 
 Contact Francis Davey - barrister with interest in intelectual property and copyright to clarify copyright issues.
+
+Add social networks: facebook, twitter, linked in
+
+Add wikipedia links
+
+Add more details: dob, previous elections, gender, profession, school, university
 
 [ NEXT ]
 
