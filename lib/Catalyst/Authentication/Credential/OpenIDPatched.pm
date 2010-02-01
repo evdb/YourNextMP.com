@@ -1,4 +1,4 @@
-package Catalyst::Authentication::Credential::OpenID;
+package Catalyst::Authentication::Credential::OpenIDPatched;
 use strict;
 
 # use warnings; no warnings "uninitialized"; # for testing, not production
