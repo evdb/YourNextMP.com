@@ -141,6 +141,8 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-01 14:21:52
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:seLQE2MzckTpUvdXMyNp3A
 
+__PACKAGE__->resultset_attributes( { order_by => ['name'] } );
+
 __PACKAGE__->has_many(
     "emblems",
     "YourNextMP::Schema::YourNextMPDB::Result::File",
