@@ -27,7 +27,10 @@ sub fuzzy_search {
         my @values = split /\s+/, $value;
 
         $rs = $rs->search(    #
-            { $key => { like => [ '-and', map { '%' . $_ . '%' } @values ] } }
+            {
+                $key =>
+                  { ilike => [ '-and', map { lc( '%' . $_ . '%' ) } @values ] }
+            }
         );
     }
 
