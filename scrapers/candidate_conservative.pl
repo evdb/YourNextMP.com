@@ -30,10 +30,10 @@ my $candidates                         #
   ->scrape( URI->new($start_page) )    #
   ->{candidates};
 
-my $con_rs         = YourNextMP::Schema::YourNextMPDB->resultset('Seats');
-my $can_rs         = YourNextMP::Schema::YourNextMPDB->resultset('Candidates');
-my $candidacies_rs = YourNextMP::Schema::YourNextMPDB->resultset('Candidacies');
-my $files_rs       = YourNextMP::Schema::YourNextMPDB->resultset('Files');
+my $con_rs         = YourNextMP::Schema::YourNextMPDB->resultset('Seat');
+my $can_rs         = YourNextMP::Schema::YourNextMPDB->resultset('Candidate');
+my $candidacies_rs = YourNextMP::Schema::YourNextMPDB->resultset('Candidacy');
+my $files_rs       = YourNextMP::Schema::YourNextMPDB->resultset('File');
 
 foreach my $can (@$candidates) {
 

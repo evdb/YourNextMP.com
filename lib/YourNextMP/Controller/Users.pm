@@ -14,7 +14,7 @@ sub index : Path : Args(0) {
 sub user_base : PathPart('users') Chained('/') CaptureArgs(1) {
     my ( $self, $c, $user_id ) = @_;
 
-    my $user = $c->db('Users')->find($user_id)
+    my $user = $c->db('User')->find($user_id)
       || $c->detach('/page_not_found');
 
     $c->stash->{user} = $user;

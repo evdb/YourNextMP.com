@@ -36,12 +36,12 @@ foreach my $start_page (@start_pages) {
 
     # die Dumper($candidates);
 
-    my $con_rs     = YourNextMP::Schema::YourNextMPDB->resultset('Seats');
-    my $can_rs     = YourNextMP::Schema::YourNextMPDB->resultset('Candidates');
-    my $parties_rs = YourNextMP::Schema::YourNextMPDB->resultset('Parties');
+    my $con_rs     = YourNextMP::Schema::YourNextMPDB->resultset('Seat');
+    my $can_rs     = YourNextMP::Schema::YourNextMPDB->resultset('Candidate');
+    my $parties_rs = YourNextMP::Schema::YourNextMPDB->resultset('Party');
     my $candidacies_rs =
-      YourNextMP::Schema::YourNextMPDB->resultset('Candidacies');
-    my $files_rs = YourNextMP::Schema::YourNextMPDB->resultset('Files');
+      YourNextMP::Schema::YourNextMPDB->resultset('Candidacy');
+    my $files_rs = YourNextMP::Schema::YourNextMPDB->resultset('File');
 
     foreach my $can (@$candidates) {
 
@@ -63,7 +63,7 @@ foreach my $start_page (@start_pages) {
         my $candidate = $can_rs->update_or_create($can);
 
         $candidate->add_to_candidacies( { seat => $seat } )
-          unless $parties_rs->find('labour')->candidates(
+          unless $parties_rs->find({code=>'labour'})->candidates(
                   { seat => $seat->code }, { join => 'candidacies' }
               )->count
               || $candidate->candidacies( { seat => $seat->code } )->count;

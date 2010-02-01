@@ -15,8 +15,8 @@ my $commision_site = 'http://registers.electoralcommission.org.uk';
 my $base_search_page =
   $commision_site . '/regulatory-issues/regpoliticalparties.cfm';
 
-my $parties_rs = YourNextMP::Schema::YourNextMPDB->resultset('Parties');
-my $files_rs   = YourNextMP::Schema::YourNextMPDB->resultset('Files');
+my $parties_rs = YourNextMP::Schema::YourNextMPDB->resultset('Party');
+my $files_rs   = YourNextMP::Schema::YourNextMPDB->resultset('File');
 
 # create the independent party
 $parties_rs->find_or_create(    #
@@ -68,7 +68,7 @@ sub scrape_parties {
         my ($id) = $commision_url =~ m{frmPartyID=(\d+)};
         $party->{electoral_commision_id} = $id;
 
-        if ( !$parties_rs->find( $party->{code} ) ) {
+        if ( !$parties_rs->find( {code=>$party->{code}} ) ) {
 
             # scrape the emblem off the electoral commission site
             my $emblem_page_url =

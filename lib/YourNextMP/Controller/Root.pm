@@ -29,9 +29,9 @@ YourNextMP::Controller::Root - Root Controller for YourNextMP
 sub index : Path : Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->stash->{seats}      = $c->db('Seats')->search();
-    $c->stash->{parties}    = $c->db('Parties')->search();
-    $c->stash->{candidates} = $c->db('Candidates')->search();
+    $c->stash->{seats}      = $c->db('Seat')->search();
+    $c->stash->{parties}    = $c->db('Party')->search();
+    $c->stash->{candidates} = $c->db('Candidate')->search();
 }
 
 sub default : Path {

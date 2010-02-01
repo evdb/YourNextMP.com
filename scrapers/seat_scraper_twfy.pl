@@ -10,7 +10,7 @@ use YourNextMP::Schema::YourNextMPDB;
 use YourNextMP::Util::TheyWorkForYou;
 use Encode;
 
-my $rs = YourNextMP::Schema::YourNextMPDB->resultset('Seats');
+my $rs = YourNextMP::Schema::YourNextMPDB->resultset('Seat');
 $rs->delete_all;
 
 my $results = YourNextMP::Util::TheyWorkForYou->new->query(    #

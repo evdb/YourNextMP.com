@@ -9,7 +9,7 @@ sub default : Path {
     my ( $self, $c, $md5, $format ) = @_;
     $format ||= 'original';
 
-    my $file_rs = $c->db('Files');
+    my $file_rs = $c->db('File');
 
     my $file = $file_rs->find_or_create( { md5 => $md5, format => $format } )
       || $c->detach('/page_not_found');

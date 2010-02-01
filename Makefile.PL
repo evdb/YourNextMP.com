@@ -26,7 +26,7 @@ requires 'Cwd';
 requires 'Data::Dumper';
 requires 'DateTime';
 requires 'DBIx::Class';
-requires 'DBIx::Class::Schema::Loader';
+requires 'DBIx::Class::Schema::Loader' => '0.05000';
 requires 'Digest::MD5';
 requires 'Encode';
 requires 'File::Copy::Recursive';

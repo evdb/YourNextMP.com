@@ -29,8 +29,8 @@ __PACKAGE__->config(
     name => 'YourNextMP',
 
     'Plugin::Session' => {
-        dbic_class => 'DB::Sessions',
-        expires    => 3600 * 24 * 365, # one year
+        dbic_class => 'DB::Session',
+        expires    => 3600 * 24 * 365,    # one year
     },
 
     authentication => {
@@ -41,19 +41,19 @@ __PACKAGE__->config(
         default_realm => 'default',
         realms        => {
             default => {
-                credential => {    #
+                credential => {           #
                     class         => 'Password',
                     password_type => 'none',
                 },
                 store => {
                     class       => 'DBIx::Class',
-                    user_model  => 'DB::Users',
+                    user_model  => 'DB::User',
                     role_column => 'roles',
                 }
             },
             openid => {
                 credential => {
-                    debug => 1,          # FIXME - should not be on by default
+                    debug => 1,           # FIXME - should not be on by default
                     class => 'OpenID',
                     trust_root_path => '/',
 

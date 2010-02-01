@@ -25,7 +25,7 @@ sub index : Path : Args(0) {
 
     $c->can_do_output('json');
 
-    my $seats = $c->db('Seats');
+    my $seats = $c->db('Seat');
 
     my $query = lc( $c->req->param('query') || '' );
     $query =~ s{\s+}{ }g;
@@ -70,7 +70,7 @@ sub index : Path : Args(0) {
 sub view : Path : Args(1) {
     my ( $self, $c, $code ) = @_;
 
-    $c->stash->{seat} = $c->db('Seats')->find($code)
+    $c->stash->{seat} = $c->db('Seat')->find({code=>$code})
       || $c->detach('/page_not_found');
 
 }

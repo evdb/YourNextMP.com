@@ -9,7 +9,7 @@ use YourNextMP::Form::Candidate;
 sub index : Path : Args(0) {
     my ( $self, $c ) = @_;
 
-    my $candidates = $c->db('Candidates');
+    my $candidates = $c->db('Candidate');
 
     my $query = lc( $c->req->param('query') || '' );
     $query =~ s{\s+}{ }g;
@@ -32,7 +32,7 @@ sub add : Local {
     my ( $self, $c ) = @_;
 
     # Add an empty candidate to the results
-    $c->stash->{candidate} = $c->db('Candidates')->new_result( {} );
+    $c->stash->{candidate} = $c->db('Candidate')->new_result( {} );
     $c->stash->{template} = 'candidates/edit.html';
     $c->forward('edit');
 }
@@ -40,7 +40,7 @@ sub add : Local {
 sub candidate_base : PathPart('candidates') Chained('/') CaptureArgs(1) {
     my ( $self, $c, $code ) = @_;
 
-    my $candidate = $c->db('Candidates')->find($code)
+    my $candidate = $c->db('Candidate')->find( { code => $code } )
       || $c->detach('/page_not_found');
 
     $c->stash->{candidate} = $candidate;

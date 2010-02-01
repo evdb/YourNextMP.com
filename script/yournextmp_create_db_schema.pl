@@ -15,11 +15,12 @@ make_schema_at(
         debug          => 1,
         dump_directory => './lib',
         use_namespaces => 1,
+        naming         => 'v5',
 
         components => [
             '+YourNextMP::Schema::YourNextMPDB::Base::Component',
             'InflateColumn::DateTime'
         ],
     },
-    [ "dbi:mysql:yournextmp", "root" ]
+    ["dbi:Pg:dbname=yournextmp"]
 );

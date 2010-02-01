@@ -1,4 +1,4 @@
-package YourNextMP::Schema::YourNextMPDB::ResultSet::Candidates;
+package YourNextMP::Schema::YourNextMPDB::ResultSet::Candidate;
 use base 'YourNextMP::Schema::YourNextMPDB::Base::ResultSet';
 
 use strict;

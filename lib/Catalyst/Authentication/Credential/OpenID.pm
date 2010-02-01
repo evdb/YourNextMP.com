@@ -1,5 +1,6 @@
 package Catalyst::Authentication::Credential::OpenID;
 use strict;
+
 # use warnings; no warnings "uninitialized"; # for testing, not production
 use parent "Class::Accessor::Fast";
 
@@ -14,10 +15,7 @@ use Catalyst::Exception ();
 
 sub new : method {
     my ( $class, $config, $c, $realm ) = @_;
-    my $self = { _config => { %{ $config },
-                              %{ $realm->{config} }
-                          }
-                 };
+    my $self = { _config => { %{$config}, %{ $realm->{config} } } };
     bless $self, $class;
 
     # 2.0 spec says "SHOULD" be named "openid_identifier."
@@ -25,24 +23,22 @@ sub new : method {
 
     $self->debug( $self->_config->{debug} );
 
-    my $secret = $self->_config->{consumer_secret} ||= join("+",
-                                                            __PACKAGE__,
-                                                            $VERSION,
-                                                            sort keys %{ $c->config }
-                                                            );
+    my $secret = $self->_config->{consumer_secret} ||=
+      join( "+", __PACKAGE__, $VERSION, sort keys %{ $c->config } );
 
-    $secret = substr($secret,0,255) if length $secret > 255;
+    $secret = substr( $secret, 0, 255 ) if length $secret > 255;
     $self->secret($secret);
+
     # If user has no preference we prefer L::PA b/c it can prevent DoS attacks.
-    $self->_config->{ua_class} ||= eval "use LWPx::ParanoidAgent" ?
-        "LWPx::ParanoidAgent" : "LWP::UserAgent";
+    $self->_config->{ua_class} ||=
+      eval "use LWPx::ParanoidAgent" ? "LWPx::ParanoidAgent" : "LWP::UserAgent";
 
     my $agent_class = $self->_config->{ua_class};
     eval "require $agent_class"
-        or Catalyst::Exception->throw("Could not 'require' user agent class " .
-                                      $self->_config->{ua_class});
+      or Catalyst::Exception->throw(
+        "Could not 'require' user agent class " . $self->_config->{ua_class} );
 
-    $c->log->debug("Setting consumer secret: " . $secret) if $self->debug;
+    $c->log->debug( "Setting consumer secret: " . $secret ) if $self->debug;
 
     return $self;
 }
@@ -50,107 +46,108 @@ sub new : method {
 sub authenticate : method {
     my ( $self, $c, $realm, $authinfo ) = @_;
 
-    $c->log->debug("authenticate() called from " . $c->request->uri) if $self->debug;
+    $c->log->debug( "authenticate() called from " . $c->request->uri )
+      if $self->debug;
 
     my $field = $self->{_config}->{openid_field};
 
-    my $claimed_uri = $authinfo->{ $field };
+    my $claimed_uri = $authinfo->{$field};
 
-    # Its security related so we want to be explicit about GET/POST param retrieval.
-    $claimed_uri ||= $c->req->method eq 'GET' ? 
-        $c->req->query_params->{ $field } : $c->req->body_params->{ $field };
-
+# Its security related so we want to be explicit about GET/POST param retrieval.
+    $claimed_uri ||=
+        $c->req->method eq 'GET'
+      ? $c->req->query_params->{$field}
+      : $c->req->body_params->{$field};
 
     my $csr = Net::OpenID::Consumer->new(
-        ua => $self->_config->{ua_class}->new(%{$self->_config->{ua_args} || {}}),
-        args => $c->req->params,
+        ua => $self->_config->{ua_class}
+          ->new( %{ $self->_config->{ua_args} || {} } ),
+        args            => $c->req->params,
         consumer_secret => $self->secret,
     );
 
-    if ( $self->_config->{extension_args} and $self->debug )
-    {
-        $c->log->info("The configuration key 'extension_args' is deprecated; use 'extensions'");
+    if ( $self->_config->{extension_args} and $self->debug ) {
+        $c->log->info(
+"The configuration key 'extension_args' is deprecated; use 'extensions'"
+        );
     }
 
-    my @extensions = $self->_config->{extensions} ?
-        @{ $self->_config->{extensions} } : $self->_config->{extension_args} ?
-        @{ $self->_config->{extension_args} } : ();
+    my @extensions =
+        $self->_config->{extensions}     ? @{ $self->_config->{extensions} }
+      : $self->_config->{extension_args} ? @{ $self->_config->{extension_args} }
+      :                                    ();
 
-    if ( $claimed_uri )
-    {
-        my $current = $c->uri_for($c->req->uri->path); # clear query/fragment...
+    if ($claimed_uri) {
+        my $current =
+          $c->uri_for( $c->req->uri->path );    # clear query/fragment...
 
         my $trust_root =
             $self->_config->{trust_root_path}
-          ? $c->uri_for( $self->_config->{trust_root_path})
+          ? $c->uri_for( $self->_config->{trust_root_path} )
           : $current;
 
         my $identity = $csr->claimed_identity($claimed_uri);
-        unless ( $identity )
-        {
-            if ( $self->_config->{errors_are_fatal} )
-            {
-                Catalyst::Exception->throw($csr->err);
+        unless ($identity) {
+            if ( $self->_config->{errors_are_fatal} ) {
+                Catalyst::Exception->throw( $csr->err );
             }
-            else
-            {
-                $c->log->error($csr->err . " -- $claimed_uri");
+            else {
+                $c->log->error( $csr->err . " -- $claimed_uri" );
                 $c->detach();
             }
         }
 
         $identity->set_extension_args(@extensions)
-            if @extensions;
+          if @extensions;
 
         my $check_url = $identity->check_url(
-            return_to  => $current . '?openid-check=1',
-            trust_root => $trust_root,
+            return_to      => $current . '?openid-check=1',
+            trust_root     => $trust_root,
             delayed_return => 1,
         );
         $c->res->redirect($check_url);
         $c->detach();
     }
-    elsif ( $c->req->params->{'openid-check'} )
-    {
-        if ( my $setup_url = $csr->user_setup_url )
-        {
+    elsif ( $c->req->params->{'openid-check'} ) {
+        if ( my $setup_url = $csr->user_setup_url ) {
             $c->res->redirect($setup_url);
             return;
         }
-        elsif ( $csr->user_cancel )
-        {
+        elsif ( $csr->user_cancel ) {
             return;
         }
-        elsif ( my $identity = $csr->verified_identity )
-        {
-            # This is where we ought to build an OpenID user and verify against the spec.
-            my $user = +{ map { $_ => scalar $identity->$_ }
-                qw( url display rss atom foaf declared_rss declared_atom declared_foaf foafmaker ) };
-            # Dude, I did not design the array as hash spec. Don't curse me [apv].
+        elsif ( my $identity = $csr->verified_identity ) {
+
+   # This is where we ought to build an OpenID user and verify against the spec.
+            my $user =
+              +{ map { $_ => scalar $identity->$_ }
+                  qw( url display rss atom foaf declared_rss declared_atom declared_foaf foafmaker )
+              };
+
+          # Dude, I did not design the array as hash spec. Don't curse me [apv].
             my %flat = @extensions;
-            for my $key ( keys %flat )
-            {
-                $user->{extensions}->{$key} = $identity->signed_extension_fields($key);
+            for my $key ( keys %flat ) {
+                $user->{extensions}->{$key} =
+                  $identity->signed_extension_fields($key);
             }
 
-            my $user_obj = $realm->find_user($user, $c);
+            my $user_obj = $realm->find_user( $user, $c );
 
-            if ( ref $user_obj )
-            {
+            if ( ref $user_obj ) {
                 return $user_obj;
             }
-            else
-            {
-                $c->log->debug("Verified OpenID identity failed to load with find_user; bad user_class? Try 'Null.'") if $self->debug;
+            else {
+                $c->log->debug(
+"Verified OpenID identity failed to load with find_user; bad user_class? Try 'Null.'"
+                ) if $self->debug;
                 return;
             }
         }
-        else
-        {
-            $self->_config->{errors_are_fatal} ?
-                Catalyst::Exception->throw("Error validating identity: " . $csr->err)
-                      :
-                $c->log->error( $csr->err);
+        else {
+            $self->_config->{errors_are_fatal}
+              ? Catalyst::Exception->throw(
+                "Error validating identity: " . $csr->err )
+              : $c->log->error( $csr->err );
         }
     }
     return;
