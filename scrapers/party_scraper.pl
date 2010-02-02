@@ -68,7 +68,7 @@ sub scrape_parties {
         my ($id) = $commision_url =~ m{frmPartyID=(\d+)};
         $party->{electoral_commision_id} = $id;
 
-        if ( !$parties_rs->find( {code=>$party->{code}} ) ) {
+        if ( !$parties_rs->find( { code => $party->{code} } ) ) {
 
             # scrape the emblem off the electoral commission site
             my $emblem_page_url =

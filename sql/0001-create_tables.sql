@@ -40,8 +40,9 @@ create table parties (
 -- could use across several tables as an id - perhaps migrate?
 create table links (
     id          bigint      default nextval('global_id_seq') primary key,
-    code        varchar(80) not null,
+    source      bigint      not null,
     url         text        not null,
+        unique( source, url ),
     title       text        not null,
     created     timestamp    not null,
     updated     timestamp    not null
@@ -94,7 +95,7 @@ create table candidates (
 create table candidacies (
     candidate_id   bigint not null references candidates(id),
     seat_id        bigint not null references seats(id),
-        unique (candidate, seat),
+        primary key (candidate_id, seat_id),
 
     created     timestamp    not null,
     updated     timestamp    not null

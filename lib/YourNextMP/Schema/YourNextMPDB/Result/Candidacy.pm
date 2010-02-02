@@ -22,14 +22,14 @@ __PACKAGE__->table("candidacies");
 
 =head1 ACCESSORS
 
-=head2 candidate
+=head2 candidate_id
 
   data_type: bigint
   default_value: undef
   is_foreign_key: 1
   is_nullable: 0
 
-=head2 seat
+=head2 seat_id
 
   data_type: bigint
   default_value: undef
@@ -51,14 +51,14 @@ __PACKAGE__->table("candidacies");
 =cut
 
 __PACKAGE__->add_columns(
-    "candidate",
+    "candidate_id",
     {
         data_type      => "bigint",
         default_value  => undef,
         is_foreign_key => 1,
         is_nullable    => 0,
     },
-    "seat",
+    "seat_id",
     {
         data_type      => "bigint",
         default_value  => undef,
@@ -78,24 +78,9 @@ __PACKAGE__->add_columns(
         is_nullable   => 0,
     },
 );
-__PACKAGE__->add_unique_constraint( "candidacies_candidate_key",
-    [ "candidate", "seat" ] );
+__PACKAGE__->set_primary_key( "candidate_id", "seat_id" );
 
 =head1 RELATIONS
-
-=head2 candidate
-
-Type: belongs_to
-
-Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Candidate>
-
-=cut
-
-__PACKAGE__->belongs_to(
-    "candidate",
-    "YourNextMP::Schema::YourNextMPDB::Result::Candidate",
-    { id => "candidate" }, {},
-);
 
 =head2 seat
 
@@ -108,11 +93,25 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Seat>
 __PACKAGE__->belongs_to(
     "seat",
     "YourNextMP::Schema::YourNextMPDB::Result::Seat",
-    { id => "seat" }, {},
+    { id => "seat_id" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-01 14:21:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:LzqpiGehQN0kMUmCfPVU3A
+=head2 candidate
+
+Type: belongs_to
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Candidate>
+
+=cut
+
+__PACKAGE__->belongs_to(
+    "candidate",
+    "YourNextMP::Schema::YourNextMPDB::Result::Candidate",
+    { id => "candidate_id" }, {},
+);
+
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:08:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lq5f+v75qQbhktxFrmlNUA
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

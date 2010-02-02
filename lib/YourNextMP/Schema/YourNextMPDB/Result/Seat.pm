@@ -109,7 +109,7 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Candidacy>
 __PACKAGE__->has_many(
     "candidacies",
     "YourNextMP::Schema::YourNextMPDB::Result::Candidacy",
-    { "foreign.seat" => "self.id" },
+    { "foreign.seat_id" => "self.id" },
 );
 
 =head2 users
@@ -126,8 +126,8 @@ __PACKAGE__->has_many(
     { "foreign.seat" => "self.id" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-01 14:21:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6+9dI6J1UMLGCyNDmnfqqQ
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:08:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:46QrcHRreMS0+P6h5o8T+Q
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -139,7 +139,7 @@ __PACKAGE__->many_to_many(
 __PACKAGE__->has_many(
     "links",
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
-    { "foreign.code" => "self.code" },
+    { "foreign.source" => "self.id" },
 );
 
 1;

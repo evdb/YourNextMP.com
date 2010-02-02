@@ -125,8 +125,8 @@ __PACKAGE__->add_columns(
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "files_md5_key", [ "md5", "format" ] );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-01 14:21:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:NEz39kYSrowJBR8fpF7QIQ
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:06:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:6NAmbasjUE1L2aog8fcqVQ
 
 use Image::Imlib2;
 use File::Temp;

@@ -29,12 +29,11 @@ __PACKAGE__->table("links");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 code
+=head2 source
 
-  data_type: character varying
+  data_type: bigint
   default_value: undef
   is_nullable: 0
-  size: 80
 
 =head2 url
 
@@ -70,13 +69,8 @@ __PACKAGE__->add_columns(
         is_auto_increment => 1,
         is_nullable       => 0,
     },
-    "code",
-    {
-        data_type     => "character varying",
-        default_value => undef,
-        is_nullable   => 0,
-        size          => 80,
-    },
+    "source",
+    { data_type => "bigint", default_value => undef, is_nullable => 0 },
     "url",
     { data_type => "text", default_value => undef, is_nullable => 0 },
     "title",
@@ -95,8 +89,10 @@ __PACKAGE__->add_columns(
     },
 );
 __PACKAGE__->set_primary_key("id");
+__PACKAGE__->add_unique_constraint( "links_source_url_key",
+    [ "source", "url" ] );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-01 14:21:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:bNFahqgdRwwjk5pUuAnL5w
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:06:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:m9KOYGvR+a86LX+XcbGqag
 
 1;

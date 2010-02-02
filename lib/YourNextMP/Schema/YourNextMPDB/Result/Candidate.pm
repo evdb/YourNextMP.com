@@ -214,7 +214,7 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Candidacy>
 __PACKAGE__->has_many(
     "candidacies",
     "YourNextMP::Schema::YourNextMPDB::Result::Candidacy",
-    { "foreign.candidate" => "self.id" },
+    { "foreign.candidate_id" => "self.id" },
 );
 
 =head2 user
@@ -246,8 +246,8 @@ __PACKAGE__->belongs_to(
     { id => "party" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-01 14:21:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qJb154aomi2aynSNoupPaw
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:08:12
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hlzlqZVJsBq+Alu41Q1+tw
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -267,7 +267,7 @@ __PACKAGE__->has_many(
 __PACKAGE__->has_many(
     "links",
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
-    { "foreign.code" => "self.code" },
+    { "foreign.source" => "self.id" },
 );
 
 sub original_photo {

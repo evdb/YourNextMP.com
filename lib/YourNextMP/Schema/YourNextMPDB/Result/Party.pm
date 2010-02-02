@@ -115,12 +115,12 @@ __PACKAGE__->add_columns(
     },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint( "parties_code_key", ["code"] );
 __PACKAGE__->add_unique_constraint( "parties_name_key", ["name"] );
 __PACKAGE__->add_unique_constraint(
     "parties_electoral_commision_id_key",
     ["electoral_commision_id"],
 );
+__PACKAGE__->add_unique_constraint( "parties_code_key", ["code"] );
 
 =head1 RELATIONS
 
@@ -138,8 +138,8 @@ __PACKAGE__->has_many(
     { "foreign.party" => "self.id" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-01 14:21:52
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:seLQE2MzckTpUvdXMyNp3A
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:06:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mpNxq/B/mkheZ1TcHurFRQ
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -154,7 +154,7 @@ __PACKAGE__->has_many(
 __PACKAGE__->has_many(
     "links",
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
-    { "foreign.code" => "self.code" },
+    { "foreign.source" => "self.id" },
 );
 
 sub original_emblem {
