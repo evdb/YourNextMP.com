@@ -126,8 +126,8 @@ __PACKAGE__->has_many(
     { "foreign.seat" => "self.id" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:08:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:46QrcHRreMS0+P6h5o8T+Q
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:khb1q4mwki4li5bRCW5MXQ
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 

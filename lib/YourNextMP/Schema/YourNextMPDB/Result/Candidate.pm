@@ -97,13 +97,6 @@ __PACKAGE__->table("candidates");
   is_nullable: 1
   size: 200
 
-=head2 photo
-
-  data_type: character
-  default_value: undef
-  is_nullable: 1
-  size: 32
-
 =head2 bio
 
   data_type: text
@@ -116,6 +109,13 @@ __PACKAGE__->table("candidates");
   default_value: undef
   is_nullable: 1
   size: 300
+
+=head2 image_id
+
+  data_type: bigint
+  default_value: undef
+  is_foreign_key: 1
+  is_nullable: 1
 
 =cut
 
@@ -195,13 +195,6 @@ __PACKAGE__->add_columns(
         is_nullable   => 1,
         size          => 200,
     },
-    "photo",
-    {
-        data_type     => "character",
-        default_value => undef,
-        is_nullable   => 1,
-        size          => 32,
-    },
     "bio",
     { data_type => "text", default_value => undef, is_nullable => 1 },
     "scrape_source",
@@ -210,6 +203,13 @@ __PACKAGE__->add_columns(
         default_value => undef,
         is_nullable   => 1,
         size          => 300,
+    },
+    "image_id",
+    {
+        data_type      => "bigint",
+        default_value  => undef,
+        is_foreign_key => 1,
+        is_nullable    => 1,
     },
 );
 __PACKAGE__->set_primary_key("id");
@@ -260,8 +260,23 @@ __PACKAGE__->belongs_to(
     { id => "party" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:40:13
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pt3tskF0Y73XlZBVYougbg
+=head2 image
+
+Type: belongs_to
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Image>
+
+=cut
+
+__PACKAGE__->belongs_to(
+    "image",
+    "YourNextMP::Schema::YourNextMPDB::Result::Image",
+    { id        => "image_id" },
+    { join_type => "LEFT" },
+);
+
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:02
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:skmns9G40V7MPKjU9UIcgQ
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -344,10 +359,10 @@ sub update_by_scraping {
             }
         );
     }
-    
+
     # If there is a photo deal with it
-    if ( $photo_url) {
-        
+    if ($photo_url) {
+
     }
 
 }

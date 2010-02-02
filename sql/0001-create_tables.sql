@@ -10,18 +10,17 @@ create table seats (
     name        varchar(80) not null unique
 );
 
-create table files (
-    id          bigint      default nextval('global_id_seq') primary key,
+create table images (
+    id          bigint       default nextval('global_id_seq') primary key,
 
-    md5         char(32)    not null,
-    format      varchar(20) not null,
-        unique (md5, format),
+    source_url  text         unique,
+    small       varchar(200) not null,
+    medium      varchar(200) not null,
+    large       varchar(200) not null,
+    original    varchar(200) not null,
 
     created     timestamp    not null,
-    updated     timestamp    not null,
-    data        bytea    not null,
-    mime_type   varchar(80) not null,
-    source      text        not null
+    updated     timestamp    not null
 );
 
 create table parties (
@@ -31,7 +30,7 @@ create table parties (
     updated                 timestamp    not null,
     name                    varchar(80) not null unique,
     electoral_commision_id  int         unique,
-    emblem                  char(32)
+    image_id                bigint references images(id)
 );
 
 -- code is the code of the foreign row that the link is related to. ideally
@@ -87,8 +86,10 @@ create table candidates (
     phone       varchar(200),
     fax         varchar(200),
     address     varchar(200),    
-    photo       char(32),
-    bio         text
+    image_id    bigint references images(id)
+    bio         text,
+    
+    scrape_source varchar(300)
     
 );
 

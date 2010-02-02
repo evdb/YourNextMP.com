@@ -186,8 +186,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:06:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ILoVSpqvKIKEpzrka4aqOA
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WAtuf/1Wt3YjQCJWy8/60Q
 
 =head2 screen_name
 

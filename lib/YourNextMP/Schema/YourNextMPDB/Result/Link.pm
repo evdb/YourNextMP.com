@@ -92,7 +92,7 @@ __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "links_source_url_key",
     [ "source", "url" ] );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:06:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:m9KOYGvR+a86LX+XcbGqag
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:jpxdc7pj8CxM1Bdt9ZeoKQ
 
 1;

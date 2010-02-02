@@ -24,7 +24,7 @@ sub extract_candidate_data {
         # process 'div.main-txt',     html      => 'HTML';
         process 'div.main-txt p', contacts => 'html';
 
-        process 'div.main-txt img', photo_url     => '@src';
+        process 'div.main-txt img', photo_url => '@src';
         process 'div.main-txt a',   'links[]' => '@href';
         process 'div.main-txt',     'bio'     => 'HTML';
     }

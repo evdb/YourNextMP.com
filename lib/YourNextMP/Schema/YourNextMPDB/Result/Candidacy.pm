@@ -110,8 +110,8 @@ __PACKAGE__->belongs_to(
     { id => "candidate_id" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:08:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:lq5f+v75qQbhktxFrmlNUA
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:02
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:84NnboVG8YK7GeCXMTeXGA
 
 # You can replace this text with custom content, and it will be preserved on regeneration
 1;

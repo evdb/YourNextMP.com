@@ -61,12 +61,12 @@ __PACKAGE__->table("parties");
   default_value: undef
   is_nullable: 1
 
-=head2 emblem
+=head2 image_id
 
-  data_type: character
+  data_type: bigint
   default_value: undef
+  is_foreign_key: 1
   is_nullable: 1
-  size: 32
 
 =cut
 
@@ -106,12 +106,12 @@ __PACKAGE__->add_columns(
     },
     "electoral_commision_id",
     { data_type => "integer", default_value => undef, is_nullable => 1 },
-    "emblem",
+    "image_id",
     {
-        data_type     => "character",
-        default_value => undef,
-        is_nullable   => 1,
-        size          => 32,
+        data_type      => "bigint",
+        default_value  => undef,
+        is_foreign_key => 1,
+        is_nullable    => 1,
     },
 );
 __PACKAGE__->set_primary_key("id");
@@ -138,8 +138,23 @@ __PACKAGE__->has_many(
     { "foreign.party" => "self.id" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:06:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:mpNxq/B/mkheZ1TcHurFRQ
+=head2 image
+
+Type: belongs_to
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Image>
+
+=cut
+
+__PACKAGE__->belongs_to(
+    "image",
+    "YourNextMP::Schema::YourNextMPDB::Result::Image",
+    { id        => "image_id" },
+    { join_type => "LEFT" },
+);
+
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kdBtxsMYhg0LUqlJnhQQOQ
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
