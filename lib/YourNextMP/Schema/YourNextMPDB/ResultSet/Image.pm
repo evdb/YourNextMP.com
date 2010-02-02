@@ -20,10 +20,13 @@ my %FORMATS = (    #
 );
 
 my %MIME_TO_SUFFIX = (
-    'image/jpeg' => 'jpg',    #
+    'image/jpeg' => 'jpg',
+    'image/jpg'  => 'jpg',
+    'image/gif'  => 'gif',
+    'image/png'  => 'png'
 );
 
-my %SUFFIX_TO_MIME = reverse %MIME_TO_SUFFIX;
+# my %SUFFIX_TO_MIME = reverse %MIME_TO_SUFFIX;
 
 my $STORE_DIR = dir( File::HomeDir->my_home )->subdir('yournextmp');
 $STORE_DIR->mkpath;

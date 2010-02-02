@@ -6,8 +6,8 @@
     [% PROCESS 'stubs/link_list.html', links => candidate.links %]
 </div>
 
-    [% IF candidate.original_photo %]
-        <img src="[% c.uri_for('/files', candidate.original_photo.md5 ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
+    [% IF candidate.image_id %]
+        <img src="[% c.uri_for_image( candidate.image_id, 'medium' ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
     [% END %]
 
     <h1>[% candidate.name | html %]</h1>

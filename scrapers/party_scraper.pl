@@ -16,7 +16,7 @@ my $base_search_page =
   $commision_site . '/regulatory-issues/regpoliticalparties.cfm';
 
 my $parties_rs = YourNextMP::Schema::YourNextMPDB->resultset('Party');
-my $files_rs   = YourNextMP::Schema::YourNextMPDB->resultset('File');
+my $images_rs  = YourNextMP::Schema::YourNextMPDB->resultset('Image');
 
 # create the independent party
 $parties_rs->find_or_create(    #
@@ -68,7 +68,7 @@ sub scrape_parties {
         my ($id) = $commision_url =~ m{frmPartyID=(\d+)};
         $party->{electoral_commision_id} = $id;
 
-        if ( !$parties_rs->find( { code => $party->{code} } ) ) {
+        # if ( !$parties_rs->find( { code => $party->{code} } ) ) {
 
             # scrape the emblem off the electoral commission site
             my $emblem_page_url =
@@ -81,13 +81,14 @@ sub scrape_parties {
             # Fetch the emblem if it exists
             if ($emblem_url) {
                 print "\tFetching emblem for $party->{name}\n";
-                my $file = $files_rs->create_from_url($emblem_url);
-                $party->{emblem} = $file->md5;
+                my $image =
+                  $images_rs->find_or_create( { source_url => $emblem_url } );
+                $party->{image_id} = $image->id;
             }
 
-        }
+        # }
 
-        my $p = $parties_rs->find_or_create(    #
+        my $p = $parties_rs->update_or_create(    #
             $party,
         );
 

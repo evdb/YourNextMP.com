@@ -73,6 +73,17 @@ __PACKAGE__->config(
 
 );
 
+use YourNextMP::Schema::YourNextMPDB::ResultSet::Image;
+__PACKAGE__->config(
+    static => {
+        dirs         => [ 'static', 'images' ],
+        include_path => [
+            YourNextMP::Schema::YourNextMPDB::ResultSet::Image->store_dir . '',
+            YourNextMP->path_to("root"),
+        ],
+    },
+);
+
 # Start the application
 __PACKAGE__->setup();
 
@@ -196,6 +207,23 @@ sub require_user {
         { reason => $reason }
     );
 
+}
+
+=head2 uri_for_image
+
+    $uri = $c->uri_for_image( $image_id, $format );
+
+Returns the url to the image with the given id and format.
+
+=cut
+
+sub uri_for_image {
+    my ( $c, $image_id, $format ) = @_;
+
+    my $path = YourNextMP::Schema::YourNextMPDB::Result::Image    #
+      ->path_to_image( $image_id, $format, 'png' );
+
+    return $c->uri_for( '/', $path );
 }
 
 =head1 NAME

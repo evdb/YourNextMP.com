@@ -5,31 +5,49 @@ use strict;
 use warnings;
 use utf8;
 
+sub clean_name {
+    my $class = shift;
+    my $name  = shift;
+
+    # Strip out silly additions to names (tories particularly keen on this)
+    for ($name) {
+
+        # Clean up whitspace
+        s{\s+}{ }g;
+        s{^\s+}{};
+        s{\s+$}{};
+
+        s{^Rt Hon }{};
+        s{^Hon }{};
+        s{^Cllr }{}i;
+        s{^Sir }{}i;
+        s{^Dr }{}i;
+
+        s{ MP$}{};
+        s{ MEP$}{};
+        s{ MSP$}{};
+        s{ Bt$}{};
+        s{ TD$}{};
+        s{ QC$}{};
+        s{ OBE$}{};
+        s{ CBE$}{};
+        s{ AM$}{};
+    }
+
+    return $name;
+
+}
+
 sub name_to_code {
     my $class = shift;
     my $name  = shift;
+
+    $name = $class->clean_name($name);
 
     my $code = lc $name;
 
     $code =~ s{'}{}g;
     $code =~ s{[^[:alpha:]]+}{_}g;
-
-    # Strip out silly additions to names (tories particularly keen on this)
-    $code =~ s{^rt_hon_}{};
-    $code =~ s{^hon_}{};
-    $code =~ s{^cllr_}{};
-    $code =~ s{^sir_}{};
-    $code =~ s{^dr_}{};
-
-    $code =~ s{_mp$}{};
-    $code =~ s{_mep$}{};
-    $code =~ s{_msp$}{};
-    $code =~ s{_bt$}{};
-    $code =~ s{_td$}{};
-    $code =~ s{_qc$}{};
-    $code =~ s{_obe$}{};
-    $code =~ s{_cbe$}{};
-    $code =~ s{_am$}{};
 
     $code =~ s{é}{e}g;
     $code =~ s{ö}{o}g;

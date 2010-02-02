@@ -159,22 +159,9 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
 __PACKAGE__->has_many(
-    "emblems",
-    "YourNextMP::Schema::YourNextMPDB::Result::File",
-    {
-        "foreign.md5" => "self.emblem",    #
-    },
-);
-
-__PACKAGE__->has_many(
     "links",
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
     { "foreign.source" => "self.id" },
 );
-
-sub original_emblem {
-    my $self = shift;
-    return $self->emblems( { format => 'original' } )->first;
-}
 
 1;

@@ -6,8 +6,8 @@
 
 <h1>[% party.name %]</h1>
 
-[% IF party.emblem %]
-    <img src="[% c.uri_for('/files', party.original_emblem.md5 ) %]" />
+[% IF party.image_id %]
+    <img src="[% c.uri_for_image( party.image_id, 'medium' ) %]" />
 [% END %]
 
 <h2>Candidates</h2>
@@ -32,7 +32,7 @@
         [% query_regex = query.replace( '\s+', '|' ) %]
         [% PROCESS 'stubs/search_result.html',
             name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
-            image => candidate.original_photo,
+            image_id => candidate.image_id,
             href  => c.uri_for( '/candidates', candidate.code ),
             extra => extra,
         %]        
@@ -41,7 +41,7 @@
     
 [% ELSE %]
 
-    <p>Nothing matched your search for '[% query | html %]'.</p>
+    <p>There are no candidates for this party.</p>
 
 [% END %]
 

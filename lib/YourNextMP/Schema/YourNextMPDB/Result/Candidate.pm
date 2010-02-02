@@ -286,23 +286,10 @@ __PACKAGE__->many_to_many(
 );
 
 __PACKAGE__->has_many(
-    "photos",
-    "YourNextMP::Schema::YourNextMPDB::Result::File",
-    {
-        "foreign.md5" => "self.photo",    #
-    },
-);
-
-__PACKAGE__->has_many(
     "links",
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
     { "foreign.source" => "self.id" },
 );
-
-sub original_photo {
-    my $self = shift;
-    return $self->photos( { format => 'original' } )->first;
-}
 
 sub insert {
     my $self = shift;
@@ -338,9 +325,9 @@ sub update_by_scraping {
     # Get the data out
     my $data = $scraper->extract_candidate_data($self);
 
-    use Data::Dumper;
-    local $Data::Dumper::Sortkeys = 1;
-    warn Dumper($data);
+    # use Data::Dumper;
+    # local $Data::Dumper::Sortkeys = 1;
+    # warn Dumper($data);
 
     # extract bits that are not core to the candidate
     my $photo_url = delete $data->{photo_url} || '';
@@ -363,6 +350,15 @@ sub update_by_scraping {
     # If there is a photo deal with it
     if ($photo_url) {
 
+        my $image = $self          #
+          ->result_source          #
+          ->schema                 #
+          ->resultset('Image')     #
+          ->find_or_create( { source_url => $photo_url, } );
+
+        $self->update( { image => $image } )
+          if !$self->image_id      #
+              || $self->image_id != $image->id;
     }
 
 }

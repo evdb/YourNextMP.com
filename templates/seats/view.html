@@ -18,7 +18,7 @@
 
             [% PROCESS 'stubs/search_result.html',
                 name  => candidate.name,
-                image => candidate.original_photo,
+                image_id => candidate.image_id,
                 href  => c.uri_for( '/candidates', candidate.code ),
                 extra => candidate.party.name,
             %]        

@@ -1,8 +1,8 @@
 <li>
     <a href="[% href %]">
 
-        [% IF image %]
-            <img src="[% c.uri_for( '/files', image.md5, '40x40' ) %]" />
+        [% IF image_id %]
+            <img src="[% c.uri_for_image( image_id, 'small' ) %]" />
         [% END %]
 
         <span class="name">[% name %]</span>
