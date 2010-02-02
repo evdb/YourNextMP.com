@@ -63,10 +63,10 @@ foreach my $start_page (@start_pages) {
         my $candidate = $can_rs->update_or_create($can);
 
         $candidate->add_to_candidacies( { seat => $seat } )
-          unless $parties_rs->find( { code => 'labour' } )->candidates(
-                  { seat => $seat->code }, { join => 'candidacies' }
-              )->count
-              || $candidate->candidacies( { seat => $seat->code } )->count;
+          unless $parties_rs->find( { code => 'labour' } )
+          ->candidates( { seat => $seat->code }, { join => 'candidacies' } )
+          ->count
+          || $candidate->candidacies( { seat => $seat->code } )->count;
 
         # grab the photo
         if ( !$candidate->photo ) {

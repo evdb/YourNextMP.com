@@ -110,6 +110,13 @@ __PACKAGE__->table("candidates");
   default_value: undef
   is_nullable: 1
 
+=head2 scrape_source
+
+  data_type: character varying
+  default_value: undef
+  is_nullable: 1
+  size: 300
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -197,6 +204,13 @@ __PACKAGE__->add_columns(
     },
     "bio",
     { data_type => "text", default_value => undef, is_nullable => 1 },
+    "scrape_source",
+    {
+        data_type     => "character varying",
+        default_value => undef,
+        is_nullable   => 1,
+        size          => 300,
+    },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "candidates_code_key", ["code"] );
@@ -246,8 +260,8 @@ __PACKAGE__->belongs_to(
     { id => "party" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:08:12
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hlzlqZVJsBq+Alu41Q1+tw
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 11:40:13
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pt3tskF0Y73XlZBVYougbg
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -288,6 +302,59 @@ sub insert {
     # $self->updated($now);
 
     return $self->next::method(@_);
+}
+
+use List::Util qw( first );
+
+use Module::Pluggable
+  sub_name    => 'scrapers',
+  search_path => ['YourNextMP::Scrapers'],
+  require     => 1,
+  except      => 'YourNextMP::Scrapers::ScraperBase';
+
+my @SCRAPERS = __PACKAGE__->scrapers;
+
+sub update_by_scraping {
+    my $self = shift;
+
+    # Find the scraper to use
+    my $scraper = _find_scraper_for( $self->scrape_source );
+
+    # Get the data out
+    my $data = $scraper->extract_candidate_data($self);
+
+    use Data::Dumper;
+    local $Data::Dumper::Sortkeys = 1;
+    warn Dumper($data);
+
+    # extract bits that are not core to the candidate
+    my $photo_url = delete $data->{photo_url} || '';
+    my $links     = delete $data->{links}     || [];
+
+    # Apply the data to the candidate
+    $self->update($data);
+
+    # Make sure all the links exist
+    foreach my $title ( keys %$links ) {
+        my $url = $links->{$title};
+        $self->find_or_create_related(
+            links => {
+                url   => $url,     #
+                title => $title,
+            }
+        );
+    }
+    
+    # If there is a photo deal with it
+    if ( $photo_url) {
+        
+    }
+
+}
+
+sub _find_scraper_for {
+    my $url = shift;
+    return first { $_->can_do_url($url) } @SCRAPERS;
 }
 
 1;

@@ -6,6 +6,7 @@ use inc::Module::Install;
 name 'YourNextMP';
 all_from 'lib/YourNextMP.pm';
 
+requires 'App::Cache';
 requires 'Carp';
 requires 'Catalyst';
 requires 'Catalyst::Action::RenderView';
