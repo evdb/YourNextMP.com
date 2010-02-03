@@ -1,0 +1,36 @@
+IP: 79.125.6.235
+
+------------------
+
+INSTANCE_ID=i-78ab7b0f
+INSTANCE_IP_ADDRESS=79.125.6.235
+VOLUME_ID=vol-6c6b8a05
+ATTACHED TO=/dev/sdf
+
+kernel_id = aki-02486376
+ramdisk   = ari-fa4d668e
+
+snapshot: snap-74e7111d
+IMAGE from snapshot:   ami-19ddf66d
+
+
+------------------
+
+
+original image:
+  ami-bdbe5ad4
+  developer-tools/Debian-Etch_Catalyst_DBIC_TT.manifest.xml
+
+migrate to eu availability zone
+
+  ec2-migrate-image \
+    --bucket             developer-tools \
+    --destination-bucket yournextmp      \
+    --manifest           Debian-Etch_Catalyst_DBIC_TT.manifest.xml \
+    --location EU
+
+
+# Possible starting images (available in EU)
+
+ami-b8446fcc	alestic-32-eu-west-1/debian-5.0-lenny-base-20091011.manifest.xml
+  
