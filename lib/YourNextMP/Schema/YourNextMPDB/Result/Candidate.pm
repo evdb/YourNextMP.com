@@ -117,6 +117,12 @@ __PACKAGE__->table("candidates");
   is_foreign_key: 1
   is_nullable: 1
 
+=head2 can_scrape
+
+  data_type: boolean
+  default_value: true
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -211,9 +217,13 @@ __PACKAGE__->add_columns(
         is_foreign_key => 1,
         is_nullable    => 1,
     },
+    "can_scrape",
+    { data_type => "boolean", default_value => "true", is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "candidates_code_key", ["code"] );
+__PACKAGE__->add_unique_constraint( "candidates_scrape_source_key",
+    ["scrape_source"] );
 
 =head1 RELATIONS
 
@@ -275,8 +285,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:02
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:skmns9G40V7MPKjU9UIcgQ
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 15:24:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hClNBZYXoQKYlbRcNC5//w
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -306,21 +316,14 @@ sub insert {
     return $self->next::method(@_);
 }
 
-use List::Util qw( first );
-
-use Module::Pluggable
-  sub_name    => 'scrapers',
-  search_path => ['YourNextMP::Scrapers'],
-  require     => 1,
-  except      => 'YourNextMP::Scrapers::ScraperBase';
-
-my @SCRAPERS = __PACKAGE__->scrapers;
+use YourNextMP::Scrapers::ScraperBase;
 
 sub update_by_scraping {
     my $self = shift;
 
     # Find the scraper to use
-    my $scraper = _find_scraper_for( $self->scrape_source );
+    my $scraper = YourNextMP::Scrapers::ScraperBase    #
+      ->find_candidate_scraper( $self->scrape_source );
 
     # Get the data out
     my $data = $scraper->extract_candidate_data($self);
@@ -361,11 +364,6 @@ sub update_by_scraping {
               || $self->image_id != $image->id;
     }
 
-}
-
-sub _find_scraper_for {
-    my $url = shift;
-    return first { $_->can_do_url($url) } @SCRAPERS;
 }
 
 1;

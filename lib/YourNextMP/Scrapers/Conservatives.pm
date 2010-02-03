@@ -4,14 +4,20 @@ use base 'YourNextMP::Scrapers::ScraperBase';
 use strict;
 use warnings;
 use Web::Scraper;
-
 use App::Cache;
 
-sub can_do_url {
+sub can_do_candidate_url {
     my $class = shift;
     my $url   = shift;
 
     return $url =~ m{ \A http://www.conservatives.com/ }xms;
+}
+
+sub can_do_candidate_list {
+    my $class = shift;
+    my $code  = shift;
+
+    return $code eq 'conservative';
 }
 
 sub extract_candidate_data {
@@ -77,6 +83,33 @@ sub extract_candidate_data {
     $data->{photo_url} .= '';
 
     return $data;
+}
+
+sub extract_candidate_list {
+    my $class = shift;
+
+    my $scraper = scraper {
+        process 'tbody tr', 'candidates[]' => scraper {
+            process 'td a',    name          => 'TEXT';
+            process 'td a',    scrape_source => '@href';
+            process '//td[2]', seat          => 'TEXT';
+        };
+    };
+
+    my $start_page    #
+      = 'http://www.conservatives.com'
+      . '/People/Prospective_Parliamentary_Candidates.aspx?by=All';
+
+    my $html = $class->cache->get_url($start_page);
+
+    my $candidates    #
+      = $scraper      #
+      ->scrape( $html, $start_page )    #
+      ->{candidates};
+
+    my @to_return = grep { $_->{seat} } @$candidates;
+    return \@to_return;
+
 }
 
 1;

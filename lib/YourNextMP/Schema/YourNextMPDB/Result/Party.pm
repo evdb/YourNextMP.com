@@ -153,8 +153,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:kdBtxsMYhg0LUqlJnhQQOQ
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 15:24:06
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dnFhqcw2hhrZ+lOuJgqn6w
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -163,5 +163,80 @@ __PACKAGE__->has_many(
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
     { "foreign.source" => "self.id" },
 );
+
+=head2 scrape_candidates
+
+    $party->scrape_candidates();
+
+Scrape the candidates for this party from their website. Any candidates found
+are added to the database and can be filled in properly using
+C<update_by_scraping> on the candidate object later.
+
+=cut
+
+use YourNextMP::Scrapers::ScraperBase;
+
+sub scrape_candidates {
+    my $self = shift;
+
+    # Find the scraper to use
+    my $scraper = YourNextMP::Scrapers::ScraperBase    #
+      ->find_candidate_list_scraper( $self->code );
+
+    # If no scraper return (not all parties can be sraped)
+    return unless $scraper;
+
+    # Scrape the list and get the data back
+    my $candidates = $scraper->extract_candidate_list();
+
+    # use Data::Dumper;
+    # local $Data::Dumper::Sortkeys = 1;
+    # warn Dumper($candidates);
+
+    # Load resultsets we will need
+    my $seat_rs = $self->result_source->schema->resultset('Seat');
+    my $can_rs  = $self->result_source->schema->resultset('Candidate');
+
+    foreach my $can (@$candidates) {
+
+        # Get some clean data out
+        my $code          = $can_rs->name_to_code( $can->{name} );
+        my $name          = $can_rs->clean_name( $can->{name} );
+        my $scrape_source = $can->{scrape_source};
+
+        # Find the seat.
+        my $seat_name = delete $can->{seat};
+        my $seat = $seat_rs->find( { code_from_name => $seat_name } )
+          || warn("Can't find seat '$seat_name' from '$scrape_source'") && next;
+
+        # We don't care if candidates already exist - just want to add new ones.
+        # Don't trust that the code has not changed so find on scrape_source
+        my $candidate =
+             $can_rs->find( { scrape_source => $scrape_source } )
+          || $can_rs->find( { code          => $code } )
+          || $can_rs->create(
+            {
+                code          => $code,
+                name          => $name,
+                scrape_source => $scrape_source,
+                party         => $self,
+            }
+          );
+
+        # Sanity check that the scrape_source has not changed
+        if ( $candidate->scrape_source ne $scrape_source ) {
+            warn sprintf
+              "SCRAPE SOURCE HAS CHANGED!! id: %s, from '%s' to '%s'",
+              $candidate->id, $candidate->scrape_source, $scrape_source;
+        }
+
+        # Make sure that the candidate is assigned to their seat
+        $candidate->add_to_candidacies( { seat => $seat } )
+          unless $candidate->count_related(
+            candidacies => { seat_id => $seat->id } );
+    }
+
+    return 1;
+}
 
 1;

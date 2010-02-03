@@ -89,7 +89,8 @@ create table candidates (
     image_id    bigint references images(id)
     bio         text,
     
-    scrape_source varchar(300)
+    scrape_source varchar(300) unique,
+    can_scrape    bool not null default true
     
 );
 

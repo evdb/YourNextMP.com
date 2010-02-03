@@ -19,9 +19,9 @@ my @names = (
 
 my $rs = YourNextMP::Schema::YourNextMPDB->resultset('Candidate');
 
-foreach my $line ( @names ) {
-    my ($input, $name, $code) = @$line;
+foreach my $line (@names) {
+    my ( $input, $name, $code ) = @$line;
 
-    is $rs->clean_name( $input), $name, "$input -> $name";
-    is $rs->name_to_code( $input), $code, "$input -> $code";
+    is $rs->clean_name($input),   $name, "$input -> $name";
+    is $rs->name_to_code($input), $code, "$input -> $code";
 }

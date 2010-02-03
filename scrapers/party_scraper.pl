@@ -70,21 +70,20 @@ sub scrape_parties {
 
         # if ( !$parties_rs->find( { code => $party->{code} } ) ) {
 
-            # scrape the emblem off the electoral commission site
-            my $emblem_page_url =
-              $search_page . "&frmPartyID=$id" . "&frmType=emblemdetail";
-            my $emblem_url =
-              ( $emblem_scraper->scrape( URI->new($emblem_page_url) )->{url}
-                  || '' )
-              . '';
+        # scrape the emblem off the electoral commission site
+        my $emblem_page_url =
+          $search_page . "&frmPartyID=$id" . "&frmType=emblemdetail";
+        my $emblem_url =
+          ( $emblem_scraper->scrape( URI->new($emblem_page_url) )->{url} || '' )
+          . '';
 
-            # Fetch the emblem if it exists
-            if ($emblem_url) {
-                print "\tFetching emblem for $party->{name}\n";
-                my $image =
-                  $images_rs->find_or_create( { source_url => $emblem_url } );
-                $party->{image_id} = $image->id;
-            }
+        # Fetch the emblem if it exists
+        if ($emblem_url) {
+            print "\tFetching emblem for $party->{name}\n";
+            my $image =
+              $images_rs->find_or_create( { source_url => $emblem_url } );
+            $party->{image_id} = $image->id;
+        }
 
         # }
 

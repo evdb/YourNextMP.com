@@ -22,6 +22,8 @@ Add wikipedia links
 
 Add more details: dob, previous elections, gender, profession, school, university
 
+Prevent codes from being changed except via explicit method
+
 [ NEXT ]
 
 sane way to serve images (s3)
