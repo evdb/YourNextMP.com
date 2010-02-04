@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More tests => 18;
+use Test::More tests => 20;
 
 use YourNextMP::Schema::YourNextMPDB;
 
@@ -14,7 +14,8 @@ my @names = (
     [ 'Dominic Grieve QC MP',     'Dominic Grieve',    'dominic_grieve', ],
     [ 'Dr Andrew Murrison MP',    'Andrew Murrison',   'andrew_murrison', ],
     [ 'Dr Phillip Lee',           'Phillip Lee',       'phillip_lee', ],
-    [ 'Rt Hon Sir George Young Bt MP', 'George Young', 'george_young', ],
+    [ 'Dr. Julian Huppert',            'Julian Huppert', 'julian_huppert', ],
+    [ 'Rt Hon Sir George Young Bt MP', 'George Young',   'george_young', ],
 );
 
 my $rs = YourNextMP::Schema::YourNextMPDB->resultset('Candidate');

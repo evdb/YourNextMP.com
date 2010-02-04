@@ -16,6 +16,7 @@ sub name_to_code {
     $code =~ s{\&}{and}g;
     $code =~ s{[^[:alpha:]]+}{_}g;
     $code =~ s{ô}{o}g;
+    $code =~ s{ô}{o}g;
     $code =~ s{^_*}{};
     $code =~ s{_*$}{};
 

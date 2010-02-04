@@ -204,11 +204,6 @@ sub scrape_candidates {
         my $name          = $can_rs->clean_name( $can->{name} );
         my $scrape_source = $can->{scrape_source};
 
-        # Find the seat.
-        my $seat_name = delete $can->{seat};
-        my $seat = $seat_rs->find( { code_from_name => $seat_name } )
-          || warn("Can't find seat '$seat_name' from '$scrape_source'") && next;
-
         # We don't care if candidates already exist - just want to add new ones.
         # Don't trust that the code has not changed so find on scrape_source
         my $candidate =
@@ -236,10 +231,17 @@ sub scrape_candidates {
               $candidate->id, $candidate->scrape_source, $scrape_source;
         }
 
-        # Make sure that the candidate is assigned to their seat
-        $candidate->add_to_candidacies( { seat => $seat } )
-          unless $candidate->count_related(
-            candidacies => { seat_id => $seat->id } );
+        # Find the seat.
+        if ( my $seat_name = delete $can->{seat} ) {
+            my $seat = $seat_rs->find( { code_from_name => $seat_name } )
+              || warn("Can't find seat '$seat_name' from '$scrape_source'")
+              && next;
+
+            # Make sure that the candidate is assigned to their seat
+            $candidate->add_to_candidacies( { seat => $seat } )
+              unless $candidate->count_related(
+                candidacies => { seat_id => $seat->id } );
+        }
     }
 
     return 1;

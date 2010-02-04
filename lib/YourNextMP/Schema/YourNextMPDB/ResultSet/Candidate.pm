@@ -19,7 +19,7 @@ sub clean_name {
         s{^Hon }{};
         s{^Cllr }{}i;
         s{^Sir }{}i;
-        s{^Dr }{}i;
+        s{^Dr\.? }{}i;
 
         s{ MP$}{};
         s{ MEP$}{};

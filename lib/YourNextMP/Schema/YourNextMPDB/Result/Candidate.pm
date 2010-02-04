@@ -334,6 +334,7 @@ sub update_by_scraping {
 
     # extract bits that are not core to the candidate
     my $photo_url = delete $data->{photo_url} || '';
+    my $seat_name = delete $data->{seat}      || '';
     my $links     = delete $data->{links}     || {};
 
     # Apply the data to the candidate
@@ -363,6 +364,25 @@ sub update_by_scraping {
             last if !$image;
             last if $self->image_id && $self->image_id == $image->id;
             $self->update( { image => $image } );
+        }
+    }
+
+    # If there is a seat set it
+    # Find the seat.
+    if ($seat_name) {
+
+        my $seat_rs = $self->result_source->schema->resultset('Seat');
+
+        if ( my $seat = $seat_rs->find( { code_from_name => $seat_name } ) ) {
+
+            # Make sure that the candidate is assigned to their seat
+            $self->add_to_candidacies( { seat => $seat } )
+              unless $self->count_related(
+                candidacies => { seat_id => $seat->id } );
+        }
+        else {
+            warn sprintf 'Can not find seat "%s" from "%s"', $seat_name,
+              $self->scrape_source;
         }
     }
 
