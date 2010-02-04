@@ -12,10 +12,8 @@ sub clean_name {
     # Strip out silly additions to names (tories particularly keen on this)
     for ($name) {
 
-        # Clean up whitspace
+        # Clean up whitespace
         s{\s+}{ }g;
-        s{^\s+}{};
-        s{\s+$}{};
 
         s{^Rt Hon }{};
         s{^Hon }{};
@@ -32,6 +30,9 @@ sub clean_name {
         s{ OBE$}{};
         s{ CBE$}{};
         s{ AM$}{};
+
+        s{^\s+}{};
+        s{\s+$}{};
     }
 
     return $name;

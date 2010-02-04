@@ -24,6 +24,10 @@ Add more details: dob, previous elections, gender, profession, school, universit
 
 Prevent codes from being changed except via explicit method
 
+Fix http://cindy.local:3000/candidates/michael_foster (two people with same name)
+
+bios ala  http://www.wildlifenearyou.com/animals/llama/
+
 [ NEXT ]
 
 sane way to serve images (s3)

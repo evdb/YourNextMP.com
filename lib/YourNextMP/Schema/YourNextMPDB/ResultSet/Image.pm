@@ -46,6 +46,10 @@ sub create {
         my $ua  = LWP::UserAgent->new;
         my $res = $ua->get($source_url);
 
+        # Check that we have a successful response
+        return unless $res->is_success;
+        return unless length $res->content;
+
         # Work out what the suffix should be
         my $suffix = _mime_type_to_suffix( $res->content_type );
 

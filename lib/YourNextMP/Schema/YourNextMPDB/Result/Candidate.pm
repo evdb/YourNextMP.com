@@ -43,7 +43,7 @@ __PACKAGE__->table("candidates");
   is_foreign_key: 1
   is_nullable: 1
 
-=head2 party
+=head2 party_id
 
   data_type: bigint
   default_value: undef
@@ -147,7 +147,7 @@ __PACKAGE__->add_columns(
         is_foreign_key => 1,
         is_nullable    => 1,
     },
-    "party",
+    "party_id",
     {
         data_type      => "bigint",
         default_value  => undef,
@@ -267,7 +267,7 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Party>
 __PACKAGE__->belongs_to(
     "party",
     "YourNextMP::Schema::YourNextMPDB::Result::Party",
-    { id => "party" }, {},
+    { id => "party_id" }, {},
 );
 
 =head2 image
@@ -285,8 +285,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 15:24:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hClNBZYXoQKYlbRcNC5//w
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 16:28:27
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qfyGDHsWKixBA1mHDXtwtg
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -334,7 +334,7 @@ sub update_by_scraping {
 
     # extract bits that are not core to the candidate
     my $photo_url = delete $data->{photo_url} || '';
-    my $links     = delete $data->{links}     || [];
+    my $links     = delete $data->{links}     || {};
 
     # Apply the data to the candidate
     $self->update($data);
@@ -359,9 +359,11 @@ sub update_by_scraping {
           ->resultset('Image')     #
           ->find_or_create( { source_url => $photo_url, } );
 
-        $self->update( { image => $image } )
-          if !$self->image_id      #
-              || $self->image_id != $image->id;
+        for (1) {
+            last if !$image;
+            last if $self->image_id && $self->image_id == $image->id;
+            $self->update( { image => $image } );
+        }
     }
 
 }

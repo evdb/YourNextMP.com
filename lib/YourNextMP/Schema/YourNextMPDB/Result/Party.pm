@@ -135,7 +135,7 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Candidate>
 __PACKAGE__->has_many(
     "candidates",
     "YourNextMP::Schema::YourNextMPDB::Result::Candidate",
-    { "foreign.party" => "self.id" },
+    { "foreign.party_id" => "self.id" },
 );
 
 =head2 image
@@ -153,8 +153,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 15:24:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dnFhqcw2hhrZ+lOuJgqn6w
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 16:28:27
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:le6tshTZF09JLCrxjKLMHw
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -223,8 +223,14 @@ sub scrape_candidates {
             }
           );
 
-        # Sanity check that the scrape_source has not changed
-        if ( $candidate->scrape_source ne $scrape_source ) {
+        if ( !$candidate->scrape_source ) {
+
+            # we have a scrape_source for an existing candidate - add it
+            $candidate->update( { scrape_source => $scrape_source } );
+        }
+        elsif ( $candidate->scrape_source ne $scrape_source ) {
+
+            # Sanity check that the scrape_source has not changed
             warn sprintf
               "SCRAPE SOURCE HAS CHANGED!! id: %s, from '%s' to '%s'",
               $candidate->id, $candidate->scrape_source, $scrape_source;
