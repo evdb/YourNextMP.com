@@ -3,7 +3,7 @@ package YourNextMP::Scrapers::ScraperBase;
 use strict;
 use warnings;
 
-use App::Cache;
+use YourNextMP::Util::Cache;
 use List::Util qw( first );
 
 use Module::Pluggable
@@ -15,11 +15,7 @@ use Module::Pluggable
 my @SCRAPERS = __PACKAGE__->scrapers;
 
 sub cache {
-    return App::Cache->new(
-        {
-            ttl => 3600 * 12    # 12 hours
-        }
-    );
+    return YourNextMP::Util::Cache->cache;
 }
 
 sub find_candidate_scraper {
