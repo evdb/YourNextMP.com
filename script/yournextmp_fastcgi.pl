@@ -8,6 +8,7 @@ use Getopt::Long;
 use Pod::Usage;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
+use local::lib;
 use YourNextMP;
 
 my $help = 0;

@@ -3,6 +3,8 @@
 # expected.  You have been warned.
 use inc::Module::Install;
 
+use local::lib;
+
 name 'YourNextMP';
 all_from 'lib/YourNextMP.pm';
 
@@ -19,14 +21,16 @@ requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Runtime';    # => '5.80013';
 requires 'Catalyst::Test';
-requires 'Catalyst::View::TT';
 requires 'Catalyst::View::JSON';
+requires 'Catalyst::View::TT';
 requires 'Class::C3';
 requires 'Config';
 requires 'Config::General';
 requires 'Cwd';
 requires 'Data::Dumper';
 requires 'DateTime';
+requires 'DBD::Pg';
+requires 'DBI';
 requires 'DBIx::Class';
 requires 'DBIx::Class::Schema::Loader' => '0.05000';
 requires 'Digest::MD5';
@@ -59,6 +63,7 @@ requires 'URI';
 requires 'Web::Scraper';
 requires 'WebService::TWFY::API';
 requires 'WWW::Mechanize';
+requires 'XML::LibXML';
 
 catalyst;
 

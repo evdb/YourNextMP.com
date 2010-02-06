@@ -4,7 +4,7 @@ apt-get update
 apt-get upgrade
 
 # add useful programs
-apt-get install less git-core
+apt-get install less git-core screen unzip
 
 # sort out the locales
 apt-get install debconf
@@ -19,7 +19,7 @@ apt-get install ntp ntpdate
 ntpq -p
 
 # Install PostgreSQL
-apt-get install postgresql-8.3
+apt-get install postgresql-8.3 postgresql-server-dev-8.3
 
 # stop the database and change it so that the data is stored on an EBS vol
 /etc/init.d/postgresql-8.3 stop
@@ -65,11 +65,14 @@ update-rc.d yournextmp_production.sh defaults 80
 
 # create the yournextmp_stage dir
 mkdir -p /var/www/yournextmp_stage
-chown www-data:www-data /var/www/yournextmp_stage
+chown -R www-data:www-data /var/www
 
 # become www-data and go to dir
 su - www-data
-cd /var/www/yournextmp_stage
+
+# set up the stage environment
+mkdir yournextmp_stage
+cd yournextmp_stage
 git clone http://github.com/evdb/YourNextMP.com.git
 mv YourNextMP.com/* .
 mv YourNextMP.com/.git* .
@@ -78,5 +81,30 @@ rmdir YourNextMP
 # check that we are up-to-date
 git pull
 git status
+
+# configure local::lib
+cd
+wget http://search.cpan.org/CPAN/authors/id/A/AP/APEIRON/local-lib-1.004009.tar.gz
+tar zxf local-lib-1.004009.tar.gz
+cd local-lib-1.004009
+make && make test && make install
+cd
+rm -rf local-lib-1.004009*
+echo 'eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)' >>~/.profile
+
+# Install debian packages needed (as root)
+apt-get install libimlib2 libimlib2-dev libxml2 libxml2-dev
+
+# go to stage and get deps needed (most of CPAN :) )
+cpan Module::Install
+cpan Archive::Extract
+cpan YAML
+cpan CPANPLUS
+cpan DBD::Pg # (need to rename www-data user to www to pass tests)
+cd yournextmp_stage
+perl Makefile.PL # might be easier to 'cpan' them instead
+make
+
+
 
 
