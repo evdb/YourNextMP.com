@@ -1,0 +1,10 @@
+IP: 79.125.27.175
+
+------------------
+
+kernel_id = aki-02486376
+ramdisk   = ari-fa4d668e
+
+snapshot: snap-74e7111d
+IMAGE from snapshot:   ami-19ddf66d
+------------------

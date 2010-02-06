@@ -1,0 +1,82 @@
+
+# get everything up-to-date
+apt-get update
+apt-get upgrade
+
+# add useful programs
+apt-get install less git-core
+
+# sort out the locales
+apt-get install debconf
+dpkg-reconfigure locales
+
+# logout and login for changes to take effect
+
+# install ntp to keep the clocks accurate
+apt-get install ntp ntpdate
+
+# check that time servers have been found
+ntpq -p
+
+# Install PostgreSQL
+apt-get install postgresql-8.3
+
+# stop the database and change it so that the data is stored on an EBS vol
+/etc/init.d/postgresql-8.3 stop
+cd /var/lib/
+mv postgresql postgresql.bkup
+mkdir postgresql
+chown postgres:postgres postgresql
+
+# attach the appropriate EBS to /dev/sdp (mkfs.ext3 if needed)
+# add '/dev/sdp /var/lib/postgresql ext3 defaults 0 0' to /etc/fstab
+mount /var/lib/postgresql
+su - postgres
+cd /var/lib
+cp -rv postgresql.bkup/* postgresql/
+exit
+
+# start server again - should be no problems
+/etc/init.d/postgresql-8.3 start
+psql -l
+
+# return to root dir
+cd
+
+# install the web server and enable fastcgi
+apt-get install lighttpd
+
+# configure lighttpd using default config file
+scp  ec2/config/etc/lighttpd/lighttpd.conf \
+     root@remote:/etc/lighttpd/lighttpd.conf
+
+# reload the config and check for errors
+/etc/init.d/lighttpd force-reload
+wget -O /dev/null -S http://127.0.0.1/
+tail -f /var/log/lighttpd/error.log
+
+# copy out the init.d scripts
+scp -i ~/.ec2/evdb.pem \
+  ec2/config/etc/init.d/* \
+  root@79.125.27.175:/etc/init.d/
+
+# check that the production server is started at boot
+update-rc.d yournextmp_production.sh defaults 80
+
+# create the yournextmp_stage dir
+mkdir -p /var/www/yournextmp_stage
+chown www-data:www-data /var/www/yournextmp_stage
+
+# become www-data and go to dir
+su - www-data
+cd /var/www/yournextmp_stage
+git clone http://github.com/evdb/YourNextMP.com.git
+mv YourNextMP.com/* .
+mv YourNextMP.com/.git* .
+rmdir YourNextMP
+
+# check that we are up-to-date
+git pull
+git status
+
+
