@@ -14,9 +14,10 @@ use Catalyst (
     'ConfigLoader',
     'Static::Simple',
     'Unicode',
+    'Compress::Gzip',
 
-    'Authentication',     # 'Authorization::Roles',
-    'Session',
+    'Authentication',    # 'Authorization::Roles',
+    'Session',           # FIXME - switch to SessionHP
     'Session::State::Cookie',
     'Session::Store::DBIC',
 );

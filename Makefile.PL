@@ -14,6 +14,7 @@ requires 'Catalyst::Authentication::Credential::Password';
 requires 'Catalyst::Exception';
 requires 'Catalyst::Model::Adaptor';
 requires 'Catalyst::Model::DBIC::Schema';
+requires 'Catalyst::Plugin::Compress::Gzip';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Static::Simple';
 requires 'Catalyst::Runtime';    # => '5.80013';
