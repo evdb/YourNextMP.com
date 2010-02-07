@@ -81,7 +81,7 @@ __PACKAGE__->table("users");
   is_nullable: 1
   size: 10
 
-=head2 seat
+=head2 seat_id
 
   data_type: bigint
   default_value: undef
@@ -142,7 +142,7 @@ __PACKAGE__->add_columns(
         is_nullable   => 1,
         size          => 10,
     },
-    "seat",
+    "seat_id",
     {
         data_type      => "bigint",
         default_value  => undef,
@@ -182,12 +182,12 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Seat>
 __PACKAGE__->belongs_to(
     "seat",
     "YourNextMP::Schema::YourNextMPDB::Result::Seat",
-    { id        => "seat" },
+    { id        => "seat_id" },
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:WAtuf/1Wt3YjQCJWy8/60Q
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-07 00:46:28
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vuOkWm93nZd5sDEEYPlJhQ
 
 =head2 screen_name
 

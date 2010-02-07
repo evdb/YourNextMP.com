@@ -123,11 +123,11 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::User>
 __PACKAGE__->has_many(
     "users",
     "YourNextMP::Schema::YourNextMPDB::Result::User",
-    { "foreign.seat" => "self.id" },
+    { "foreign.seat_id" => "self.id" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:khb1q4mwki4li5bRCW5MXQ
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-07 00:46:28
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:40UC1GeMRlMcXZFXkHNz9w
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
