@@ -125,7 +125,7 @@ sub create {
                 acl_short    => 'public-read',
                 content_type => $mime,
             );
-            $object->put_filename($src_file);
+            $object->put( scalar file($src_file)->slurp );
 
         }
         else {

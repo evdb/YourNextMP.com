@@ -3,8 +3,11 @@
 use strict;
 use warnings;
 
+use lib 'lib';
+
 use YourNextMP;
 use File::Finder;
+use Path::Class;
 
 my $dir = $ARGV[0];
 die "Usage: $0 path_to_images/\n" unless $dir && -d $dir;
@@ -28,6 +31,6 @@ foreach my $file (@files) {
         acl_short    => 'public-read',
         content_type => $content_type,
     );
-    $object->put_filename($file);
+    $object->put( scalar file($file)->slurp );
 
 }
