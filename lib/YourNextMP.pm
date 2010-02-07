@@ -5,6 +5,8 @@ use warnings;
 
 use Catalyst::Runtime;    # 5.80;
 use List::MoreUtils 'uniq';
+use Net::Amazon::S3;
+use Net::Amazon::S3::Client;
 
 # use Moose;
 # use namespace::autoclean;
@@ -15,8 +17,8 @@ use Catalyst (
     'Compress::Gzip',
     'Static::Simple',
 
-    'Authentication',     # 'Authorization::Roles',
-    'Session',            # FIXME - switch to SessionHP
+    'Authentication',    # 'Authorization::Roles',
+    'Session',           # FIXME - switch to SessionHP
     'Session::State::Cookie',
     'Session::Store::DBIC',
 );
@@ -165,7 +167,9 @@ sub require_user {
 
     $uri = $c->uri_for_image( $image_id, $format );
 
-Returns the url to the image with the given id and format.
+Returns the url to the image with the given id and format. Either returns a
+local '/images' path or an S3 url depending on the value of 'file_store' in
+config.
 
 =cut
 
@@ -175,7 +179,63 @@ sub uri_for_image {
     my $path = YourNextMP::Schema::YourNextMPDB::Result::Image    #
       ->path_to_image( $image_id, $format, 'png' );
 
-    return $c->uri_for( '/', $path );
+    my $file_store = $c->config->{file_store}
+      || die "need to set 'file_store' config value";
+
+    if ( $file_store eq 'local' ) {
+        return $c->uri_for( '/', $path );
+    }
+    elsif ( $file_store eq 's3' ) {
+        return
+            'http://'
+          . $c->config->{aws}{public_bucket_name}
+          . '.s3.amazonaws.com/'
+          . $path;
+    }
+    else {
+        die "Can't create uri for file_store '$file_store'";
+    }
+}
+
+=head2 s3bucket
+
+    $bucket = $c->s3bucket(  );
+
+Returns a L<Net::Amazon::S3::Client::Bucket> object which is correctly set up
+according to the config.
+
+=cut
+
+my $CACHED_S3_OBJECT        = undef;
+my $CACHED_S3_CLIENT        = undef;
+my $CACHED_S3_PUBLIC_BUCKET = undef;
+
+sub s3object {
+    my $c = shift;
+
+    return $CACHED_S3_OBJECT ||=    #
+      Net::Amazon::S3->new(
+        aws_access_key_id     => $c->config->{aws}{aws_access_key_id},
+        aws_secret_access_key => $c->config->{aws}{aws_secret_access_key},
+        retry                 => 1,
+      );
+}
+
+sub s3client {
+    my $c = shift;
+
+    return $CACHED_S3_CLIENT ||=    #
+      Net::Amazon::S3::Client       #
+      ->new( s3 => $c->s3object );
+}
+
+sub s3bucket {
+    my $c = shift;
+
+    return $CACHED_S3_PUBLIC_BUCKET ||=    #
+      $c                                   #
+      ->s3client                           #
+      ->bucket( name => $c->config->{aws}{public_bucket_name} );
 }
 
 =head1 NAME

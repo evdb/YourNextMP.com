@@ -63,6 +63,7 @@ requires 'LWP::UserAgent';
 requires 'Module::Install::Base';
 requires 'Moose';
 requires 'namespace::autoclean';
+requires 'Net::Amazon::S3';
 requires 'Net::OpenID::Consumer';
 requires 'Net::SSL';
 requires 'Net::SSLeay';

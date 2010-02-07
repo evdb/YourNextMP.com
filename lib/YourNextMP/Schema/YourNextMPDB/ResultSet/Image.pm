@@ -26,7 +26,7 @@ my %MIME_TO_SUFFIX = (
     'image/png'  => 'png'
 );
 
-# my %SUFFIX_TO_MIME = reverse %MIME_TO_SUFFIX;
+my %SUFFIX_TO_MIME = reverse %MIME_TO_SUFFIX;
 
 my $STORE_DIR = dir( File::HomeDir->my_home )->subdir('yournextmp');
 $STORE_DIR->mkpath;
@@ -64,6 +64,7 @@ sub create {
 
         $variants{original} = {
             meta => join( ',', $imlib->width, $imlib->height, $suffix ),
+            mime => $SUFFIX_TO_MIME{$suffix},
             file => $tmp_original,
         };
 
@@ -90,6 +91,7 @@ sub create {
             # create the meta data
             $variants{$format} = {
                 meta => join( ',', $scaled->width, $scaled->height, $suffix ),
+                mime => $SUFFIX_TO_MIME{$suffix},
                 file => $tmp,
             };
         }
@@ -104,12 +106,31 @@ sub create {
     # now we have an entry in the database we can save the files in the right
     # place
     foreach my $format (qw(original large medium small)) {
-        my $path = $image->key_for($format);
+        my $path     = $image->key_for($format);
+        my $src_file = $variants{$format}{file} . "";
+        my $mime     = $variants{$format}{mime};
 
-        my $destination = $STORE_DIR->file($path);
-        $destination->dir->mkpath;
+        my $file_store = YourNextMP->config->{file_store}
+          || die "Missing config key 'file_store'";
 
-        copy( "$variants{$format}{file}", $destination->openw );
+        if ( $file_store eq 'local' ) {
+            my $destination = $STORE_DIR->file($path);
+            $destination->dir->mkpath;
+            copy( $src_file, $destination->openw );
+        }
+        elsif ( $file_store eq 's3' ) {
+            my $bucket = YourNextMP->s3bucket;
+            my $object = $bucket->object(
+                key          => $path,
+                acl_short    => 'public-read',
+                content_type => $mime,
+            );
+            $object->put_filename($src_file);
+
+        }
+        else {
+            die "Can't store to file_store '$file_store'";
+        }
     }
 
     # all done - return the image
