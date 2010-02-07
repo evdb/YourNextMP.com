@@ -9,6 +9,9 @@ currently listed candidates and ensure that we have an entry for them.
 
 use strict;
 use warnings;
+
+use lib 'lib';
+
 use YourNextMP::Schema::YourNextMPDB;
 use File::Slurp;
 use LWP::UserAgent;
@@ -194,6 +197,7 @@ my %PARTY_NAME_TO_CODE = (
     'Welsh Liberal Democrats'                  => 'liberal_democrats',
     'Liberal Democrats (UK)'                   => 'liberal_democrats',
     'Liberal Democrats'                        => 'liberal_democrats',
+    'Liberal Democrat'                         => 'liberal_democrats',
     'Scottish Liberal Democrats'               => 'liberal_democrats',
     'Scottish National Party'                  => 'scottish_national',
     'Official Monster Raving Loony Party' => 'official_monster_raving_loony',
@@ -203,6 +207,7 @@ my %PARTY_NAME_TO_CODE = (
     'Green Party of Northern Ireland'     => 'green',
     'Scottish Green Party'                => 'scottish_green',
     'United Kingdom Independence Party'   => 'united_kingdom_independence',
+    'UKIP'                                => 'united_kingdom_independence',
     'English Democrats Party'             => 'english_democrats',
     'English Democrats'                   => 'english_democrats',
     'Social Democratic and Labour Party' => 'sdlp_social_democratic_and_labour',

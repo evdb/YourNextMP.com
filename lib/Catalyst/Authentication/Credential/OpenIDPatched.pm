@@ -10,6 +10,10 @@ BEGIN {
 
 our $VERSION = "0.16";
 
+# get some faster maths
+use Crypt::DH;
+use Crypt::DH::GMP qw(-compat);
+
 use Net::OpenID::Consumer;
 use Catalyst::Exception ();
 

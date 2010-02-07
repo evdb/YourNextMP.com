@@ -1,4 +1,4 @@
-package YourNextMP::Scrapers::LiberalDemocrat;
+package YourNextMP::Scrapers::LiberalDemocrats;
 use base 'YourNextMP::Scrapers::ScraperBase';
 
 use strict;

@@ -4,7 +4,7 @@ apt-get update
 apt-get upgrade
 
 # add useful programs
-apt-get install less git-core screen unzip
+apt-get install less git-core screen unzip ftp
 
 # sort out the locales
 apt-get install debconf
@@ -94,6 +94,7 @@ echo 'eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)' >>~/.profile
 
 # Install debian packages needed (as root)
 apt-get install libimlib2 libimlib2-dev libxml2 libxml2-dev
+apt-get install libpari2-gmp libgmp3-dev
 
 # go to stage and get deps needed (most of CPAN :) )
 cpan Module::Install

@@ -86,7 +86,7 @@ create table candidates (
     phone       varchar(200),
     fax         varchar(200),
     address     varchar(200),    
-    image_id    bigint references images(id)
+    image_id    bigint references images(id),
     bio         text,
     
     scrape_source varchar(300) unique,
