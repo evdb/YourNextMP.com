@@ -10,15 +10,13 @@ use List::MoreUtils 'uniq';
 # use namespace::autoclean;
 
 use Catalyst (
-
-    # '-Debug',
     'ConfigLoader',
-    'Static::Simple',
     'Unicode',
     'Compress::Gzip',
+    'Static::Simple',
 
-    'Authentication',    # 'Authorization::Roles',
-    'Session',           # FIXME - switch to SessionHP
+    'Authentication',     # 'Authorization::Roles',
+    'Session',            # FIXME - switch to SessionHP
     'Session::State::Cookie',
     'Session::Store::DBIC',
 );
@@ -26,53 +24,6 @@ use Catalyst (
 use base 'Catalyst';
 
 our $VERSION = '0.01';
-
-__PACKAGE__->config(
-
-    'Plugin::Session' => {
-        dbic_class => 'DB::Session',
-        expires    => 3600 * 24 * 365,    # one year
-    },
-
-    authentication => {
-        realm => {
-            auto_create_user => 1,
-            auto_update_user => 1,
-        },
-        default_realm => 'default',
-        realms        => {
-            default => {
-                credential => {           #
-                    class         => 'Password',
-                    password_type => 'none',
-                },
-                store => {
-                    class       => 'DBIx::Class',
-                    user_model  => 'DB::User',
-                    role_column => 'roles',
-                }
-            },
-            openid => {
-                credential => {
-                    debug => 1,           # FIXME - should not be on by default
-                    class           => 'OpenIDPatched',
-                    trust_root_path => '/',
-
-                    # extensions => [
-                    #     'http://openid.net/srv/ax/1.0' => {
-                    #         required => 'email',
-                    #         mode     => 'fetch_request',
-                    #         'type.email' =>
-                    #           'http://schema.openid.net/contact/email',
-                    #     },
-                    # ],
-                },
-                store => { class => 'Null', },
-            },
-        }
-    },
-
-);
 
 use YourNextMP::Schema::YourNextMPDB::ResultSet::Image;
 __PACKAGE__->config(
