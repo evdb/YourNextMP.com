@@ -10,7 +10,8 @@ use List::MoreUtils 'uniq';
 # use namespace::autoclean;
 
 use Catalyst (
-    '-Debug',
+
+    # '-Debug',
     'ConfigLoader',
     'Static::Simple',
     'Unicode',
@@ -27,7 +28,6 @@ use base 'Catalyst';
 our $VERSION = '0.01';
 
 __PACKAGE__->config(
-    name => 'YourNextMP',
 
     'Plugin::Session' => {
         dbic_class => 'DB::Session',
