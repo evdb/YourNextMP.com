@@ -65,7 +65,7 @@ _start() {
     --startas $APPDIR/script/${UNIXNAME}_fastcgi.pl -- -n $PROCS -l $SOCKET -p $PIDFILE
 
   for i in 1 2 3 4 5 ; do
-    sleep 1
+    sleep 1ti
     if check_running ; then
       return 0
     fi

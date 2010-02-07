@@ -49,7 +49,7 @@ sub extract_candidate_data {
     # grab the photo
     my ($image_path) = $html =~ m{src="(images/people/\d+/\w+_200.jpg)"};
     if ($image_path) {
-        $image_path =~ s{_200}{_250}; # get a bigger image
+        $image_path =~ s{_200}{_250};    # get a bigger image
         $data->{photo_url} = "http://www.labour.org.uk/" . $image_path;
     }
 

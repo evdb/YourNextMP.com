@@ -14,8 +14,8 @@ my @names = (
     [ 'Dominic Grieve QC MP',     'Dominic Grieve',    'dominic_grieve', ],
     [ 'Dr Andrew Murrison MP',    'Andrew Murrison',   'andrew_murrison', ],
     [ 'Dr Phillip Lee',           'Phillip Lee',       'phillip_lee', ],
-    [ 'Dr. Julian Huppert',            'Julian Huppert', 'julian_huppert', ],
-    [ 'Rt Hon Sir George Young Bt MP', 'George Young',   'george_young', ],
+    [ 'Dr. Julian Huppert',       'Julian Huppert',    'julian_huppert', ],
+    [ 'Rt Hon Sir George Young Bt MP', 'George Young', 'george_young', ],
 );
 
 my $rs = YourNextMP::Schema::YourNextMPDB->resultset('Candidate');
