@@ -52,7 +52,7 @@ sub index : Path : Args(0) {
                     name => '',
                     code => '',
                     url =>
-                      sub { $c->uri_for( '/seats', shift()->id )->as_string },
+                      sub { $c->uri_for( '/seats', shift()->code )->as_string },
                 }
             );
         }

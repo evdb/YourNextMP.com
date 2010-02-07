@@ -50,8 +50,6 @@ sub extract_rows {
             my $value     = $args->{$key};
             my $value_ref = ref $value;
 
-            warn "KEY: $key";
-
             $result->{$key} =
                 $value_ref eq ''     ? $row->get_column($key)
               : $value_ref eq 'CODE' ? $value->($row)

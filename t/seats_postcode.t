@@ -28,7 +28,14 @@ is $mech->response->content_type, 'application/json', 'got json';
 
 my $data = JSON->new->decode( $mech->content );
 ok $data, "decoded json";
-is_deeply $data->{result}, [ { code => 'putney', name => 'Putney' } ],
+is_deeply $data->{result},
+  [
+    {
+        code => 'putney',
+        name => 'Putney',
+        url  => 'http://localhost/seats/putney'
+    }
+  ],
   "got expected results";
 
 # check that the callback works too
