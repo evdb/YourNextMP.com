@@ -4,6 +4,9 @@ BEGIN { $ENV{CATALYST_ENGINE} ||= 'FastCGI' }
 
 use strict;
 use warnings;
+
+use local::lib;
+
 use Getopt::Long;
 use Pod::Usage;
 use FindBin;

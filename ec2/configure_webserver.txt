@@ -63,12 +63,22 @@ scp -i ~/.ec2/evdb.pem \
 # check that the production server is started at boot
 update-rc.d yournextmp_production.sh defaults 80
 
-# create the yournextmp_stage dir
-mkdir -p /var/www/yournextmp_stage
+# configure local::lib (as root)
+wget http://search.cpan.org/CPAN/authors/id/A/AP/APEIRON/local-lib-1.004009.tar.gz
+tar zxf local-lib-1.004009.tar.gz
+cd local-lib-1.004009
+make && make test && make install
+cd
+rm -rf local-lib-1.004009*
+
+# change /var/www ownership so that it is correct
 chown -R www-data:www-data /var/www
 
 # become www-data and go to dir
 su - www-data
+
+# configure local::lib
+echo 'eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)' >>~/.profile
 
 # set up the stage environment
 mkdir yournextmp_stage
@@ -81,16 +91,6 @@ rmdir YourNextMP
 # check that we are up-to-date
 git pull
 git status
-
-# configure local::lib
-cd
-wget http://search.cpan.org/CPAN/authors/id/A/AP/APEIRON/local-lib-1.004009.tar.gz
-tar zxf local-lib-1.004009.tar.gz
-cd local-lib-1.004009
-make && make test && make install
-cd
-rm -rf local-lib-1.004009*
-echo 'eval $(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)' >>~/.profile
 
 # Install debian packages needed (as root)
 apt-get install libimlib2 libimlib2-dev libxml2 libxml2-dev
