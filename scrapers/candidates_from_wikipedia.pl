@@ -25,13 +25,12 @@ local $Data::Dumper::Sortkeys = 1;
 sub run {
     my $mech = LWP::UserAgent->new( agent => 'FooBar' );
 
-    my $work_dir = dir('tmp/candidates_from_wikipedia');
+    my $work_dir = dir('/tmp/candidates_from_wikipedia');
     $work_dir->mkpath;
     my $touch_file = $work_dir->file('last_checked_seat.txt');
 
-    my $seats_rs                            #
-      = YourNextMP::Schema::YourNextMPDB    #
-      ->resultset('Seat')                   #
+    my $seats_rs                     #
+      = YourNextMP->model('Seat')    #
       ->search( {}, { order_by => ['code'] } );
 
     while ( my $seat = $seats_rs->next ) {
@@ -257,16 +256,14 @@ sub put_entry_in_db {
 
     printf "\t%s\n", $entry->{candidate_name};
 
-    my $party                               #
-      = YourNextMP::Schema::YourNextMPDB    #
-      ->resultset('Party')                  #
+    my $party                         #
+      = YourNextMP->model('Party')    #
       ->find( { code => $entry->{party_code} } )
       || die "no party matches '$entry->{party_code}'";
 
-    my $candidate_rs = YourNextMP::Schema::YourNextMPDB    #
-      ->resultset('Candidate');
+    my $candidate_rs = YourNextMP->model('Candidate');
 
-    my $candidate = $candidate_rs                          #
+    my $candidate = $candidate_rs     #
       ->find_or_create(
         {
             code  => $candidate_rs->name_to_code( $entry->{candidate_name} ),  #
