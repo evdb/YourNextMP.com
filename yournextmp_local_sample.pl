@@ -3,6 +3,9 @@
     # where should the files be stored? ('local' or 's3')
     file_store => 's3',
 
+    # should we display the warning banner?
+    show_dev_warning => 1,
+
     aws => {
         aws_access_key_id     => die('need aws_access_key_id'),
         aws_secret_access_key => die('need aws_secret_access_key'),
