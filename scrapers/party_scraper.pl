@@ -9,14 +9,14 @@ use WWW::Mechanize;
 use Web::Scraper;
 use URI;
 use Encode;
-use YourNextMP::Schema::YourNextMPDB;
+use YourNextMP;
 
 my $commision_site = 'http://registers.electoralcommission.org.uk';
 my $base_search_page =
   $commision_site . '/regulatory-issues/regpoliticalparties.cfm';
 
-my $parties_rs = YourNextMP::Schema::YourNextMPDB->resultset('Party');
-my $images_rs  = YourNextMP::Schema::YourNextMPDB->resultset('Image');
+my $parties_rs = YourNextMP->model('Party');
+my $images_rs  = YourNextMP->model('Image');
 
 # create the independent party
 $parties_rs->find_or_create(    #
