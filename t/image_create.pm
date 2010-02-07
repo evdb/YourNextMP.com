@@ -3,7 +3,7 @@
 use strict;
 use Test::More tests => 10;
 
-use YourNextMP::Schema::YourNextMPDB;
+use YourNextMP;
 
 my $image_rs = YourNextMP->model('Image');
 

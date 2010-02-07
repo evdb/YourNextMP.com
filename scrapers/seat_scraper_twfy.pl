@@ -6,7 +6,7 @@ use warnings;
 use lib '../YourNextMP/lib';
 
 use File::Slurp;
-use YourNextMP::Schema::YourNextMPDB;
+use YourNextMP;
 use YourNextMP::Util::TheyWorkForYou;
 use Encode;
 

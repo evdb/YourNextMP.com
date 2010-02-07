@@ -9,7 +9,7 @@ use WWW::Mechanize;
 use Web::Scraper;
 use URI;
 use Encode;
-use YourNextMP::Schema::YourNextMPDB;
+use YourNextMP;
 use Digest::MD5 'md5_hex';
 use Path::Class;
 

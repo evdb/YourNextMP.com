@@ -10,6 +10,7 @@ use local::lib;
 use Getopt::Long;
 use Pod::Usage;
 use FindBin;
+use local::lib;
 use lib "$FindBin::Bin/../lib";
 use YourNextMP;
 

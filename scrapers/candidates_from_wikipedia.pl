@@ -12,7 +12,7 @@ use warnings;
 
 use lib 'lib';
 
-use YourNextMP::Schema::YourNextMPDB;
+use YourNextMP;
 use File::Slurp;
 use LWP::UserAgent;
 use XML::Simple;

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use YourNextMP::Schema::YourNextMPDB;
+use YourNextMP;
 
 my $candidate_rs = YourNextMP->model('Candidate');
 my $party_rs     = YourNextMP->model('Party');

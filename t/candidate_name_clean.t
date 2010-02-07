@@ -3,7 +3,7 @@
 use strict;
 use Test::More tests => 20;
 
-use YourNextMP::Schema::YourNextMPDB;
+use YourNextMP;
 
 my @names = (
     [ 'Andrew Tyrie MP',          'Andrew Tyrie',      'andrew_tyrie', ],
