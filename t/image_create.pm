@@ -5,7 +5,7 @@ use Test::More tests => 10;
 
 use YourNextMP::Schema::YourNextMPDB;
 
-my $image_rs = YourNextMP::Schema::YourNextMPDB->resultset('Image');
+my $image_rs = YourNextMP->model('Image');
 
 my $url = 'http://farm1.static.flickr.com/85/233472093_1f1d235e7b_d.jpg';
 

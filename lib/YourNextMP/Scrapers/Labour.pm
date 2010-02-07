@@ -80,7 +80,7 @@ sub extract_candidate_list {
     push @candidates, grep { !$seen_seats{ $_->{seat} } } @$mps;
 
     # Filter out bad seats
-    my $seat_rs = YourNextMP::Schema::YourNextMPDB->resultset('Seat');
+    my $seat_rs = YourNextMP->model('Seat');
     @candidates = grep { $seat_rs->find( { name => $_->{seat} } ) } @candidates;
 
     return \@candidates;

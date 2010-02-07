@@ -27,7 +27,7 @@ my $seats = $scraper                      #
   ->scrape( URI->new($wikipedia_url) )    #
   ->{seats};
 
-my $con_rs = YourNextMP::Schema::YourNextMPDB->resultset('Seat');
+my $con_rs = YourNextMP->model('Seat');
 
 foreach my $con (@$seats) {
 

@@ -5,8 +5,8 @@ use warnings;
 
 use YourNextMP::Schema::YourNextMPDB;
 
-my $candidate_rs = YourNextMP::Schema::YourNextMPDB->resultset('Candidate');
-my $party_rs     = YourNextMP::Schema::YourNextMPDB->resultset('Party');
+my $candidate_rs = YourNextMP->model('Candidate');
+my $party_rs     = YourNextMP->model('Party');
 
 # Scrape all the parties to make sure that the lists are up-to-date
 my $parties = $party_rs->search();

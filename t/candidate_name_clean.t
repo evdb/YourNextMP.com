@@ -18,7 +18,7 @@ my @names = (
     [ 'Rt Hon Sir George Young Bt MP', 'George Young', 'george_young', ],
 );
 
-my $rs = YourNextMP::Schema::YourNextMPDB->resultset('Candidate');
+my $rs = YourNextMP->model('Candidate');
 
 foreach my $line (@names) {
     my ( $input, $name, $code ) = @$line;
