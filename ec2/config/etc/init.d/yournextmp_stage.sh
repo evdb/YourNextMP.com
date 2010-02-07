@@ -16,9 +16,9 @@
 
 APPNAME=YourNextMP
 APPDIR=/var/www/yournextmp_stage
-UNIXNAME=$(echo $APPNAME | perl -pe 's/::/_/;$_=lc')
-PROCS=5
-SOCKET=127.0.0.1:55900
+UNIXNAME=$(echo $APPNAME | perl -pe 's/::/_/g;$_=lc')
+PROCS=1
+SOCKET=127.0.0.1:55901
 # Leave these unset and we won't try to setuid/setgid.
 USER=www-data
 GROUP=www-data
