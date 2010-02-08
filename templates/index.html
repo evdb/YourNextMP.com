@@ -1,8 +1,134 @@
 [% PROCESS 'chrome/header.html', title => 'test' %]
 
-        <p>Hello</p>
-        <p>Found [% seats.count %] seats.</p>
-        <p>Found [% parties.count %] parties.</p>
-        <p>Found [% candidates.count %] candidates.</p>
+<style type="text/css" media="screen">
+    .callout {
+        text-align: center;
+        font-size: 130%;
+        padding: 0.5em;
+        background-color: #fff7ad;
+        border: 1px solid #dcad82;
+        margin-bottom: 0.5em;
+    }
+    
+    .callout strong {
+        font-size: 120%;
+    }
+    
+    .left_column {
+        width: 48%;
+        float: left;
+        padding-right: 2%;
+    }
+    
+    .right_column {
+        width: 48%;
+        float: right;
+        padding-left: 2%;
+    }
+    
+    .centered {
+        text-align: center;
+    }
+    
+    .box {
+        border: 1px solid #888;
+        padding-bottom: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    
+    .box h2 {
+        text-align: center;
+        background-color: #bbb;
+        margin-bottom: 0.5em;
+    }
+    
+    .hints {
+        font-family: Helvetica;
+        font-size: 80%;
+        color: #444;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 1em;
+    }
+    
+    td, th {
+        border-bottom: 1px solid #ccc;
+        padding: 0 0.2em;
+        text-align: left;
+    }
+    
+    tr.odd {
+        background-color: #eee;        
+    }
+    
+    tr.even {
+        background-color: inherit;
+    }
+        
+</style>
+
+<div class="callout">
+    Watching 
+    <strong>[% candidates.count %]</strong> candidates from 
+    <strong>[% parties.count %]</strong> parties running in 
+    <strong>[% seats.count %]</strong> seats.
+</div>
+
+<div class="left_column">
+
+    <div class="box centered">
+        <h2>Find your candidates</h2>
+
+        <p>Who wants your vote?</p>
+
+        <form action="/seats" method="post">
+            <input type="text" name="query" value="postcode or name" />
+            <input type="submit" value="search" />
+            <p class="hints">eg. '<a href="/seats/?query=sw1a+1aa">SW1A 1AA</a>' or '<a href="/seats/?query=luton">Luton</a>'</p>
+        </form>
+    </div>
+
+    <div class="box">
+        <h2>Parties</h2>
+
+        <table>
+            <tr>
+                <th>Name</td>
+                <th>#</td>
+            </tr>
+
+        [% FOREACH party = top_parties %]        
+
+            <tr class="[% loop.count % 2 ? 'odd' : 'even' %]">
+                <td><a href="[% c.uri_for('/parties', party.code) %]">[% party.name %]</a></td>
+                <td>[% party.candidate_count %]</td>
+            </tr>
+        [% END %]
+        </table> 
+        
+        <p style="text-align:right"><a href="/parties">All parties...</a></p>       
+
+    </div>
+
+</div>
+
+<div class="right_column">
+
+<div class="box">
+    <h2>About us</h2>
+
+    [% # FIXME - terrible wording - needs improving %]
+
+    <p>We want to make it easier to choose who to vote for by listing all the
+    candidates and where you can learn more about them. We are completely
+    neutral, you have to make your own choice.</p>
+    
+    </div>
+
+</div>
+
 
 [% PROCESS 'chrome/footer.html' %]

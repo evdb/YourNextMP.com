@@ -32,6 +32,29 @@ sub index : Path : Args(0) {
     $c->stash->{seats}      = $c->db('Seat')->search();
     $c->stash->{parties}    = $c->db('Party')->search();
     $c->stash->{candidates} = $c->db('Candidate')->search();
+
+    # generate the list of top parties
+    my $top_parties = $c->db('Party')->search(
+        undef,    #
+        {
+            join   => 'candidates',
+            select => [
+                'me.code',    #
+                'me.name',    #
+                { count => 'candidates.id' }
+            ],
+            as       => [qw( code name candidate_count )],
+            group_by => [ 'me.code', 'me.name' ],
+
+            order_by => 'count desc, me.code',
+            rows     => 10,
+        }
+    );
+    $c->stash->{top_parties} = [
+        map {
+            { $_->get_columns }
+          } $top_parties->all
+    ];
 }
 
 sub default : Path {
