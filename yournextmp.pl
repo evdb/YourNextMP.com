@@ -1,6 +1,11 @@
 {
     name => 'YourNextMP',
 
+    general_email_address => 'evdb@ecclestoad.co.uk',
+
+    # FIXME - get this email address working and then switch to it
+    #    general_email_address => 'hello@yournextmp.com',
+
     'Plugin::Session' => {
         dbic_class => 'DB::Session',
         expires    => 3600 * 24 * 365,    # one year
