@@ -97,6 +97,13 @@ __PACKAGE__->table("candidates");
   is_nullable: 1
   size: 200
 
+=head2 image_id
+
+  data_type: bigint
+  default_value: undef
+  is_foreign_key: 1
+  is_nullable: 1
+
 =head2 bio
 
   data_type: text
@@ -110,18 +117,17 @@ __PACKAGE__->table("candidates");
   is_nullable: 1
   size: 300
 
-=head2 image_id
-
-  data_type: bigint
-  default_value: undef
-  is_foreign_key: 1
-  is_nullable: 1
-
 =head2 can_scrape
 
   data_type: boolean
   default_value: true
   is_nullable: 0
+
+=head2 last_scraped
+
+  data_type: timestamp without time zone
+  default_value: undef
+  is_nullable: 1
 
 =cut
 
@@ -201,6 +207,13 @@ __PACKAGE__->add_columns(
         is_nullable   => 1,
         size          => 200,
     },
+    "image_id",
+    {
+        data_type      => "bigint",
+        default_value  => undef,
+        is_foreign_key => 1,
+        is_nullable    => 1,
+    },
     "bio",
     { data_type => "text", default_value => undef, is_nullable => 1 },
     "scrape_source",
@@ -210,15 +223,14 @@ __PACKAGE__->add_columns(
         is_nullable   => 1,
         size          => 300,
     },
-    "image_id",
-    {
-        data_type      => "bigint",
-        default_value  => undef,
-        is_foreign_key => 1,
-        is_nullable    => 1,
-    },
     "can_scrape",
     { data_type => "boolean", default_value => "true", is_nullable => 0 },
+    "last_scraped",
+    {
+        data_type     => "timestamp without time zone",
+        default_value => undef,
+        is_nullable   => 1,
+    },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "candidates_code_key", ["code"] );
@@ -285,8 +297,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 16:28:27
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:qfyGDHsWKixBA1mHDXtwtg
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-08 11:51:56
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:guNz6Rs4+56NkVXfaV3zwA
 
 __PACKAGE__->resultset_attributes( { order_by => ['name'] } );
 
@@ -309,14 +321,11 @@ sub insert {
             $self->result_source->resultset->name_to_code( $self->name ) );
     }
 
-    # my $now = DateTime->now();
-    # $self->created($now);
-    # $self->updated($now);
-
     return $self->next::method(@_);
 }
 
 use YourNextMP::Scrapers::ScraperBase;
+use DateTime;
 
 sub update_by_scraping {
     my $self = shift;
@@ -338,6 +347,7 @@ sub update_by_scraping {
     my $links     = delete $data->{links}     || {};
 
     # Apply the data to the candidate
+    $data->{last_scraped} = DateTime->now;
     $self->update($data);
 
     # Make sure all the links exist

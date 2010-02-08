@@ -22,5 +22,5 @@ make_schema_at(
             'InflateColumn::DateTime'
         ],
     },
-    ["dbi:Pg:dbname=yournextmp"]
+    ["dbi:Pg:dbname=yournextmp_dev"]
 );
