@@ -28,5 +28,6 @@ my $to_scrape = $candidate_rs->search(
 
 while ( my $candidate = $to_scrape->next ) {
     printf "Scraping %s (%s)...\n", $candidate->name, $candidate->party->name;
-    $candidate->update_by_scraping;
+    eval { $candidate->update_by_scraping };
+    warn $@ if $@;
 }
