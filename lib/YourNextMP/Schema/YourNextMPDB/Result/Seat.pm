@@ -129,7 +129,7 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-07 00:46:28
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:40UC1GeMRlMcXZFXkHNz9w
 
-__PACKAGE__->resultset_attributes( { order_by => ['name'] } );
+__PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 __PACKAGE__->many_to_many(
     candidates => 'candidacies',

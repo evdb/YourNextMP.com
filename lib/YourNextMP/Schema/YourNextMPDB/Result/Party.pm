@@ -156,7 +156,7 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 16:28:27
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:le6tshTZF09JLCrxjKLMHw
 
-__PACKAGE__->resultset_attributes( { order_by => ['name'] } );
+__PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 __PACKAGE__->has_many(
     "links",
