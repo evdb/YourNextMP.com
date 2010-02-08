@@ -61,6 +61,7 @@ sub scrape_parties {
         print "Looking at $party->{name}\n";
 
         # create the code for this party
+        $party->{name} = $parties_rs->clean_name( $party->{name} );
         $party->{code} = $parties_rs->name_to_code( $party->{name} );
 
         # extract the electoral_commision_id

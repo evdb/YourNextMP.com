@@ -5,6 +5,26 @@ use strict;
 use warnings;
 use utf8;
 
+sub clean_name {
+    my $class = shift;
+    my $name  = shift;
+
+    for ($name) {
+
+        # Clean up whitespace
+        s{\s+}{ }g;
+
+        # remove trailing '[The]'
+        s{ \s* \[The\] \z }{}xmsi;
+
+        s{^\s+}{};
+        s{\s+$}{};
+    }
+
+    return $name;
+
+}
+
 sub name_to_code {
     my $class = shift;
     my $name  = shift;
