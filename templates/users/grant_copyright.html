@@ -1,0 +1,31 @@
+[% PROCESS 'chrome/header.html', title => 'Users', no_links => 1 %]
+
+<div class="callout">
+    Concerning copyright ...
+</div>
+
+<p>We need you to agree that the copyright of any contribution you make to this site will belong to YourNextMP.com.</p>
+
+<p>This is so that we can share the data with other parties such as DemocracyClub.</p>
+
+<form action="" method="post">
+
+    <input type="hidden" name="xsrf_token" value="[% c.session.xsrf_token %]">
+
+    <input type="radio" name="agreement" id="agree" value="agree" checked>
+    <label for="agree">I agree to assign the copyright of my contributions to YourNextMP.com</label>
+    <br>    
+
+    <input type="radio" name="agreement" id="disagree" value="disagree">
+    <label for="disagree">I do not agree - please log me out of this site!</label>
+    <br>
+
+    <input type="submit" value="Continue">
+    <br>
+
+    
+
+</form>
+
+
+[% PROCESS 'chrome/footer.html', no_links => 1  %]

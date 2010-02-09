@@ -15,20 +15,23 @@
 [% END %]
 
 <div id="toptext">
-
-    <ul>
-    [% IF c.user %]
-        <li><a href="/users/[% c.user.id %]">[% c.user.name || c.user.email || 'Anonymous User' %]</a></li>
-        <li><a href="/auth/logout">Log Out</a></li>
+    [% IF no_links %]
+        <ul><li>&nbsp;</li></ul>
     [% ELSE %]
-        <li><a href="/auth/login">Sign In</a></li>
+        <ul>
+        [% IF c.user %]
+            <li><a href="/users/[% c.user.id %]">[% c.user.name || c.user.email || 'Anonymous User' %]</a></li>
+            <li><a href="/auth/logout">Log Out</a></li>
+        [% ELSE %]
+            <li><a href="/auth/login">Sign In</a></li>
+        [% END %]
+        </ul>
     [% END %]
-    </ul>
 </div>
 
 <div id="header">
     <h1>YourNext<strong>MP</strong></h1>
-    [% PROCESS 'chrome/tabs.html' %]
+    [% PROCESS 'chrome/tabs.html', no_links => no_links %]
 </div>
 
 <div id="content_wrapper">

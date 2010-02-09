@@ -12,7 +12,11 @@
 %]
 
 <ul id="tabs">
-    [% FOREACH item IN menu_items %]
-        <li[% ' class="active"' IF item.url == path_root %]><a href="[% item.url %]">[% item.name %]</a></li>
+    [% IF no_links %]
+        <li style="visibility: hidden;">&nbsp;</li>
+    [% ELSE %]
+        [% FOREACH item IN menu_items %]
+            <li[% ' class="active"' IF item.url == path_root %]><a href="[% item.url %]">[% item.name %]</a></li>
+        [% END %]
     [% END %]
 </ul>

@@ -88,6 +88,12 @@ __PACKAGE__->table("users");
   is_foreign_key: 1
   is_nullable: 1
 
+=head2 copyright_granted
+
+  data_type: timestamp without time zone
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -149,6 +155,12 @@ __PACKAGE__->add_columns(
         is_foreign_key => 1,
         is_nullable    => 1,
     },
+    "copyright_granted",
+    {
+        data_type     => "timestamp without time zone",
+        default_value => undef,
+        is_nullable   => 1,
+    },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "users_email_key", ["email"] );
@@ -186,8 +198,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-07 00:46:28
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vuOkWm93nZd5sDEEYPlJhQ
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 14:54:24
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dTYuF+c5lclEWMrgLmYSyA
 
 =head2 screen_name
 

@@ -22,6 +22,27 @@ YourNextMP::Controller::Root - Root Controller for YourNextMP
 
 =cut
 
+=head2 auto
+
+Carry out some checks to see that the request can be served.
+
+If there is a user check that they have granted us copyright.
+
+=cut
+
+sub auto : Private {
+    my ( $self, $c ) = @_;
+
+    # If we have a user check that the copyright has been handed over
+    if ( $c->user_exists && !$c->user->copyright_granted ) {
+        my $divert_url = '/users/grant_copyright';
+        $c->divert_to($divert_url)
+          unless $c->req->uri->path eq $divert_url;
+    }
+
+    return 1;
+}
+
 =head2 index
 
 =cut

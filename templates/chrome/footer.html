@@ -15,6 +15,8 @@
 
     <ul>
         <li>&copy; 2010 YourNextMP.com</li>
+
+        [% UNLESS no_links %]
         <li>
             <a  href="http://blog.yournextmp.com/"
                 title="Discussion about this site, the election and democracy in general"
@@ -23,6 +25,8 @@
 
     [% FOREACH format = available_output_formats %]
         <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>
+    [% END %]
+
     [% END %]
 
     </ul>
