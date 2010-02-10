@@ -161,8 +161,23 @@ __PACKAGE__->has_many(
     { "foreign.image_id" => "self.id" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:10
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BAqJWC/2B9SNnbW2gyVHvg
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 19:36:14
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vVIctUSHn6Jqm147RVhbDw
+
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
+);
 
 sub suffix {
     my $self   = shift;

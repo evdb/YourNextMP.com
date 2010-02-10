@@ -89,10 +89,24 @@ __PACKAGE__->add_columns(
     },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint( "links_source_url_key",
-    [ "source", "url" ] );
+__PACKAGE__->add_unique_constraint( "links_source_key", [ "source", "url" ] );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 15:24:06
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OzSI6WGHxipAhd+J3gu1Rg
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 19:36:14
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oPL9wlJWzyhnpesvNWKcsQ
+
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
+);
 
 1;

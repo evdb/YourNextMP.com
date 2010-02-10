@@ -6,23 +6,72 @@ use warnings;
 
 use DateTime;
 use Class::C3;
+use YourNextMP;
+
+sub _store_edits { 1; }
 
 sub insert {
     my $self = shift;
+    my $args = shift;
 
     my $now = DateTime->now();
     $self->created($now);
     $self->updated($now);
 
-    return $self->next::method(@_);
+    my $result = $self->next::method( $args, @_ );
+
+    $self->add_to_edits(
+        {
+            source_table => $self->table,
+            data         => { $self->get_columns },
+            edit_type    => 'insert',
+            user_id      => YourNextMP->edit_user_id,
+            comment      => YourNextMP->edit_comment,
+        }
+    ) if $self->_store_edits;
+
+    return $result;
 }
 
 sub update {
     my $self = shift;
+    my $args = shift;
 
     $self->updated( DateTime->now() );
 
-    return $self->next::method(@_);
+    my $result = $self->next::method( $args, @_ );
+
+    # store data to edits
+    $self->add_to_edits(
+        {
+            source_table => $self->table,
+            data         => { $self->get_columns },
+            edit_type    => 'update',
+            user_id      => YourNextMP->edit_user_id,
+            comment      => YourNextMP->edit_comment,
+        }
+    ) if $self->_store_edits;
+
+    return $result;
+}
+
+sub delete {
+    my $self = shift;
+    my $args = shift;
+
+    $self->add_to_edits(
+        {
+            source_table => $self->table,
+            data         => {},
+            edit_type    => 'delete',
+            user_id      => YourNextMP->edit_user_id,
+            comment      => YourNextMP->edit_comment,
+        }
+    ) if $self->_store_edits;
+
+    my $result = $self->next::method( $args, @_ );
+
+    return $result;
 }
 
 =head2 extract_fields

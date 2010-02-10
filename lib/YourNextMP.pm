@@ -238,6 +238,37 @@ sub s3bucket {
       ->bucket( name => $c->config->{aws}{public_bucket_name} );
 }
 
+my $EDIT_USER    = undef;
+my $EDIT_COMMENT = undef;
+
+sub edit_user {
+    my $class = shift;
+    $EDIT_USER = shift if @_;
+    return $EDIT_USER;
+}
+
+sub edit_user_id {
+    return $EDIT_USER ? $EDIT_USER->id : undef;
+}
+
+sub edit_comment {
+    my $class = shift;
+    $EDIT_COMMENT = shift if @_;
+    return $EDIT_COMMENT;
+}
+
+sub clear_edit_details {
+    $EDIT_COMMENT = undef;
+    $EDIT_USER    = undef;
+}
+
+sub finalize {
+    my $c      = shift;
+    my $result = $c->next::method(@_);
+    $c->clear_edit_details;
+    return $result;
+}
+
 =head1 NAME
 
 YourNextMP - Catalyst based application

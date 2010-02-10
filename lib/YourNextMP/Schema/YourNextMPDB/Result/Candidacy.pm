@@ -48,6 +48,13 @@ __PACKAGE__->table("candidacies");
   default_value: undef
   is_nullable: 0
 
+=head2 id
+
+  data_type: integer
+  default_value: nextval('candidacies_id_seq'::regclass)
+  is_auto_increment: 1
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -77,8 +84,19 @@ __PACKAGE__->add_columns(
         default_value => undef,
         is_nullable   => 0,
     },
+    "id",
+    {
+        data_type         => "integer",
+        default_value     => "nextval('candidacies_id_seq'::regclass)",
+        is_auto_increment => 1,
+        is_nullable       => 0,
+    },
 );
-__PACKAGE__->set_primary_key( "candidate_id", "seat_id" );
+__PACKAGE__->set_primary_key("id");
+__PACKAGE__->add_unique_constraint(
+    "candidacies_seat_id_candidate_id_key",
+    [ "seat_id", "candidate_id" ],
+);
 
 =head1 RELATIONS
 
@@ -110,8 +128,22 @@ __PACKAGE__->belongs_to(
     { id => "candidate_id" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-02 14:55:02
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:84NnboVG8YK7GeCXMTeXGA
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:19
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BdcLOGq9MZzKv8lAdc8tRg
 
-# You can replace this text with custom content, and it will be preserved on regeneration
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
+);
+
 1;

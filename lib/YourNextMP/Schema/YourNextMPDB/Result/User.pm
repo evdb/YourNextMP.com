@@ -183,6 +183,20 @@ __PACKAGE__->has_many(
     { "foreign.user_id" => "self.id" },
 );
 
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.user_id" => "self.id" },
+);
+
 =head2 seat
 
 Type: belongs_to
@@ -198,8 +212,23 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 14:54:24
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dTYuF+c5lclEWMrgLmYSyA
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pBWJiFZvbLCRaQys3v1ZNQ
+
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
+);
 
 =head2 screen_name
 

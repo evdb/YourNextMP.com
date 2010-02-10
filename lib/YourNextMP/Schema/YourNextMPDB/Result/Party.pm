@@ -153,8 +153,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-03 16:28:27
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:le6tshTZF09JLCrxjKLMHw
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 19:36:14
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:podizve5l1oIv9c4XYctbA
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
@@ -162,6 +162,21 @@ __PACKAGE__->has_many(
     "links",
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
     { "foreign.source" => "self.id" },
+);
+
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
 );
 
 =head2 scrape_candidates

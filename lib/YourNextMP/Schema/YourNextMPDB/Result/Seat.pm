@@ -126,20 +126,32 @@ __PACKAGE__->has_many(
     { "foreign.seat_id" => "self.id" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-07 00:46:28
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:40UC1GeMRlMcXZFXkHNz9w
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:33
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hnM0LtAthSg/p/GA/Ir6vQ
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
-
-__PACKAGE__->many_to_many(
-    candidates => 'candidacies',
-    'candidate'
-);
 
 __PACKAGE__->has_many(
     "links",
     "YourNextMP::Schema::YourNextMPDB::Result::Link",
     { "foreign.source" => "self.id" },
+);
+
+__PACKAGE__->many_to_many( candidates => candidacies => 'candidate' );
+
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
 );
 
 1;

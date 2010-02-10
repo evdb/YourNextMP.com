@@ -9,6 +9,8 @@ use lib 'lib';
 
 use DBIx::Class::Schema::Loader qw/ make_schema_at /;
 
+local $ENV{DBIC_OVERWRITE_HELPER_METHODS_OK} = 1;
+
 make_schema_at(
     'YourNextMP::Schema::YourNextMPDB',
     {
