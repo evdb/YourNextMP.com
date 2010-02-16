@@ -28,15 +28,6 @@ sub index : Path : Args(0) {
 
 }
 
-sub add : Local {
-    my ( $self, $c ) = @_;
-
-    # Add an empty candidate to the results
-    $c->stash->{candidate} = $c->db('Candidate')->new_result( {} );
-    $c->stash->{template} = 'candidates/edit.html';
-    $c->forward('edit');
-}
-
 sub candidate_base : PathPart('candidates') Chained('/') CaptureArgs(1) {
     my ( $self, $c, $code ) = @_;
 

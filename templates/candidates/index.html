@@ -44,10 +44,7 @@
             <p>Nothing matched your search for '[% query | html %]'.</p>
         
         [% END %]
-
-            <p>Can't find the candidate you're looking for? <a href="[% c.uri_for('add') %]">Add a new candidate</a></p>
-
-
+        
     [% ELSE %]
 
         <p>Please search for a candidate or <a href="[% c.uri_for('',{view_all=>1} ) %]">view them all</a>.</p>
