@@ -12,6 +12,12 @@ sub finalize {
         return $c->next::method(@_);
     }
 
+    # Don't try to compress if there are errors - the content to compress has
+    # not been generated yet - done in finalize_error
+    if ( $c->error ) {
+        return $c->next::method(@_);
+    }
+
     unless ( $c->response->body ) {
         return $c->next::method(@_);
     }
