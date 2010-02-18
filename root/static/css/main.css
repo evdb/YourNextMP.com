@@ -261,7 +261,8 @@ table {
     margin-bottom: 1em;
 }
 
-td, th {
+
+table.lined td, table.lined th {
     border-bottom: 1px solid #ccc;
     padding: 0 0.2em;
     text-align: left;
@@ -273,4 +274,9 @@ tr.odd {
 
 tr.even {
     background-color: inherit;
+}
+
+
+.error_message {
+    color: red;
 }

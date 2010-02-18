@@ -28,8 +28,10 @@
         
     [% ELSE %]
     
-        <p>There are no candidates yet - please <a href="/candidates/add">add any you know</a>.</p>
+        <p>There are no candidates yet</p>
     
     [% END %]
+
+<p>Are we missing a candidate? Please <a href="[% c.uri_for('/','candidates','add', { seats => seat.id }) %]">add them</a>.</p>
 
 [% PROCESS 'chrome/footer.html' %]

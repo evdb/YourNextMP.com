@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use parent 'YourNextMP::ControllerBase';
 
+use YourNextMP::Form::AddCandidate;
+
 sub result_base : PathPart('candidates') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
 }
@@ -12,25 +14,39 @@ sub source_name {
     return 'Candidate';
 }
 
-sub index : PathPart('') Chained('result_base') Args(0) {
+sub add : PathPart('add') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 
-    my $results = $c->db( $self->source_name );
+    # We need logged in users to create candidates
+    $c->require_user("Please log in to create a new candidate");
 
-    my $query = lc( $c->req->param('query') || '' );
-    $query =~ s{\s+}{ }g;
-    $query =~ s{[^a-z0-9 ]}{}g;
+    # create the form and place it on the stash
+    my $item = $c->db('Candidate')->new_result( {} );
+    my $form = YourNextMP::Form::AddCandidate->new( item => $item );
+    $c->stash( form => $form );
 
-    if ($query) {
-        $results =
-            $query =~ m{\d}
-          ? $results->search_postcode($query)
-          : $results->fuzzy_search( { name => $query } );
+    # Combine the GET and POST parameters
+    my $params = {
+        %{ $c->req->query_parameters },    # GET
+        %{ $c->req->body_parameters },     # POST (overides GET)
+    };
+
+    # Check that the code created will not clash with an existing candidate
+    if ( my $name = $params->{name} ) {
+        my $code = $c->db('Candidate')->name_to_code($name);
+
+        if ( $c->db('Candidate')->find( { code => $code } ) ) {
+            $c->res->redirect( $c->uri_for( '/candidates', $code ) );
+            $c->detach;
+        }
     }
 
-    $c->stash->{view_all} = $c->req->param('view_all') || 0;
-    $c->stash->{query}    = $query;
-    $c->stash->{results}  = $results;
+    # process the form and return if there were errors
+    return if !$form->process( params => $params );
+
+    # We have a new candidate
+    $c->res->redirect( $c->uri_for( '/candidates', $item->code ) );
+    $c->detach;
 
 }
 

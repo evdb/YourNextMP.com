@@ -19,7 +19,13 @@ sub find {
 
 sub fuzzy_search {
     my $rs   = shift;
-    my $args = shift;
+    my $args = shift || {};
+    my $opts = shift || {};
+
+    my $combiner =
+      $opts->{combiner}
+      ? "-$opts->{combiner}"
+      : '-and';
 
     foreach my $key ( keys %$args ) {
         my $value = $args->{$key};
@@ -28,8 +34,9 @@ sub fuzzy_search {
 
         $rs = $rs->search(    #
             {
-                $key =>
-                  { ilike => [ '-and', map { lc( '%' . $_ . '%' ) } @values ] }
+                $key => {
+                    ilike => [ $combiner, map { lc( '%' . $_ . '%' ) } @values ]
+                }
             }
         );
     }
