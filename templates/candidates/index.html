@@ -11,14 +11,14 @@
     </div>
     [% IF view_all || query %]
 
-        [% count = candidates.count %]
+        [% count = results.count %]
         [% IF count %]
     
             [% WRAPPER 'stubs/search_results.html',
                 title => "Found $count matches:"
             %]
         
-            [% WHILE (candidate = candidates.next ) %]
+            [% WHILE (candidate = results.next ) %]
 
                 [% extra = BLOCK %]
                     [% candidate.party.name %]

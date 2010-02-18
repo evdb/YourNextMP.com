@@ -2,25 +2,17 @@ package YourNextMP::Controller::Seats;
 
 use strict;
 use warnings;
-use parent 'Catalyst::Controller';
+use parent 'YourNextMP::ControllerBase';
 
-=head1 NAME
+sub result_base : PathPart('seats') Chained('/') CaptureArgs(0) {
+    my ( $self, $c ) = @_;
+}
 
-YourNextMP::Controller::Seats - Catalyst Controller
+sub source_name {
+    return 'Seat';
+}
 
-=head1 DESCRIPTION
-
-Catalyst Controller.
-
-=head1 METHODS
-
-=cut
-
-=head2 index
-
-=cut
-
-sub index : Path : Args(0) {
+sub index : PathPart('') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 
     $c->can_do_output('json');
@@ -40,7 +32,7 @@ sub index : Path : Args(0) {
 
     $c->stash->{view_all} = $c->req->param('view_all') || 0;
     $c->stash->{query}    = $query;
-    $c->stash->{seats}    = $seats;
+    $c->stash->{results}    = $seats;
 
     # check for JSON output
     if ( $c->output_is('json') ) {
@@ -60,18 +52,6 @@ sub index : Path : Args(0) {
             $c->stash->{json_result} = [];
         }
     }
-
-}
-
-=head2 seat
-
-=cut
-
-sub view : Path : Args(1) {
-    my ( $self, $c, $code ) = @_;
-
-    $c->stash->{seat} = $c->db('Seat')->find( { code => $code } )
-      || $c->detach('/page_not_found');
 
 }
 
