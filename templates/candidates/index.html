@@ -42,6 +42,8 @@
         [% ELSE %]
         
             <p>Nothing matched your search for '[% query | html %]'.</p>
+            
+            <p>You can <a href="[% c.uri_for('/candidates/add', {name => query}) %]">add them as a candidate</a>.</p>
         
         [% END %]
         

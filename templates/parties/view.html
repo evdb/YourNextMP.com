@@ -46,4 +46,7 @@
 
 [% END %]
 
+    <p>If we are missing a candidate for this party <a href="[% c.uri_for('/candidates/add', {party => party.id}) %]">please add them</a>.</p>
+    
+
 [% PROCESS 'chrome/footer.html' %]
