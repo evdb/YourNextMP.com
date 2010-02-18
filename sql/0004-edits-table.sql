@@ -4,7 +4,6 @@ alter table candidacies drop constraint candidacies_pkey;
 alter table candidacies add column id serial primary key;
 create unique index candidacies_seat_id_candidate_id_key on candidacies (seat_id , candidate_id);
 
-
 create table edits (
     id              serial          primary key,
     source_table    varchar(100)    not null,
@@ -21,5 +20,7 @@ create table edits (
     user_id         bigint          references users(id),
     comment         text
 );
+
+alter table candidates drop column user_id;
 
 commit;

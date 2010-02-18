@@ -36,13 +36,6 @@ __PACKAGE__->table("candidates");
   is_nullable: 0
   size: 80
 
-=head2 user_id
-
-  data_type: bigint
-  default_value: undef
-  is_foreign_key: 1
-  is_nullable: 1
-
 =head2 party_id
 
   data_type: bigint
@@ -146,13 +139,6 @@ __PACKAGE__->add_columns(
         is_nullable   => 0,
         size          => 80,
     },
-    "user_id",
-    {
-        data_type      => "bigint",
-        default_value  => undef,
-        is_foreign_key => 1,
-        is_nullable    => 1,
-    },
     "party_id",
     {
         data_type      => "bigint",
@@ -253,21 +239,6 @@ __PACKAGE__->has_many(
     { "foreign.candidate_id" => "self.id" },
 );
 
-=head2 user
-
-Type: belongs_to
-
-Related object: L<YourNextMP::Schema::YourNextMPDB::Result::User>
-
-=cut
-
-__PACKAGE__->belongs_to(
-    "user",
-    "YourNextMP::Schema::YourNextMPDB::Result::User",
-    { id        => "user_id" },
-    { join_type => "LEFT" },
-);
-
 =head2 party
 
 Type: belongs_to
@@ -298,7 +269,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:16:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:zgk7i9m4LksJSnyxYIe0AA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gSIddahGyOMav+4Lt62ajQ
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 

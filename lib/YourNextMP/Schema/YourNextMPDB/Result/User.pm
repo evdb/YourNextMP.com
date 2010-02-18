@@ -169,20 +169,6 @@ __PACKAGE__->add_unique_constraint( "users_openid_identifier_key",
 
 =head1 RELATIONS
 
-=head2 candidates
-
-Type: has_many
-
-Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Candidate>
-
-=cut
-
-__PACKAGE__->has_many(
-    "candidates",
-    "YourNextMP::Schema::YourNextMPDB::Result::Candidate",
-    { "foreign.user_id" => "self.id" },
-);
-
 =head2 edits
 
 Type: has_many
@@ -213,7 +199,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:pBWJiFZvbLCRaQys3v1ZNQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tA5Njw/zfgBv1JHlfYPsFg
 
 =head2 edits
 
