@@ -17,6 +17,7 @@ has_field 'name' => (
 has_field 'party' => (
     type             => 'Select',
     label            => 'Political party',
+    empty_select     => '--- Choose a party ---',
     required         => 1,
     required_message => "Please select the party",
 );
@@ -24,6 +25,7 @@ has_field 'party' => (
 has_field 'seats' => (
     type             => 'Select',
     label            => 'Constituency',
+    empty_select     => '--- Choose a constituency ---',
     required         => 1,
     required_message => 'Please select the constituency',
 );
