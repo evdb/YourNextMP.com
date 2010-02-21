@@ -97,12 +97,6 @@ __PACKAGE__->table("candidates");
   is_foreign_key: 1
   is_nullable: 1
 
-=head2 bio
-
-  data_type: text
-  default_value: undef
-  is_nullable: 1
-
 =head2 scrape_source
 
   data_type: character varying
@@ -200,8 +194,6 @@ __PACKAGE__->add_columns(
         is_foreign_key => 1,
         is_nullable    => 1,
     },
-    "bio",
-    { data_type => "text", default_value => undef, is_nullable => 1 },
     "scrape_source",
     {
         data_type     => "character varying",
