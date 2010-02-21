@@ -7,18 +7,6 @@ use YourNextMP;
 use DateTime;
 
 my $candidate_rs = YourNextMP->model('Candidate');
-my $party_rs     = YourNextMP->model('Party');
-
-# Scrape all the parties to make sure that the lists are up-to-date
-my $parties = $party_rs->search();
-
-while ( my $party = $parties->next ) {
-    printf "Scraping candidate list from %s\n", $party->name;
-    $party->scrape_candidates;
-}
-
-print "\n\n";
-
 my $scraped_before = DateTime->now - DateTime::Duration->new( hours => 20 );
 
 # get all the candidates that need scraping
