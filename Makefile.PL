@@ -60,6 +60,7 @@ requires 'HTML::FormHandler::Model::DBIC' => '0.08';
 requires 'HTTP::Date';
 requires 'Image::Imlib2';
 requires 'JSON';
+requires 'JSON::XS';
 requires 'LWP::Simple';
 requires 'LWP::UserAgent';
 requires 'Module::Install::Base';
