@@ -1,0 +1,37 @@
+[% candidates = results %]
+[% PROCESS 'chrome/header.html', title => 'All Candidates' %]
+
+    <h1>All candidates</h1>
+
+    
+    [% pager_text = PROCESS 'stubs/pager.html' %]
+    [% pager_text %]
+
+    [% WRAPPER 'stubs/search_results.html',
+        title => "Showing ${pager.first} to ${pager.last} of ${pager.total_entries} candidates"
+    %]
+    
+        [% WHILE (candidate = results.next ) %]
+        
+            [% extra = BLOCK %]
+                [% candidate.party.name %]
+                [%  FOREACH seat = candidate.seats %]
+                    [% ' - ' IF loop.first %]
+                    [% seat.name %]
+                    [% ',' UNLESS loop.last %]
+                [% END %]
+            [% END %]
+        
+            [% PROCESS 'stubs/search_result.html',
+                name    => candidate.name,
+                show_missing_person_image => 1,                    
+                image_id => candidate.image_id,
+                href     => c.uri_for( candidate.code ),
+                extra    => extra,
+            %]        
+        [% END %]
+    [% END %]
+    
+    [% pager_text %]
+
+[% PROCESS 'chrome/footer.html' %]

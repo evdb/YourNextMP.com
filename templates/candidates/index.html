@@ -3,55 +3,13 @@
     <h1>Candidates</h1>
 
     <div>
-        <form method="GET" action="[% c.uri_for() %]">
+        <form method="GET" action="[% c.uri_for('search') %]">
             <label for="query">Candidate's name:</label>
             <input name="query" id="query" type="text" value="[% query %]"/>
             <input type="submit" value="Search" />
         </form>
     </div>
-    [% IF view_all || query %]
 
-        [% count = results.count %]
-        [% IF count %]
-    
-            [% WRAPPER 'stubs/search_results.html',
-                title => "Found $count matches:"
-            %]
-        
-            [% WHILE (candidate = results.next ) %]
-
-                [% extra = BLOCK %]
-                    [% candidate.party.name %]
-                    [%  FOREACH seat = candidate.seats %]
-                        [% ' - ' IF loop.first %]
-                        [% seat.name %]
-                        [% ',' UNLESS loop.last %]
-                    [% END %]
-                [% END %]
-
-                [% query_regex = query.replace( '\s+', '|' ) %]
-                [% PROCESS 'stubs/search_result.html',
-                    name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
-                    show_missing_person_image => 1,                    
-                    image_id => candidate.image_id,
-                    href  => c.uri_for( candidate.code ),
-                    extra => extra,
-                %]        
-            [% END %]
-            [% END %]
-            
-        [% ELSE %]
-        
-            <p>Nothing matched your search for '[% query | html %]'.</p>
-            
-            <p>You can <a href="[% c.uri_for('/candidates/add', {name => query}) %]">add them as a candidate</a>.</p>
-        
-        [% END %]
-        
-    [% ELSE %]
-
-        <p>Please search for a candidate or <a href="[% c.uri_for('',{view_all=>1} ) %]">view them all</a>.</p>
-
-    [% END %]
+    <p><a href="[% c.uri_for( 'all', 1 ) %]">View all candidates</a></p>
 
 [% PROCESS 'chrome/footer.html' %]

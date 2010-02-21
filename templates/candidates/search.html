@@ -1,0 +1,59 @@
+[% parties = results %]
+[% PROCESS 'chrome/header.html', title => 'Parties' %]
+
+    <h1>Search for Parties</h1>
+
+    <div>
+    <form method="GET" action="[% c.uri_for('search') %]">
+        <label for="query">Candidate name:</label>
+        <input name="query" id="query" type="text" value="[% query %]"/>
+        <input type="submit" value="Search" />
+    </form>
+    </div>
+
+    [% IF query %]
+
+        [% count = parties.count %]
+        [% IF count %]
+    
+        [% WRAPPER 'stubs/search_results.html',
+            title => "Found $count candidates:"
+        %]
+
+        [% WHILE (candidate = results.next ) %]
+
+            [% extra = BLOCK %]
+                [% candidate.party.name %]
+                [%  FOREACH seat = candidate.seats %]
+                    [% ' - ' IF loop.first %]
+                    [% seat.name %]
+                    [% ',' UNLESS loop.last %]
+                [% END %]
+            [% END %]
+
+            [% query_regex = query.replace( '\s+', '|' ) %]
+            [% PROCESS 'stubs/search_result.html',
+                name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
+                show_missing_person_image => 1,                    
+                image_id => candidate.image_id,
+                href  => c.uri_for( candidate.code ),
+                extra => extra,
+            %]        
+        [% END %]
+        [% END %]
+        
+        [% ELSE %]
+        
+            <p>Nothing matched your search for '[% query | html %]'.</p>
+        
+        [% END %]
+
+
+    [% ELSE %]
+
+        <p>Please search for a party or <a href="[% c.uri_for('all', 1 ) %]">view them all</a>.</p>
+
+    [% END %]
+
+[% PROCESS 'chrome/footer.html' %]
+

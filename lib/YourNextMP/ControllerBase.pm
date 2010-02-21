@@ -16,6 +16,10 @@ sub result_find : PathPart('') Chained('result_base') CaptureArgs(1) {
 
 sub index : PathPart('') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
+}
+
+sub search : PathPart('search') Chained('result_base') Args(0) {
+    my ( $self, $c ) = @_;
 
     my $results = $c->db( $self->source_name );
 
@@ -39,10 +43,43 @@ sub index : PathPart('') Chained('result_base') Args(0) {
 
 }
 
+sub all_empty : PathPart('all') Chained('result_base') {
+    my ( $self, $c ) = @_;
+
+    $c->res->redirect( $c->uri_for( 'all', 1 ) );
+    $c->detach;
+}
+
+sub all : PathPart('all') Chained('result_base') Args(1) {
+    my ( $self, $c, $page_number ) = @_;
+
+    my $results_per_page = 50;
+
+    # clean up the page_number
+    $page_number =~ s{\D+}{}g;
+    $page_number ||= 1;
+
+    my $results = $c->db( $self->source_name )->search(
+        undef,    # find everything
+        {
+            rows => $results_per_page,
+            page => $page_number,
+        }
+    );
+
+    # check that we have not gone beyond the end of the list
+    if ( $page_number > $results->pager->last_page ) {
+        $c->res->redirect( $c->uri_for( 'all', $results->pager->last_page ) );
+        $c->detach;
+    }
+
+    $c->stash->{pager}   = $results->pager;
+    $c->stash->{results} = $results;
+}
+
 sub search_for_results {
     my ( $self, $results, $query ) = @_;
     $results->fuzzy_search( { name => $query } );
-
 }
 
 sub view : PathPart('') Chained('result_find') Args(0) {

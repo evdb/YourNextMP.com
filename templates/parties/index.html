@@ -4,44 +4,14 @@
     <h1>Parties</h1>
 
     <div>
-    <form method="GET" action="[% c.uri_for() %]">
+    <form method="GET" action="[% c.uri_for('search') %]">
         <label for="query">Party name:</label>
         <input name="query" id="query" type="text" value="[% query %]"/>
         <input type="submit" value="Search" />
     </form>
     </div>
 
-    [% IF view_all || query %]
+    <p><a href="[% c.uri_for( 'all', 1 ) %]">View all parties</a></p>
 
-        [% count = parties.count %]
-        [% IF count %]
-    
-            [% WRAPPER 'stubs/search_results.html',
-                title => "Found $count matches:"
-            %]
-
-            [% WHILE (party = parties.next ) %]
-                [% query_regex = query.replace( '\s+', '|' ) %]
-                [% PROCESS 'stubs/search_result.html',
-                    name  => party.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
-                    image_id => party.image_id,
-                    href  => c.uri_for( party.code ),
-                    extra => (party.candidates_rs.count || 'no') _ " candidates",
-                %]        
-            [% END %]
-            [% END %]
-        
-        [% ELSE %]
-        
-            <p>Nothing matched your search for '[% query | html %]'.</p>
-        
-        [% END %]
-
-
-    [% ELSE %]
-
-        <p>Please search for a party or <a href="[% c.uri_for('',{view_all=>1} ) %]">view them all</a>.</p>
-
-    [% END %]
 
 [% PROCESS 'chrome/footer.html' %]

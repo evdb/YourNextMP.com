@@ -1,0 +1,53 @@
+<br>
+
+<ul class='pager'>
+    
+    [%
+        # get these out to make the rest cleaner.
+        first_page     = pager.first_page;
+        current_page   = pager.current_page;
+        last_page      = pager.last_page;
+
+        pages_to_show = [];
+        pages_to_show.push(
+            first_page,
+            first_page + 1,
+
+            current_page - 3
+            current_page - 2,
+            current_page - 1,
+            current_page,
+            current_page + 1,
+            current_page + 2,
+            current_page + 3,
+                                  
+            last_page - 1,
+            last_page,       
+        );
+        pages_to_show = pages_to_show.unique.nsort;
+    %]
+    
+    [% previous_page = 0 %]
+
+    
+        <li style="float: left; [% 'visibility: hidden' IF current_page == first_page %]"><a href="[% c.uri_for( 'all', current_page - 1 ) %]">&lt;&lt;&lt;</a></li>
+
+    [% FOREACH n IN pages_to_show %]
+        [% NEXT IF n < 1  || n > last_page %]
+
+
+        [% IF n - previous_page > 1 %]
+            <li class="clean">&#x2026;</li>
+        [% END %]
+
+        <li[% ' class="current_page"' IF n == current_page %]><a href="[% c.uri_for('all', n ) %]">[% n %]</a></li>
+
+        [% previous_page = n %]
+    [% END %]
+    
+    
+        <li style="float: right; [% 'visibility: hidden' IF current_page == last_page %]"><a href="[% c.uri_for( 'all', current_page + 1 ) %]">&gt;&gt;&gt;</a></li>
+    
+</ul>
+
+<br>

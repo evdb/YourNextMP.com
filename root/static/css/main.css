@@ -298,3 +298,28 @@ img.icon {
 .discreet:hover {
     opacity: 1;
 }
+
+ul.pager {
+    text-align: center;
+}
+
+ul.pager li {
+    display: inline;
+    padding: 0 0.5em;
+    border: 1px solid #888;
+    background-color: #eee;
+}
+
+ul.pager a {
+    text-decoration: none;
+}    
+
+ul.pager .current_page {
+    font-weight: bold;
+    background-color: #ccc;
+}
+
+ul.pager .clean {
+    border: none;
+    background-color: #fff;
+}

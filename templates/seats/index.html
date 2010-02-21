@@ -4,56 +4,13 @@
     <h1>Seats</h1>
 
     <div>
-    <form name="seat_search" method="GET" action="[% c.uri_for() %]">
+    <form name="seat_search" method="GET" action="[% c.uri_for('search') %]">
         <label for="query">Place or postcode:</label>
         <input name="query" id="query" type="text" value="[% query %]"/>
         <input type="submit" value="Search" />
     </form>
     </div>
 
-    [% IF view_all || query %]
-
-        [% count = seats.count %]
-        [% IF count %]
-    
-            [% WRAPPER 'stubs/search_results.html',
-                title => "Found $count matches:"
-            %]
-        
-            [% WHILE (seat = seats.next ) %]
-                
-                [% extra = BLOCK %]
-
-                    [% candidates = seat.candidates_rs %]
-                    [% candidates.count || 'no' %] candidates:
-
-                    [%  FOREACH candidate IN candidates.all %]
-                        [% candidate.name %] - [% candidate.party.name -%]
-                        [%- ',' UNLESS loop.last %]
-                    [% END %]
-
-                [% END %]
-                
-                [% query_regex = query.replace( '\s+', '|' ) %]
-                [% PROCESS 'stubs/search_result.html',
-                    name  => seat.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
-                    href  => c.uri_for( seat.code ),
-                    extra => extra,
-                %]        
-            [% END %]
-            [% END %]
-                
-        [% ELSE %]
-        
-            <p>Nothing matched your search for '[% query | html %]'.</p>
-        
-        [% END %]
-
-
-    [% ELSE %]
-
-        <p>Please search for a seat or <a href="[% c.uri_for('',{view_all=>1} ) %]">view them all</a>.</p>
-
-    [% END %]
+    <p><a href="[% c.uri_for( 'all', 1 ) %]">View all seats</a></p>
 
 [% PROCESS 'chrome/footer.html' %]

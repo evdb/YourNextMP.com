@@ -1,0 +1,26 @@
+[% parties = results %]
+[% PROCESS 'chrome/header.html', title => 'All Parties' %]
+
+    <h1>All parties</h1>
+
+    
+    [% pager_text = PROCESS 'stubs/pager.html' %]
+    [% pager_text %]
+
+    [% WRAPPER 'stubs/search_results.html',
+        title => "Showing ${pager.first} to ${pager.last} of ${pager.total_entries} parties"
+    %]
+    
+        [% WHILE (party = parties.next ) %]
+            [% PROCESS 'stubs/search_result.html',
+                name     => party.name,
+                image_id => party.image_id,
+                href     => c.uri_for( party.code ),
+                extra    => (party.candidates_rs.count || 'no') _ " candidates",
+            %]        
+        [% END %]
+    [% END %]
+    
+    [% pager_text %]
+
+[% PROCESS 'chrome/footer.html' %]

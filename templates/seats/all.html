@@ -1,0 +1,35 @@
+[% seats = results %]
+[% PROCESS 'chrome/header.html', title => 'Seats' %]
+
+<h1>All Seats</h1>
+
+[% pager_text = PROCESS 'stubs/pager.html' %]
+[% pager_text %]
+
+[% WRAPPER 'stubs/search_results.html',
+    title => "Showing ${pager.first} to ${pager.last} of ${pager.total_entries} seats"
+%]
+            
+    [% WHILE (seat = seats.next ) %]
+        
+        [% extra = BLOCK %]
+    
+            [% candidates = seat.candidates_rs %]
+            [% candidates.count || 'no' %] candidates:
+    
+            [%  FOREACH candidate IN candidates.all %]
+                [% candidate.name %] - [% candidate.party.name -%]
+                [%- ',' UNLESS loop.last %]
+            [% END %]
+    
+        [% END %]
+        
+        [% PROCESS 'stubs/search_result.html',
+            name  => seat.name,
+            href  => c.uri_for( seat.code ),
+            extra => extra,
+        %]        
+    [% END %]
+[% END %]
+                
+[% PROCESS 'chrome/footer.html' %]
