@@ -34,8 +34,6 @@ sub extract_candidate_data {
         process '#divIntroduction h2 a',       seat_name1 => 'text';
         process '#divIntroduction h2',         seat_name2 => 'html';
         process '#divIntroduction img',        photo_url  => '@src';
-        process '#divBiography p',             'bio[]'    => 'text';
-        process '#divBiography',               'bio2'     => 'text';
         process '#divIndividualContactInfo a', 'links[]'  => '@href';
         process '#divIndividualContactInfo ul.address li',
           'address[]' => 'TEXT';
@@ -52,13 +50,6 @@ sub extract_candidate_data {
         s{&#(\d+);}{ chr($1) }eg;
         s{^.* for ([\w\s&\-]*).*$}{$1};
     }
-
-    # Extract the bio
-    $data->{bio} ||= [ $data->{bio2} ];
-    $data->{bio} = join "\n\n", @{ $data->{bio} || [] };
-    delete $data->{bio2};
-    eval { $data->{bio} = decode( 'latin1', $data->{bio} ) };
-    $data->{bio} =~ s{^Biography\s*}{};
 
     # get the address
     $data->{address} = join ", ",

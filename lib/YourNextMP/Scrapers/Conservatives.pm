@@ -32,7 +32,6 @@ sub extract_candidate_data {
 
         process 'div.main-txt img', photo_url => '@src';
         process 'div.main-txt a',   'links[]' => '@href';
-        process 'div.main-txt',     'bio'     => 'HTML';
     }
     ->scrape( $html, $candidate->scrape_source );
 
@@ -43,20 +42,6 @@ sub extract_candidate_data {
         $data->{fax}   = join ',', m{ Fax: $number_regex }xmsg;
 
         ( $data->{address} ) = m{ \s* ([^/]*?) \s* (?: <br | Email: ) }xmsg;
-    }
-
-    # bio - nasty cleanup of html
-    for ( $data->{bio} ) {
-
-        # warn "$_\n\n";
-        s{^.*<div class="personBody">}{};
-        s{.*\(opens in a new window\)}{};
-        s{<br\s*/*>}{\n}g;
-        s{</?(?:p|h\d).*?>}{\n\n}g;
-        s{<.*?>}{}g;
-        s{&#(\d+);}{ chr($1) }eg;
-        s{\s*\n+\s*}{\n\n}g;
-        s{\A\s*(.*?)\s*\z}{$1}xms;
     }
 
     # links

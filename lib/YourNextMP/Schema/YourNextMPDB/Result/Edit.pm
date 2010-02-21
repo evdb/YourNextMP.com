@@ -177,7 +177,7 @@ __PACKAGE__->inflate_column(
         inflate => sub { JSON->new->decode( $_[0] ) },
         deflate => sub {
             my $data = $_[0];
-            $_ += '' for grep { ref $_ } values %$data;
+            $_ .= '' for grep { ref $_ } values %$data;
             JSON->new->pretty->encode($data);
         },
     }
