@@ -7,10 +7,20 @@ use YourNextMP;
 
 my $image_rs = YourNextMP->model('Image');
 
-my $url = 'http://farm1.static.flickr.com/85/233472093_1f1d235e7b_d.jpg';
+# check that non-image files don't crash the code
+my $bad_url  = 'http://www.google.co.uk';
+my $good_url = 'http://farm1.static.flickr.com/85/233472093_1f1d235e7b_d.jpg';
 
-$image_rs->search( { source_url => $url } )->delete;
-my $image = $image_rs->create( { source_url => $url } );
+# This url returns '403' for HEAD requests - so code should fall back to 'GET'
+my $get_only_url = 'http://x80.xanga.com/f32c900426733206272947/z160426333.jpg';
+
+# check that the can_capture_url code works
+ok !$image_rs->can_capture_url($bad_url), "can't capture '$bad_url'";
+ok $image_rs->can_capture_url($good_url),     "can capture '$good_url'";
+ok $image_rs->can_capture_url($get_only_url), "can capture '$get_only_url'";
+
+$image_rs->search( { source_url => $good_url } )->delete;
+my $image = $image_rs->create( { source_url => $good_url } );
 
 ok $image, "Created a new image";
 

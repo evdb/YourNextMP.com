@@ -42,6 +42,12 @@
         [% candidate.address %]
     </li>
     [% END %]
+
+    <li style="opacity: 0.5">
+        <img class="icon" src="/static/icons/pencil.png" alt="edit">
+        <a href="[% c.uri_for(candidate.code, 'edit_details') %]">Add to or edit these details</a>
+    </li>
+
 </ul>
 <br />
     

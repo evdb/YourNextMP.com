@@ -32,6 +32,28 @@ my $STORE_DIR = dir( File::HomeDir->my_home )->subdir('yournextmp');
 $STORE_DIR->mkpath;
 sub store_dir { $STORE_DIR; }
 
+sub can_capture_url {
+    my $self = shift;
+    my $url  = shift;
+
+    # sanity check that it looks like a url
+    return unless $url =~ m{ \A http s? :// \S+ \z }xms;
+
+    # Get the head and check that the content type is correct.
+    my $ua  = LWP::UserAgent->new;
+    my $res = $ua->head($url);
+
+    # Some image servers don't support 'HEAD' so try a get instead
+    $res = $ua->get($url) unless $res->is_success;
+
+    return unless $res->is_success;
+
+    my $mime_type = $res->content_type;
+    return unless $MIME_TO_SUFFIX{$mime_type};
+
+    return 1;
+}
+
 sub create {
     my $rs   = shift;
     my $args = shift;

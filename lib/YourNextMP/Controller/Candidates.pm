@@ -4,7 +4,8 @@ use strict;
 use warnings;
 use parent 'YourNextMP::ControllerBase';
 
-use YourNextMP::Form::AddCandidate;
+use YourNextMP::Form::CandidateAdd;
+use YourNextMP::Form::CandidateEditDetails;
 
 sub result_base : PathPart('candidates') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -22,7 +23,7 @@ sub add : PathPart('add') Chained('result_base') Args(0) {
 
     # create the form and place it on the stash
     my $item = $c->db('Candidate')->new_result( {} );
-    my $form = YourNextMP::Form::AddCandidate->new( item => $item );
+    my $form = YourNextMP::Form::CandidateAdd->new( item => $item );
     $c->stash( form => $form );
 
     # Combine the GET and POST parameters
@@ -44,8 +45,31 @@ sub add : PathPart('add') Chained('result_base') Args(0) {
     # process the form and return if there were errors
     return if !$form->process( params => $params );
 
+    # We have a new candidate - send user to edit page to add more details
+    $c->res->redirect(
+        $c->uri_for( '/candidates', $item->code, 'edit_details' ) );
+    $c->detach;
+
+}
+
+sub edit_details : PathPart('edit_details') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
+
+    # We need logged in users to create candidates
+    $c->require_user("Please log in to edit candidate details");
+
+    # create the form and place it on the stash
+    my $candidate = $c->stash->{result};
+    my $form =
+      YourNextMP::Form::CandidateEditDetails->new( item => $candidate );
+    $c->stash( form => $form );
+
+    # process the form and return if there were errors
+    return if !$form->process( params => $c->req->params );
+
     # We have a new candidate
-    $c->res->redirect( $c->uri_for( '/candidates', $item->code ) );
+    $candidate->update( { can_scrape => 0 } );
+    $c->res->redirect( $c->uri_for( '/candidates', $candidate->code ) );
     $c->detach;
 
 }

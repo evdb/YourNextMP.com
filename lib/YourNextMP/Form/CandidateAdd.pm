@@ -1,4 +1,4 @@
-package YourNextMP::Form::AddCandidate;
+package YourNextMP::Form::CandidateAdd;
 
 use strict;
 use warnings;
