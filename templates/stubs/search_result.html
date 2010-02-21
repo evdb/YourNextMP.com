@@ -1,15 +1,10 @@
 <li>
     <a href="[% href %]">
-
-        [% IF image_id %]
-            <img src="[% c.uri_for_image( image_id, 'small' ) %]" />
+        [% IF show_missing_person_image || image_id %]
+        <img src="[% c.uri_for_image( image_id, 'small' ) %]" />
         [% END %]
-
-        <span class="name">[% name %]</span>
-        
+        <span class="name">[% name %]</span>    
         <br />
-
         [% IF extra %]<span class="extra">[% extra %]</span>[% END %]
-
     </a>
 </li>

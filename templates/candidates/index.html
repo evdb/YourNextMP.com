@@ -32,6 +32,7 @@
                 [% query_regex = query.replace( '\s+', '|' ) %]
                 [% PROCESS 'stubs/search_result.html',
                     name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
+                    show_missing_person_image => 1,                    
                     image_id => candidate.image_id,
                     href  => c.uri_for( candidate.code ),
                     extra => extra,

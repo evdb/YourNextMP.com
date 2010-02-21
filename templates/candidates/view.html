@@ -2,9 +2,7 @@
 [% PROCESS 'chrome/header.html', title => candidate.name %]
 
 
-    [% IF candidate.image_id %]
-        <img src="[% c.uri_for_image( candidate.image_id, 'large' ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
-    [% END %]
+    <img src="[% c.uri_for_image( candidate.image_id, 'large' ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
 
     <h1>[% candidate.name | html %]</h1>
 

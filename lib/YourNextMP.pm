@@ -171,10 +171,14 @@ Returns the url to the image with the given id and format. Either returns a
 local '/images' path or an S3 url depending on the value of 'file_store' in
 config.
 
+If the image_id is false then the standard 'no-photo-xxx.png' is used.
+
 =cut
 
 sub uri_for_image {
     my ( $c, $image_id, $format ) = @_;
+
+    return $c->uri_for_no_image($format) unless $image_id;
 
     my $path = YourNextMP::Schema::YourNextMPDB::Result::Image    #
       ->path_to_image( $image_id, $format, 'png' );
@@ -195,6 +199,20 @@ sub uri_for_image {
     else {
         die "Can't create uri for file_store '$file_store'";
     }
+}
+
+=head2 uri_for_no_image
+
+    $c->uri_for_no_image( $format );
+
+Returns the uri to the appropriate 'no-photo-xxx.png' image.
+=cut
+
+sub uri_for_no_image {
+    my $c      = shift;
+    my $format = shift;
+
+    return $c->uri_for("/static/no-photo-$format.png");
 }
 
 =head2 s3bucket
