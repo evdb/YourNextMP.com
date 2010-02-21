@@ -280,3 +280,13 @@ tr.even {
 .error_message {
     color: red;
 }
+
+img.icon {
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+}
+
+.candidate_details {
+    margin-left: 1em;
+}

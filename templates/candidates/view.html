@@ -2,30 +2,59 @@
 [% PROCESS 'chrome/header.html', title => candidate.name %]
 
 
-<div id="sidebar">
-    [% PROCESS 'candidates/candidate_sidebar.html', candidate => candidate %]
-    [% PROCESS 'stubs/link_list.html', links => candidate.links %]
-</div>
-
     [% IF candidate.image_id %]
-        <img src="[% c.uri_for_image( candidate.image_id, 'medium' ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
+        <img src="[% c.uri_for_image( candidate.image_id, 'large' ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
     [% END %]
 
     <h1>[% candidate.name | html %]</h1>
 
-    <h2>[% candidate.party.name | html %]</h2>
-    
-    [% FOREACH seat IN candidate.seats %]
-        [% "<ul>" IF loop.first %]
-        <li><a href="[% c.uri_for( '/seats', seat.code )%]">[% seat.name %]</a></li>
-        [% "</ul>" IF loop.last %]
+<ul class="candidate_details">
+
+    <li>
+        <img class="icon" src="/static/icons/rosette-grey.png" alt="party">
+        <a href="[% c.uri_for('/parties', candidate.party.code ) %]">[% candidate.party.name | html %]</a>
+    </li>
+
+    [% IF candidate.email %]
+    <li>
+        <img class="icon" src="/static/icons/email.png" alt="email">
+        <a href="mailto:[% candidate.email %]">[% candidate.email %]</a>
+    </li>
     [% END %]
 
-    <h2>Biography</h2>
+    [% IF candidate.phone %]
+    <li>
+        <img class="icon" src="/static/icons/telephone.png" alt="telephone">
+        [% candidate.phone %]
+    </li>
+    [% END %]
 
-    <p>[% candidate.bio | html_para %]</p>
+    [% IF candidate.fax %]
+    <li>
+        <img class="icon" src="/static/icons/printer.png" alt="fax">
+        [% candidate.fax %]
+    </li>
+    [% END %]
 
+    [% IF candidate.address %]
+    <li>
+        <img class="icon" src="/static/icons/house.png" alt="address">
+        [% candidate.address %]
+    </li>
+    [% END %]
+</ul>
+<br />
     
 
+<h2>Constituencies:</h2>
+
+    [% FOREACH seat IN candidate.seats %]
+        [% '<ul class="candidate_details">' IF loop.first %]
+        <li>
+            <img class="icon" src="/static/icons/group.png" alt="constituency">
+            <a href="[% c.uri_for( '/seats', seat.code )%]">[% seat.name %]</a>
+        </li>
+        [% "</ul>" IF loop.last %]
+    [% END %]
 
 [% PROCESS 'chrome/footer.html' %]
