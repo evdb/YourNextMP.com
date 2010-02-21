@@ -290,3 +290,11 @@ img.icon {
 .candidate_details {
     margin-left: 1em;
 }
+
+.discreet {
+    opacity: 0.5;
+}    
+
+.discreet:hover {
+    opacity: 1;
+}

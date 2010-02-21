@@ -10,40 +10,61 @@
 
 <ul class="candidate_details">
 
-    <li>
-        <img class="icon" src="/static/icons/rosette-grey.png" alt="party">
-        <a href="[% c.uri_for('/parties', candidate.party.code ) %]">[% candidate.party.name | html %]</a>
-    </li>
+[%
+details = [
+    {
+        src     => '/static/icons/rosette-grey.png',
+        alt     => 'party',
+        href    => c.uri_for('/parties', candidate.party.code ),
+        content => candidate.party.name,
+    },
+    {
+        src     => '/static/icons/email.png',
+        alt     => 'email',
+        href    => "mailto:${candidate.email}"
+        content => candidate.email,
+    },
+    {
+        src     => '/static/icons/telephone.png',
+        alt     => 'telephone',
+        content => candidate.phone,
+    },
+    {
+        src     => '/static/icons/printer.png',
+        alt     => 'fax',
+        content => candidate.fax,
+    },
+    {
+        src     => '/static/icons/house.png',
+        alt     => 'address',
+        content => candidate.address,
+    },
+];
+%]
 
-    [% IF candidate.email %]
-    <li>
-        <img class="icon" src="/static/icons/email.png" alt="email">
-        <a href="mailto:[% candidate.email %]">[% candidate.email %]</a>
+
+    [% FOREACH item IN details %]
+    <li [% 'class="discreet"' IF ! item.content %]>
+        <img class="icon" src="[% item.src %]" alt="[% item.alt %]" title="[% item.alt %]" />
+        [% IF item.content %]
+            [% "<a href=\"${item.href}\">" IF item.href -%]
+                [%- item.content | html -%]
+            [%- "</a>" IF item.href %]
+        [% ELSE %]
+            missing
+        [% END %]
     </li>
     [% END %]
 
-    [% IF candidate.phone %]
-    <li>
-        <img class="icon" src="/static/icons/telephone.png" alt="telephone">
-        [% candidate.phone %]
-    </li>
-    [% END %]
 
-    [% IF candidate.fax %]
-    <li>
-        <img class="icon" src="/static/icons/printer.png" alt="fax">
-        [% candidate.fax %]
-    </li>
-    [% END %]
 
-    [% IF candidate.address %]
-    <li>
-        <img class="icon" src="/static/icons/house.png" alt="address">
-        [% candidate.address %]
-    </li>
-    [% END %]
 
-    <li style="opacity: 0.5">
+
+
+
+
+
+    <li class="discreet">
         <img class="icon" src="/static/icons/pencil.png" alt="edit">
         <a href="[% c.uri_for(candidate.code, 'edit_details') %]">Add to or edit these details</a>
     </li>
