@@ -24,15 +24,24 @@ sub index : PathPart('') Chained('result_base') Args(0) {
     $query =~ s{[^a-z0-9 ]}{}g;
 
     if ($query) {
-        $results =
-            $query =~ m{\d}
-          ? $results->search_postcode($query)
-          : $results->fuzzy_search( { name => $query } );
+        $results = $self->search_for_results( $results, $query );
+    }
+
+    # If there is only one result then redirect to it
+    if ( $results->count == 1 ) {
+        $c->res->redirect( $c->uri_for( $results->first->code ) );
+        $c->detach;
     }
 
     $c->stash->{view_all} = $c->req->param('view_all') || 0;
     $c->stash->{query}    = $query;
     $c->stash->{results}  = $results;
+
+}
+
+sub search_for_results {
+    my ( $self, $results, $query ) = @_;
+    $results->fuzzy_search( { name => $query } );
 
 }
 
