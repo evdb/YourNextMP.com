@@ -2,41 +2,6 @@
 
 <h1>Add a candidate</h1>
 
-[% IF possibles %]
-
-<div class="callout">
-    To avoid entering a candidate twice please check that none of these are the
-    candidate you are trying to add:
-</div>
-
-    [% WRAPPER 'stubs/search_results.html', title => '' %]
-
-    [% WHILE (candidate = possibles.next ) %]
-
-        [% extra = BLOCK %]
-            [% candidate.party.name %]
-            [%  FOREACH seat = candidate.seats %]
-                [% ' - ' IF loop.first %]
-                [% seat.name %]
-                [% ',' UNLESS loop.last %]
-            [% END %]
-        [% END %]
-
-        [% query_regex = query.replace( '\s+', '|' ) %]
-        [% PROCESS 'stubs/search_result.html',
-            name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
-            image_id => candidate.image_id,
-            href  => c.uri_for( candidate.code ),
-            extra => extra,
-        %]        
-    [% END %]
-    [% END %]
-    
-
-[% END %]
-
 [% form.render %]
-
-
 
 [% PROCESS 'chrome/footer.html' %]
