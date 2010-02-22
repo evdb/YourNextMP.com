@@ -30,7 +30,7 @@
                 name    => candidate.name,
                 show_missing_person_image => 1,                    
                 image_id => candidate.image_id,
-                href     => c.uri_for( candidate.code ),
+                href     => c.uri_for( '/candidates', candidate.code ),
                 extra    => extra,
             %]        
         [% END %]
