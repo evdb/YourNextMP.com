@@ -1,53 +1,24 @@
 [% party = result %]
 [% PROCESS 'chrome/header.html', title => party.name %]
 
-<div id="sidebar">
-[% PROCESS 'stubs/link_list.html', links => party.links %]
-</div>
+[% IF party.image_id %]
+    <img style="float: right" src="[% c.uri_for_image( party.image_id, 'large' ) %]" />
+[% END %]
 
 <h1>[% party.name %]</h1>
 
-[% IF party.image_id %]
-    <img src="[% c.uri_for_image( party.image_id, 'medium' ) %]" />
-[% END %]
+[% PROCESS 'stubs/item_details.html', 
+    details => [
+        {
+            src     => '/static/icons/group.png',
+            alt     => 'candidates',
+            href    => c.uri_for( party.code, 'candidates', 1 ),
+            content => "View ${party.candidates_rs.count} candidates",
+        },
+    ];
+%]
+<br />
 
-<h2>Candidates</h2>
-
-[% candidates = party.candidates_rs %]
-[% count = candidates.count %]
-[% IF count %]
-
-    [% WRAPPER 'stubs/search_results.html',
-        title => "Found $count matches:"
-    %]
-
-    [% WHILE (candidate = candidates.next ) %]
-
-        [% extra = BLOCK %]
-            [%  FOREACH seat = candidate.seats %]
-                [% seat.name %]
-                [% ',' UNLESS loop.last %]
-            [% END %]
-        [% END %]
-
-        [% query_regex = query.replace( '\s+', '|' ) %]
-        [% PROCESS 'stubs/search_result.html',
-            name  => candidate.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
-            show_missing_person_image => 1,
-            image_id => candidate.image_id,
-            href  => c.uri_for( '/candidates', candidate.code ),
-            extra => extra,
-        %]        
-    [% END %]
-    [% END %]
-    
-[% ELSE %]
-
-    <p>There are no candidates for this party.</p>
-
-[% END %]
-
-    <p>If we are missing a candidate for this party <a href="[% c.uri_for('/candidates/add', {party => party.id}) %]">please add them</a>.</p>
     
 
 [% PROCESS 'chrome/footer.html' %]

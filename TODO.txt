@@ -28,6 +28,8 @@ Fix http://cindy.local:3000/candidates/michael_foster (two people with same name
 
 bios ala  http://www.wildlifenearyou.com/animals/llama/
 
+add hints to seach engines in the header so that list pages don't get indexed.
+
 [ NEXT ]
 
 sane way to serve images (s3)

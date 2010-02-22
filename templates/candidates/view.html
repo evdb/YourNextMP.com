@@ -6,75 +6,51 @@
 
     <h1>[% candidate.name | html %]</h1>
 
-<ul class="candidate_details">
-
-[%
-details = [
-    {
-        src     => '/static/icons/rosette-grey.png',
-        alt     => 'party',
-        href    => c.uri_for('/parties', candidate.party.code ),
-        content => candidate.party.name,
-    },
-    {
-        src     => '/static/icons/email.png',
-        alt     => 'email',
-        href    => "mailto:${candidate.email}"
-        content => candidate.email,
-    },
-    {
-        src     => '/static/icons/telephone.png',
-        alt     => 'telephone',
-        content => candidate.phone,
-    },
-    {
-        src     => '/static/icons/printer.png',
-        alt     => 'fax',
-        content => candidate.fax,
-    },
-    {
-        src     => '/static/icons/house.png',
-        alt     => 'address',
-        content => candidate.address,
-    },
-];
+[% PROCESS 'stubs/item_details.html', 
+    details => [
+        {
+            src     => '/static/icons/rosette-grey.png',
+            alt     => 'party',
+            href    => c.uri_for('/parties', candidate.party.code ),
+            content => candidate.party.name,
+        },
+        {
+            src     => '/static/icons/email.png',
+            alt     => 'email',
+            href    => "mailto:${candidate.email}"
+            content => candidate.email,
+        },
+        {
+            src     => '/static/icons/telephone.png',
+            alt     => 'telephone',
+            content => candidate.phone,
+        },
+        {
+            src     => '/static/icons/printer.png',
+            alt     => 'fax',
+            content => candidate.fax,
+        },
+        {
+            src     => '/static/icons/house.png',
+            alt     => 'address',
+            content => candidate.address,
+        },
+        {
+            class   => 'discreet',
+            src     => '/static/icons/pencil.png',
+            alt     => 'edit',
+            href    => c.uri_for(candidate.code, 'edit_details'),
+            content => 'Add to or edit these details',
+        },
+    ];
 %]
-
-
-    [% FOREACH item IN details %]
-    <li [% 'class="discreet"' IF ! item.content %]>
-        <img class="icon" src="[% item.src %]" alt="[% item.alt %]" title="[% item.alt %]" />
-        [% IF item.content %]
-            [% "<a href=\"${item.href}\">" IF item.href -%]
-                [%- item.content | html -%]
-            [%- "</a>" IF item.href %]
-        [% ELSE %]
-            missing
-        [% END %]
-    </li>
-    [% END %]
-
-
-
-
-
-
-
-
-
-    <li class="discreet">
-        <img class="icon" src="/static/icons/pencil.png" alt="edit">
-        <a href="[% c.uri_for(candidate.code, 'edit_details') %]">Add to or edit these details</a>
-    </li>
-
-</ul>
 <br />
     
 
 <h2>Constituencies:</h2>
 
     [% FOREACH seat IN candidate.seats %]
-        [% '<ul class="candidate_details">' IF loop.first %]
+        [% '<ul class="item_details">' IF loop.first %]
         <li>
             <img class="icon" src="/static/icons/group.png" alt="constituency">
             <a href="[% c.uri_for( '/seats', seat.code )%]">[% seat.name %]</a>

@@ -1,0 +1,17 @@
+<ul class="item_details">
+
+    [% FOREACH item IN details %]
+    <li class="[% item.class %] [% 'discreet' IF ! item.content %]">
+        <img class="icon" src="[% item.src %]" alt="[% item.alt %]" title="[% item.alt %]" />
+        [% IF item.content %]
+            [% "<a href=\"${item.href}\">" IF item.href -%]
+                [%- item.content | html -%]
+            [%- "</a>" IF item.href %]
+        [% ELSE %]
+            missing
+        [% END %]
+    </li>
+    [% END %]
+
+
+</ul>

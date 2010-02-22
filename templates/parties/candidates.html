@@ -1,0 +1,50 @@
+[% party = result %]
+[% PROCESS 'chrome/header.html', title => "${party.name} Candidates" %]
+
+<h1>[% party.name %] Candidates</h1>
+
+[% count = results.count %]
+[% IF count %]
+
+    [% pager_text = PROCESS 'stubs/pager.html',
+        uri_for_base = "/parties/${party.code}/candidates"
+    %]
+    [% pager_text %]
+    
+    [% WRAPPER 'stubs/search_results.html',
+        title => "Showing ${pager.first} to ${pager.last} of ${pager.total_entries} candidates"
+    %]
+    
+        [% WHILE (candidate = results.next ) %]
+        
+            [% extra = BLOCK %]
+                [% candidate.party.name %]
+                [%  FOREACH seat = candidate.seats %]
+                    [% ' - ' IF loop.first %]
+                    [% seat.name %]
+                    [% ',' UNLESS loop.last %]
+                [% END %]
+            [% END %]
+        
+            [% PROCESS 'stubs/search_result.html',
+                name    => candidate.name,
+                show_missing_person_image => 1,                    
+                image_id => candidate.image_id,
+                href     => c.uri_for( candidate.code ),
+                extra    => extra,
+            %]        
+        [% END %]
+    [% END %]
+    
+    [% pager_text %]
+    
+    [% ELSE %]
+    
+        <p>There are no candidates for this party</p>
+    
+    [% END %]
+
+    <p>If we are missing a candidate for this party <a href="[% c.uri_for('/candidates/add', {party => party.id}) %]">please add them</a>.</p>
+
+[% PROCESS 'chrome/footer.html' %]
+
