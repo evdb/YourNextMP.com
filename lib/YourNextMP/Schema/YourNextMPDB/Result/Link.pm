@@ -29,12 +29,6 @@ __PACKAGE__->table("links");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 source
-
-  data_type: bigint
-  default_value: undef
-  is_nullable: 0
-
 =head2 url
 
   data_type: text
@@ -59,6 +53,25 @@ __PACKAGE__->table("links");
   default_value: undef
   is_nullable: 0
 
+=head2 summary
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
+=head2 link_type
+
+  data_type: character varying
+  default_value: undef
+  is_nullable: 0
+  size: 10
+
+=head2 published
+
+  data_type: timestamp without time zone
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -69,8 +82,6 @@ __PACKAGE__->add_columns(
         is_auto_increment => 1,
         is_nullable       => 0,
     },
-    "source",
-    { data_type => "bigint", default_value => undef, is_nullable => 0 },
     "url",
     { data_type => "text", default_value => undef, is_nullable => 0 },
     "title",
@@ -87,12 +98,42 @@ __PACKAGE__->add_columns(
         default_value => undef,
         is_nullable   => 0,
     },
+    "summary",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "link_type",
+    {
+        data_type     => "character varying",
+        default_value => undef,
+        is_nullable   => 0,
+        size          => 10,
+    },
+    "published",
+    {
+        data_type     => "timestamp without time zone",
+        default_value => undef,
+        is_nullable   => 1,
+    },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint( "links_source_key", [ "source", "url" ] );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 19:36:14
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:oPL9wlJWzyhnpesvNWKcsQ
+=head1 RELATIONS
+
+=head2 link_relations
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::LinkRelation>
+
+=cut
+
+__PACKAGE__->has_many(
+    "link_relations",
+    "YourNextMP::Schema::YourNextMPDB::Result::LinkRelation",
+    { "foreign.link_id" => "self.id" },
+);
+
+# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-23 12:11:55
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dEUsSelEF4nJFEsyMyig/A
 
 =head2 edits
 

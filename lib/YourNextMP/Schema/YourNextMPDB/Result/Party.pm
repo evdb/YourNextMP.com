@@ -159,10 +159,12 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 __PACKAGE__->has_many(
-    "links",
-    "YourNextMP::Schema::YourNextMPDB::Result::Link",
-    { "foreign.source" => "self.id" },
+    "link_relations",
+    "YourNextMP::Schema::YourNextMPDB::Result::LinkRelation",
+    { "foreign.foreign_id" => "self.id" },
 );
+
+__PACKAGE__->many_to_many( links => link_relations => 'link' );
 
 =head2 edits
 
