@@ -18,11 +18,17 @@ my $base_search_page =
 my $parties_rs = YourNextMP->model('Party');
 my $images_rs  = YourNextMP->model('Image');
 
-# create the independent party
-$parties_rs->find_or_create(    #
+# create the edge cas parties
+$parties_rs->find_or_create(
     {
         code => 'independent',
         name => 'Independent',
+    }
+);
+$parties_rs->find_or_create(
+    {
+        code => 'speaker_seeking_reelection',
+        name => 'Speaker seeking re-election',
     }
 );
 

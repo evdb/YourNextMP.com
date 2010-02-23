@@ -232,7 +232,7 @@ my %PARTY_NAME_TO_CODE = (
     'Independent Kidderminster Hospital and Health Concern' =>
       'independent_kidderminster_hospital_and_health_concern',
 
-    'Speaker of the British House of Commons' => 'independent',
+    'Speaker of the British House of Commons' => 'speaker_seeking_reelection',
 
     'Alliance Party of Northern Ireland' =>
       'alliance_alliance_party_of_northern_ireland',
