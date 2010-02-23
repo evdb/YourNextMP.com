@@ -14,10 +14,6 @@ has_field 'title' => (
     required_message => 'Please enter a title',
 );
 
-has_field 'foo' => (
-    type             => 'Hidden',
-);
-
 has_field 'link_type' => (
     label    => 'Type of link',
     type     => 'Select',
