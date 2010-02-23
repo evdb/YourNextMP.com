@@ -133,7 +133,7 @@ __PACKAGE__->has_many(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-23 12:11:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dEUsSelEF4nJFEsyMyig/A
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3XjbCGAM+ddPpTR207EcRw
 
 =head2 edits
 
@@ -149,5 +149,76 @@ __PACKAGE__->has_many(
     { "foreign.source_id" => "self.id" },
     { cascade_delete      => 0 },
 );
+
+=head2 candidates, parties, seats
+
+Type: many_to_many
+
+=cut
+
+__PACKAGE__->many_to_many( candidates => link_relations => 'candidate' );
+__PACKAGE__->many_to_many( parties    => link_relations => 'party' );
+__PACKAGE__->many_to_many( seats      => link_relations => 'seat' );
+
+=head2 abbreviated_url
+
+    $abbreviated_url = $link->abbreviated_url( $max_length );
+
+Abbreviate the url so that it will fit in the $max_length (default 40 chars).
+Chops out bits between the host and filename until it fits or there is none
+left. Also ditches params etc.
+
+=cut
+
+sub abbreviated_url {
+    my $self = shift;
+    my $max_length = shift || 40;
+
+    my $url = $self->url;
+
+    # ditch the params
+    $url =~ s{\?.*$}{};
+
+    my ( $schema, $host, @parts ) = split m{/+}, $url;
+    return $url unless @parts;
+    my $file = pop @parts || '';
+
+    my $joiner = undef;
+
+    while (1) {
+
+        $url = join '/',    #
+          grep { defined }  #
+          ( $host, @parts, $joiner, $file );
+
+        last unless @parts;
+        last if length($url) <= $max_length;
+        $joiner = '...';
+        pop @parts;
+    }
+
+    return $url;
+}
+
+=head2 long_type
+
+    $long_type = $link->long_type(  );
+
+Returns the pretty wordy version of the type.
+
+=cut
+
+my %LONG_TYPES = (
+    info    => 'Informational',
+    news    => 'News',
+    opinion => 'Opinion',
+);
+
+sub long_type {
+    my $self = shift;
+
+    return $LONG_TYPES{ $self->link_type }
+      || die "Unknown type: " . $self->link_type;
+}
 
 1;

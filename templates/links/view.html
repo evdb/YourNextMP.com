@@ -1,0 +1,93 @@
+[% link = result %]
+[% PROCESS 'chrome/header.html', title => 'Link' %]
+
+<img style="float: right" class="pageglimpse-medium" src="http://images.pageglimpse.com/v1/thumbnails?url=[% link.url | url %]&amp;size=medium&amp;root=no&amp;devkey=26ad767be62243346e33d6115c32f6be" alt="screenshot">
+
+<h1>[% link.title %]</h1>
+
+[% PROCESS 'stubs/item_details.html', 
+    details => [
+        {
+            src     => '/static/icons/calendar.png',
+            alt     => 'published',
+            content => link.published.dmy('/'),
+            only_show_if_content => 1,
+        },
+        {
+            src     => '/static/icons/world.png',
+            alt     => 'url',
+            content => link.abbreviated_url(40),
+            href    => link.url,
+        },
+        {
+            src     => '/static/icons/newspaper.png',
+            alt     => 'type',
+            content => link.long_type,
+        },
+        {
+            class   => 'discreet',
+            src     => '/static/icons/pencil.png',
+            alt     => 'edit',
+            href    => c.uri_for( link.id, 'edit' ),
+            content => 'Add to or edit these details',
+        },
+    ];
+%]
+<br />
+
+<h2>Summary</h2>
+
+<p>[% link.summary | html %]</p>
+
+
+<h2>Linked to</h2>
+
+[%
+
+    linked_to = [];
+    
+    FOREACH item = link.candidates;
+        linked_to.push(
+            {
+                src     => '/static/icons/user_gray.png',
+                alt     => 'candidate',
+                href    => c.uri_for( '/candidates', item.code ),
+                content => item.name,
+            }
+        );
+    END;
+    
+    FOREACH item = link.parties;
+    linked_to.push(
+        {
+            src     => '/static/icons/rosette_grey.png',
+            alt     => 'candidate',
+            href    => c.uri_for( '/party', item.code ),
+            content => item.name,
+        }
+    );
+    END;
+    
+    FOREACH item = link.seats;
+    linked_to.push(
+        {
+            src     => '/static/icons/group.png',
+            alt     => 'candidate',
+            href    => c.uri_for( '/seats', item.code ),
+            content => item.name,
+        }
+    );
+    END;
+    
+
+%]
+
+[% PROCESS 'stubs/item_details.html', details => linked_to %]
+<br />
+
+
+
+
+
+
+[% PROCESS 'chrome/footer.html' %]

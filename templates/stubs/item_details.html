@@ -1,6 +1,9 @@
 <ul class="item_details">
 
     [% FOREACH item IN details %]
+
+        [% NEXT IF item.only_show_if_content && !item.content %]
+
     <li class="[% item.class %] [% 'discreet' IF ! item.content %]">
         <img class="icon" src="[% item.src %]" alt="[% item.alt %]" title="[% item.alt %]" />
         [% IF item.content %]

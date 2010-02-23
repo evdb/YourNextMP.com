@@ -7,8 +7,11 @@ create table link_relations (
     link_id      bigint not null references links(id),
         primary key (foreign_id, link_id),
 
-        created     timestamp    not null,
-        updated     timestamp    not null
+    -- to enable smart backward linking from links to objects
+    foreign_table varchar(40) not null,
+
+    created     timestamp    not null,
+    updated     timestamp    not null
 );
 
 -- data cleanup
@@ -22,7 +25,19 @@ delete from links
 
 -- move existing data from links to link_relations
 insert into link_relations 
-    select source, id, created, updated from links;
+    select source, id, 'candidates', created, updated
+      from links
+      where source in (select id from candidates);
+insert into link_relations 
+    select source, id, 'parties', created, updated
+      from links
+      where source in (select id from parties);
+insert into link_relations 
+    select source, id, 'seats', created, updated
+      from links
+      where source in (select id from seats);
+
+-- don't need this column anymore
 alter table links drop column source;
 
 -- add extra fields

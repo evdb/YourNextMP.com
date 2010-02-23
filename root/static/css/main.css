@@ -323,3 +323,33 @@ ul.pager .clean {
     border: none;
     background-color: #fff;
 }
+
+ul.lined {
+    border-top: 1px solid #ddd;
+}
+
+ul.lined li {
+    border-bottom: 1px solid #ddd;
+    padding: 2px 0;
+}
+
+li.link img.pageglimpse-small {
+    float: left;
+    margin-right: 4px;
+}    
+
+li.link h3 {
+    display: inline;
+}    
+
+.pageglimpse-small {
+    height: 108px;
+    width:  150px;
+    border: 1px solid #888;
+}
+
+.pageglimpse-medium {
+    height: 202px;
+    width:  280px;
+    border: 1px solid #888;
+}

@@ -261,7 +261,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:16:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gSIddahGyOMav+4Lt62ajQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u8wWXj1phz6esL7nAQ+5aA
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 

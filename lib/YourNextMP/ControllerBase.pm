@@ -5,9 +5,21 @@ use warnings;
 use parent 'Catalyst::Controller';
 
 sub result_find : PathPart('') Chained('result_base') CaptureArgs(1) {
-    my ( $self, $c, $code ) = @_;
+    my ( $self, $c, $value ) = @_;
 
-    my $result = $c->db( $self->source_name )->find( { code => $code } )
+    # If the value is numeric assume it is an id - otherwise a code
+    my $key = $value =~ m{\D} ? 'code' : 'id';
+
+    # check that the rs has the key requested (if code)
+    my $rs = $c->db( $self->source_name );
+
+    # Check that we can do a code lookup
+    $c->detach('/page_not_found')
+      if $key ne 'id'
+          && ! $rs->result_source->has_column($key);
+
+    my $result =    #
+      $rs->find( { $key => $value } )
       || $c->detach('/page_not_found');
 
     $c->stash->{result} = $result;
