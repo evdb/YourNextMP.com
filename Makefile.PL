@@ -16,6 +16,8 @@ requires 'Catalyst::Engine::FastCGI';
 requires 'Catalyst::Exception';
 requires 'Catalyst::Model::Adaptor';
 requires 'Catalyst::Model::DBIC::Schema';
+requires 'Catalyst::Plugin::Authentication';
+requires 'Catalyst::Plugin::Authorization::Roles';
 requires 'Catalyst::Plugin::Compress::Gzip';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Session::State::Cookie';
