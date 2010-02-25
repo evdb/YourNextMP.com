@@ -200,25 +200,28 @@ sub abbreviated_url {
     return $url;
 }
 
-=head2 long_type
+=head2 type_verbose, type_icon
 
-    $long_type = $link->long_type(  );
+    $type_verbose = $link->type_verbose(  );
 
 Returns the pretty wordy version of the type.
 
 =cut
 
-my %LONG_TYPES = (
-    info    => 'Informational',
-    news    => 'News',
-    opinion => 'Opinion',
+my %LINK_TYPE_EXTRAS = (
+    info    => { verbose => 'Informational', icon => 'information', },
+    news    => { verbose => 'News',          icon => 'newspaper', },
+    opinion => { verbose => 'Opinion',       icon => 'comments', },
 );
 
-sub long_type {
-    my $self = shift;
+sub type_verbose { $_[0]->_get_extra('verbose') }
+sub type_icon    { $_[0]->_get_extra('icon') }
 
-    return $LONG_TYPES{ $self->link_type }
-      || die "Unknown type: " . $self->link_type;
+sub _get_extra {
+    my ( $self, $extra ) = @_;
+
+    return $LINK_TYPE_EXTRAS{ $self->link_type }{$extra}
+      || die "Unknown type for extra '$extra': " . $self->link_type;
 }
 
 1;

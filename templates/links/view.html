@@ -20,9 +20,9 @@
             href    => link.url,
         },
         {
-            src     => '/static/icons/newspaper.png',
+            src     => "/static/icons/${link.type_icon}.png",
             alt     => 'type',
-            content => link.long_type,
+            content => link.type_verbose,
         },
         {
             class   => 'discreet',
@@ -60,8 +60,8 @@
     FOREACH item = link.parties;
     linked_to.push(
         {
-            src     => '/static/icons/rosette_grey.png',
-            alt     => 'candidate',
+            src     => '/static/icons/rosette-grey.png',
+            alt     => 'party',
             href    => c.uri_for( '/party', item.code ),
             content => item.name,
         }
@@ -72,7 +72,7 @@
     linked_to.push(
         {
             src     => '/static/icons/group.png',
-            alt     => 'candidate',
+            alt     => 'constituency',
             href    => c.uri_for( '/seats', item.code ),
             content => item.name,
         }
