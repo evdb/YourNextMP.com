@@ -5,6 +5,7 @@ table.form {
 table.form td {
 	vertical-align:top;
 	padding:3px 4px;
+	margin-bottom: 1px;
 }
 
 td.label_column {

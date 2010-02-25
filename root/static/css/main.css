@@ -130,49 +130,6 @@ p {
     padding: 0 0.4em;
 }
 
-
-#sidebar {
-    float: right;
-    width: 200px;
-    margin: 0 0 0 1em;
-
-    text-align: center;
-
-    font-family: arial, sans-serif;
-    color: #333;
-    font-size: 90%;
-}
-
-div.sidebar {
-    border: 1px solid #ddd;
-    margin-bottom: 1em;
-    
-}
-
-div.sidebar h2 {
-    background-color: #ddd;
-}
-
-div.sidebar h2 a {
-    float: right;
-}
-
-ul.link_list li a {
-/*    padding-left: 18px;*/
-    text-decoration: none;
-    color: inherit;
-}
-
-ul.link_list li a:hover {
-    text-decoration: underline;
-    color: blue;
-}
-
-/*ul.link_list li.link_wikipedia a {
-    background: url('/static/icons/wikipedia.ico') top left no-repeat;
-}
-*/
-
 ul.search_results {
     border-top: 1px solid #ccc;
 }

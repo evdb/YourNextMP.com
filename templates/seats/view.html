@@ -1,10 +1,6 @@
 [% seat = result %]
 [% PROCESS 'chrome/header.html', title => seat.name %]
 
-    <div id="sidebar">
-    [% PROCESS 'stubs/link_list.html', links => seat.links %]
-    </div>
-
     <h1>[% seat.name %]</h1>
 
     [% candidates = seat.candidates_rs %]
@@ -12,7 +8,7 @@
     [% IF count %]
 
         [% WRAPPER 'stubs/search_results.html',
-            title => "Found $count candidates:"
+            title => "Candidates:"
         %]
     
         [% WHILE (candidate = candidates.next ) %]
