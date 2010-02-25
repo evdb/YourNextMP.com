@@ -98,7 +98,7 @@ tr.error {
 	font-size:90%;
 }
 
-input[type=text],select,textarea {
+input[type=text],textarea {
 	width:100%;
 	border:1px solid #888;
 }
