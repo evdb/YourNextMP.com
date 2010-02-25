@@ -17,8 +17,9 @@ use Catalyst (
     'Compress::Gzip',
     'Static::Simple',
 
-    'Authentication',    # 'Authorization::Roles',
-    'Session',           # FIXME - switch to SessionHP
+    'Authentication',
+    'Authorization::Roles',
+    'Session',    # FIXME - switch to SessionHP
     'Session::State::Cookie',
     'Session::Store::DBIC',
 );
@@ -140,7 +141,7 @@ sub return_from_diversion {
     $c->detach;
 }
 
-=head2 require_user
+=head2 require_user, require_admin_user
 
     $c->require_user( "Reason user is required - passed to login template" );
 
@@ -161,6 +162,22 @@ sub require_user {
         { reason => $reason }
     );
 
+}
+
+sub require_admin_user {
+    my $c      = shift;
+    my $reason = shift;
+
+    # If we have a user and they are in the admin role
+    return 1
+      if $c->user_exists
+          && $c->check_user_roles('admin');
+
+    # no user - divert to login
+    $c->divert_to(
+        $c->uri_for('/auth/login'),    #
+        { reason => $reason }
+    );
 }
 
 =head2 uri_for_image

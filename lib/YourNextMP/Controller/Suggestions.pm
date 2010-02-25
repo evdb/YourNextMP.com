@@ -2,19 +2,11 @@ package YourNextMP::Controller::Suggestions;
 
 use strict;
 use warnings;
-use parent 'YourNextMP::ControllerBase';
+use parent 'Catalyst::Controller';
 
 use YourNextMP::Form::SuggestionAdd;
 
-sub result_base : PathPart('suggestions') Chained('/') CaptureArgs(0) {
-    my ( $self, $c ) = @_;
-}
-
-sub source_name {
-    return 'Suggestion';
-}
-
-sub add : PathPart('add') Chained('result_base') Args(0) {
+sub add : Local {
     my ( $self, $c ) = @_;
 
     # create the form and place it on the stash
@@ -40,7 +32,6 @@ sub add : PathPart('add') Chained('result_base') Args(0) {
     $c->flash->{message} = "Thanks - your suggestion has been saved.";
     $c->res->redirect( $item->referer || $c->uri_for('/') );
     $c->detach;
-
 }
 
 1;
