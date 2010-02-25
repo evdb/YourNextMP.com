@@ -197,7 +197,8 @@ sub abbreviated_url {
         pop @parts;
     }
 
-    return $url;
+    return $url if length($url) < $max_length;
+    return $host;
 }
 
 =head2 type_verbose, type_icon

@@ -1,6 +1,18 @@
 [% PROCESS 'chrome/header.html', title => 'Make a suggestion' %]
 
-<p>Any suggestions or corrections that you have are very welcome. We look at them daily and try to do as many of them as possible.</p>
+<h1>Make a suggestion</h1>
+
+<p>
+    Any suggestions or corrections that you have are very welcome. We look at
+    them daily and try to act on as many as possible.
+</p>
+
+[% IF form.field('referer').value %]
+    <p>
+        You are making a suggestion about this page:
+        <tt>[% form.field('referer').value %]</tt>
+    </p>
+[% END %]
 
 [% form.render %]
 

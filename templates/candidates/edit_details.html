@@ -1,7 +1,10 @@
-[% PROCESS 'chrome/header.html', title => 'Edit candidate' %]
+[%
 
-<h1>Update details for [% result.name | html %]</h1>
+    query = '"' _ result.name _ '"' _ ' ' _ result.party.name | uri;
 
-[% form.render %]
-
-[% PROCESS 'chrome/footer.html' %]
+    PROCESS
+        'chrome/edit-frame.html',
+        title        => 'Edit candidate',
+        instructions => "Please update the details for ${result.name}, using the search page below as help if needed",
+        iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
+%]
