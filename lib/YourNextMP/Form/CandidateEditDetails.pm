@@ -5,7 +5,7 @@ use warnings;
 
 use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
-with 'HTML::FormHandler::Render::Table';
+with 'YourNextMP::Form::Render::Table';
 
 has_field 'email' => (
     type  => 'Email',

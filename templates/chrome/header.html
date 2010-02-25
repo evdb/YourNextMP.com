@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>[% "$title :: " IF title %]YourNextMP</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/all.css">
         <link rel="stylesheet" type="text/css" href="/static/css/main.css">
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
     </head>
@@ -36,3 +37,8 @@
 
 <div id="content_wrapper">
 <div id="content">
+    
+[% IF c.flash.message %]
+    <div class="callout">[% c.flash.message | html %]</div>
+[% END %]
+    

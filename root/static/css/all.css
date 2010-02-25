@@ -1,0 +1,36 @@
+table.form {
+	border-collapse:collapse;
+}
+
+table.form td {
+	vertical-align:top;
+	padding:3px 4px;
+}
+
+td.label_column {
+	width:20%;
+	text-align:right;
+}
+
+td.input_column {
+	width:60%;
+}
+
+td.error_column {
+	width:19%;
+}
+
+tr.error {
+	background-color:#fdd;
+}
+
+.error_message {
+	color:#f33;
+	font-size:90%;
+}
+
+table.form input[type=text],
+table.form textarea {
+	width:100%;
+	border:1px solid #888;
+}

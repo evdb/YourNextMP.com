@@ -28,7 +28,7 @@ sub render_start {
     $output .= 'method="' . $self->http_method . '" ' if $self->http_method;
     $output .= 'enctype="' . $self->enctype . '" '    if $self->enctype;
     $output .= '>' . "\n";
-    $output .= "<table>\n";
+    $output .= "<table class='form'>\n";
     return $output;
 }
 
