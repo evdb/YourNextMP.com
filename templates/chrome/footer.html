@@ -22,6 +22,11 @@
                 title="Discussion about this site, the election and democracy in general"
             >Blog</a>
         </li>
+        <li>
+            <a  href="[% c.uri_for('/suggestions/add',{ referer => c.req.uri}) %]"
+                title="Help us make this site better"
+            >Suggest a feature or report an error</a>
+        </li>
 
     [% FOREACH format = available_output_formats %]
         <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>

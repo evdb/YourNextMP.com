@@ -40,7 +40,18 @@
             src     => '/static/icons/pencil.png',
             alt     => 'edit',
             href    => c.uri_for(candidate.code, 'edit_details'),
-            content => 'Add to or edit these details',
+            content => 'edit contact details or photo',
+        },
+        {
+            class   => 'discreet',
+            src     => '/static/icons/pencil.png',
+            alt     => 'edit',
+            href    => 
+                c.uri_for(
+                    '/suggestions/add',
+                    { type => 'correction', referer => c.req.uri }
+                ),
+            content => 'suggest change to name, party or seats',
         },
     ];
 %]
