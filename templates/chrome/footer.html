@@ -23,9 +23,13 @@
             >Blog</a>
         </li>
         <li>
-            <a  href="[% c.uri_for('/suggestions/add',{ referer => c.req.uri}) %]"
+            <a  href="[% c.uri_for('/suggestions/add',{ referer => c.req.uri, type => 'suggestion'}) %]"
                 title="Help us make this site better"
-            >Suggest a feature or report an error</a>
+            >Suggest a feature</a>
+            or
+            <a  href="[% c.uri_for('/suggestions/add',{ referer => c.req.uri, type => 'correction'}) %]"
+                title="Help us make this site better"
+            >report an error</a>
         </li>
 
     [% FOREACH format = available_output_formats %]
