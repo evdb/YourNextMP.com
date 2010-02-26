@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib '../YourNextMP/lib';
+use lib 'lib';
 
 use File::Slurp;
 use YourNextMP;

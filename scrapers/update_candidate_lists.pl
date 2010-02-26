@@ -2,6 +2,9 @@
 
 use strict;
 use warnings;
+
+use lib 'lib';
+
 use YourNextMP;
 
 my $party_rs = YourNextMP->model('Party');
