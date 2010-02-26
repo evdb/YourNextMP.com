@@ -1,9 +1,16 @@
 [% candidate = result %]
 [% PROCESS 'chrome/header.html', title => candidate.name %]
 
+    <style type="text/css" media="screen">
+        #candidate_hero_photo {
+            float: right;
+            margin: 0 0 0.5em 0.5em;
+            border: 1px solid #000;
+        }
+    </style>
 
-    <img src="[% c.uri_for_image( candidate.image_id, 'large' ) %]" style="float: right; margin: 0 0 0.5em 0.5em; border: 1px solid #000"/>
-
+    <img id="candidate_hero_photo" alt="candidate photo" src="[% c.uri_for_image( candidate.image_id, 'large' ) %]" />
+    
     <h1>[% candidate.name | html %]</h1>
 
 [% PROCESS 'stubs/item_details.html', 
@@ -38,14 +45,21 @@
         {
             class   => 'discreet',
             src     => '/static/icons/pencil.png',
-            alt     => 'edit',
+            alt     => 'edit details',
             href    => c.uri_for(candidate.code, 'edit_details'),
             content => 'edit contact details',
         },
         {
             class   => 'discreet',
+            src     => '/static/icons/photo.png',
+            alt     => 'edit photo',
+            href    => c.uri_for(candidate.code, 'edit_photo'),
+            content => 'edit photo',
+        },
+        {
+            class   => 'discreet',
             src     => '/static/icons/pencil.png',
-            alt     => 'edit',
+            alt     => 'suggest change',
             href    => 
                 c.uri_for(
                     '/suggestions/add',

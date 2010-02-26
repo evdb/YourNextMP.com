@@ -6,6 +6,7 @@ use parent 'YourNextMP::ControllerBase';
 
 use YourNextMP::Form::CandidateAdd;
 use YourNextMP::Form::CandidateEditDetails;
+use YourNextMP::Form::CandidateEditPhoto;
 
 sub result_base : PathPart('candidates') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -74,20 +75,31 @@ sub edit_details : PathPart('edit_details') Chained('result_find') Args(0) {
 
 }
 
-sub edit_photo : PathPart('edit_details') Chained('result_find') Args(0) {
+sub edit_photo : PathPart('edit_photo') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
     # We need logged in users to create candidates
-    $c->require_user("Please log in to edit candidate details");
+    $c->require_user("Please log in to edit candidate photo");
 
     # create the form and place it on the stash
     my $candidate = $c->stash->{result};
-    my $form =
-      YourNextMP::Form::CandidateEditDetails->new( item => $candidate );
+    my $form = YourNextMP::Form::CandidateEditPhoto->new( item => $candidate );
     $c->stash( form => $form );
 
+    # If it is not a post then return
+    return unless $c->req->method eq 'POST';
+
+    # gather all the parameters - including the uploaded file if posted
+    my $params = $c->req->params;
+    my $upload = $c->req->upload('photo_upload');
+    $params->{photo_upload} = $upload if $upload;
+
+    use Data::Dumper;
+    local $Data::Dumper::Sortkeys = 1;
+    warn Dumper($params);
+
     # process the form and return if there were errors
-    return if !$form->process( params => $c->req->params );
+    return if !$form->process( params => $params );
 
     # We have a new candidate
     $candidate->update( { can_scrape => 0 } );

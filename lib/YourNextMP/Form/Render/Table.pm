@@ -5,8 +5,10 @@ use warnings;
 
 use Moose::Role;
 
-with 'HTML::FormHandler::Render::Simple' => { excludes =>
-      [ 'render', 'render_field_struct', 'render_end', 'render_start' ] };
+with 'HTML::FormHandler::Render::Simple' => {    #
+    excludes =>
+      [ 'render', 'render_field_struct', 'render_end', 'render_start' ]
+};
 
 sub render {
     my $self = shift;
@@ -41,8 +43,9 @@ sub render_field_struct {
 
     my $output = qq{\n  <tr$class>\n};
 
-    my $l_type = $self->get_label_type( $field->widget )
-      || '';
+    my $l_type = $self->get_label_type( $field->widget );
+    $l_type ||= 'label' if $field->type eq 'Upload';
+    $l_type ||= '';
 
     if ( $l_type eq 'label' ) {
         $output .= '    '    #
@@ -85,6 +88,16 @@ sub render_end {
     my $self = shift;
     my $output .= "</table>\n";
     $output .= "</form>\n";
+    return $output;
+}
+
+sub render_upload {
+    my ( $self, $field ) = @_;
+    my $output = '<input type="file" name="';
+    $output .= $field->html_name . '"';
+    $output .= ' id="' . $field->id . '"';
+    $output .= $self->_add_html_attributes($field);
+    $output .= ' />';
     return $output;
 }
 

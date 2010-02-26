@@ -62,22 +62,36 @@ sub create {
     my %variants = ();
 
     # If we are given a url then fetch the image and create the formats.
-    if ( my $source_url = $args->{source_url} ) {
+    my $upload     = delete $args->{upload};
+    my $source_url = $args->{source_url};
+
+    if ( $upload || $source_url ) {
+
+        my $content = undef;
+        my $suffix  = undef;
 
         # Fetch the image
-        my $ua  = LWP::UserAgent->new;
-        my $res = $ua->get($source_url);
+        if ($source_url) {
+            my $ua  = LWP::UserAgent->new;
+            my $res = $ua->get($source_url);
 
-        # Check that we have a successful response
-        return unless $res->is_success;
-        return unless length $res->content;
+            # Check that we have a successful response
+            return unless $res->is_success;
+            return unless length $res->content;
 
-        # Work out what the suffix should be
-        my $suffix = _mime_type_to_suffix( $res->content_type );
+            # Work out what the suffix should be
+            $suffix  = _mime_type_to_suffix( $res->content_type );
+            $content = $res->content;
+        }
+        elsif ($upload) {
+            $suffix  = _mime_type_to_suffix( $upload->type );
+            $content = file( $upload->tempname )->slurp;
+        }
+        else { die "should not get here"; }
 
         # save original to tmp file
         my $tmp_original = File::Temp->new( SUFFIX => $suffix );
-        $tmp_original->print( $res->content );
+        $tmp_original->print($content);
         $tmp_original->close;
 
         # open the original with imlib
@@ -164,6 +178,14 @@ sub _mime_type_to_suffix {
 
     return $MIME_TO_SUFFIX{$mime_type}
       || die "Could not find suffix for mime_type '$mime_type'";
+}
+
+sub is_mime_type_acceptable {
+    my $self      = shift;
+    my $mime_type = shift;
+
+    return 1 if $MIME_TO_SUFFIX{$mime_type};
+    return;
 }
 
 1;
