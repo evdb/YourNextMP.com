@@ -15,8 +15,8 @@ sub insert {
     my $args = shift;
 
     my $now = DateTime->now();
-    $self->created($now);
-    $self->updated($now);
+    $self->created($now) if $self->result_source->has_column('created');
+    $self->updated($now) if $self->result_source->has_column('updated');
 
     my $result = $self->next::method( $args, @_ );
 
@@ -40,8 +40,9 @@ sub update {
     my %dirty           = $self->get_dirty_columns();
     my $row_has_changed = scalar keys %dirty;
 
-    $self->updated( DateTime->now() )
-      if $row_has_changed;
+    $self->updated( DateTime->now )
+      if $row_has_changed    #
+          && $self->result_source->has_column('updated');
 
     my $result = $self->next::method( $args, @_ );
 
