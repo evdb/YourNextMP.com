@@ -1,7 +1,10 @@
 [%
-    PROCESS
+    WRAPPER
         'chrome/edit-frame.html',
+        debug        => 0,
         title        => 'Edit link',
         instructions => 'Please complete the details for this link - it will load below to help you.',
         iframe_src   => result.url,
 %]
+    [% form.render %]    
+[% END %]

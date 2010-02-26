@@ -59,6 +59,7 @@ iframe {
 	float:left;
 	width:20%;
 }
+
 #instructions div {
 	font-size:120%;
 	text-align:center;
@@ -68,6 +69,15 @@ iframe {
 	padding:0.3em;
 }
 
+#main_content {
+    width: 80%;
+}
+
+#main_content div {
+	margin:0.3em;
+	padding:0.3em;
+}
+
 form table {
-	width:80%;
+	width:100%;
 }

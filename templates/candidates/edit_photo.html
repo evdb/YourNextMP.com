@@ -2,9 +2,12 @@
 
     query = '"' _ result.name _ '"' _ ' ' _ result.party.name | uri;
 
-    PROCESS
+    WRAPPER
         'chrome/edit-frame.html',
+        debug        => 0,
         title        => 'Edit candidate photo',
         instructions => "Please find a photo for ${result.name} that is free to use.",
         iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
 %]
+    [% form.render %]    
+[% END %]

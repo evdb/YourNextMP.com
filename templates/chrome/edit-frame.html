@@ -23,13 +23,21 @@
                         </div>
                     </div>
 
-                    [% form.render %]
+                    <div id="main_content">
+                        <div>
+                            [% content %]
+                        </div>
+                    </div>
 
                 </td>
             </tr>
             <tr>
                 <td class="content">
+                    [% IF debug %]
+                    <pre>[% content | html %]</pre>
+                    [% ELSE %]
                     <iframe src="[% iframe_src %]" frameborder="0"></iframe>
+                    [% END %]
                 </td>
             </tr>
         </table>
