@@ -58,6 +58,8 @@ iframe {
 #instructions {
 	float:left;
 	width:20%;
+}
+#instructions div {
 	font-size:120%;
 	text-align:center;
 	background-color:#ccf;
@@ -67,5 +69,5 @@ iframe {
 }
 
 form table {
-	width:79%;
+	width:80%;
 }
