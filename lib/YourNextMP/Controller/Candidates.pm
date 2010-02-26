@@ -74,4 +74,26 @@ sub edit_details : PathPart('edit_details') Chained('result_find') Args(0) {
 
 }
 
+sub edit_photo : PathPart('edit_details') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
+
+    # We need logged in users to create candidates
+    $c->require_user("Please log in to edit candidate details");
+
+    # create the form and place it on the stash
+    my $candidate = $c->stash->{result};
+    my $form =
+      YourNextMP::Form::CandidateEditDetails->new( item => $candidate );
+    $c->stash( form => $form );
+
+    # process the form and return if there were errors
+    return if !$form->process( params => $c->req->params );
+
+    # We have a new candidate
+    $candidate->update( { can_scrape => 0 } );
+    $c->res->redirect( $c->uri_for( '/candidates', $candidate->code ) );
+    $c->detach;
+
+}
+
 1;
