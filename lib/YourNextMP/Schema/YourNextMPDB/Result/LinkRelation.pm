@@ -107,6 +107,21 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-23 12:11:55
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2P62PvqPqFq4ZDMg2WnIgg
 
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
+);
+
 __PACKAGE__->might_have(
     candidate => "YourNextMP::Schema::YourNextMPDB::Result::Candidate",
     { 'foreign.id'   => 'self.foreign_id' },
