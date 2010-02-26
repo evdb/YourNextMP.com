@@ -19,9 +19,9 @@ use Catalyst (
 
     'Authentication',
     'Authorization::Roles',
-    'Session',    # FIXME - switch to SessionHP
-    'Session::State::Cookie',
+    'SessionHP::State::Cookie',
     'Session::Store::DBIC',
+    'SessionHP',
 );
 
 use base 'Catalyst';

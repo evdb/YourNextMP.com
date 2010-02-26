@@ -37,7 +37,11 @@ sub update {
     my $self = shift;
     my $args = shift;
 
-    $self->updated( DateTime->now() );
+    my %dirty           = $self->get_dirty_columns();
+    my $row_has_changed = scalar keys %dirty;
+
+    $self->updated( DateTime->now() )
+      if $row_has_changed;
 
     my $result = $self->next::method( $args, @_ );
 
@@ -50,7 +54,7 @@ sub update {
             user_id      => YourNextMP->edit_user_id,
             comment      => YourNextMP->edit_comment,
         }
-    ) if $self->_store_edits;
+    ) if $row_has_changed && $self->_store_edits;
 
     return $result;
 }

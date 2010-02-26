@@ -4,8 +4,10 @@
     general_email_address => 'hello@yournextmp.com',
 
     'Plugin::Session' => {
-        dbic_class => 'DB::Session',
-        expires    => 3600 * 24 * 365,    # one year
+        dbic_class   => 'DB::Session',
+        expires      => 3600 * 24 * 365,    # 1 year
+        max_lifetime => 3600 * 24 * 2,      # 2 days
+        min_lifetime => 3600 * 24 * 1,      # 1 day
     },
 
     authentication => {
@@ -16,7 +18,7 @@
         default_realm => 'default',
         realms        => {
             default => {
-                credential => {           #
+                credential => {             #
                     class         => 'Password',
                     password_type => 'none',
                 },
