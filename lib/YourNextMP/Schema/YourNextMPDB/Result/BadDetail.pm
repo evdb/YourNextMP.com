@@ -127,8 +127,20 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-26 17:55:34
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YUEyxzbPOWEpf+3Yt4UuBg
 
+use DateTime;
+
 sub _store_edits { 0; }
 
 __PACKAGE__->resultset_attributes( { order_by => ['act_after'] } );
+
+sub new {
+    my $class = shift;
+    my $args  = shift;
+
+    $args->{act_after} ||= DateTime->now;
+    $args->{act_count} ||= 0;
+
+    return $class->next::method( $args, @_ );
+}
 
 1;

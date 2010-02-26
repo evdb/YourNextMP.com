@@ -306,13 +306,37 @@ __PACKAGE__->has_many(
 
 sub insert {
     my $self = shift;
+    my $args = shift;
 
     unless ( $self->code ) {
         $self->code(
             $self->result_source->resultset->name_to_code( $self->name ) );
     }
 
-    return $self->next::method(@_);
+    my $result = $self->next::method( $args, @_ );
+
+    $self->update_bad_details;
+
+    return $result;
+}
+
+sub update {
+    my $self   = shift;
+    my $args   = shift;
+    my $result = $self->next::method( $args, @_ );
+
+    $self->update_bad_details;
+
+    return $result;
+}
+
+sub delete {
+    my $self = shift;
+    my $args = shift;
+
+    $self->bad_details->delete;
+
+    return $self->next::method( $args, @_ );
 }
 
 use YourNextMP::Scrapers::ScraperBase;
@@ -394,6 +418,85 @@ sub update_by_scraping {
         }
     }
 
+}
+
+=head2 update_bad_details
+
+    $candidate->update_bad_details;
+
+Look at the details that we have and create or delete the entries in the bad
+details table to match.
+
+=cut
+
+sub update_bad_details {
+    my $self             = shift;
+    my @details_to_check = qw(email phone fax address);
+
+    foreach my $detail (@details_to_check) {
+        my $check_method = "_find_detail_issue_for_$detail";
+
+        my $issue = !$self->$detail    # check if it is there
+          ? 'missing'                  # if not then 'missing'
+          : $self->$check_method;      # otherwise do deeper check
+
+        if ($issue) {
+            $self->update_or_create_related(
+                bad_details => {
+                    issue  => $issue,
+                    detail => $detail,
+                }
+            );
+        }
+        else {
+            $self->bad_details( { detail => $detail, } )->delete;
+        }
+    }
+
+    return 1;
+}
+
+sub _find_detail_issue_for_email {
+    my $self = shift;
+    my $val  = $self->email;
+    return 'parliament' if $val =~ m{\@parliament\.uk}i;
+    return '';
+}
+
+sub _find_detail_issue_for_phone {
+    my $self = shift;
+    my $val  = $self->phone;
+    return 'parliament' if $self->is_parliamentary_number($val);
+    return '';
+}
+
+sub _find_detail_issue_for_fax {
+    my $self = shift;
+    my $val  = $self->fax;
+    return 'parliament' if $self->is_parliamentary_number($val);
+    return '';
+}
+
+sub _find_detail_issue_for_address {
+    my $self = shift;
+    my $val  = $self->address;
+
+    return 'parliament' if $self->is_parliamentary_address($val);
+
+    return '';
+}
+
+sub is_parliamentary_number {
+    my $class  = shift;
+    my $number = shift;
+    $number =~ s{[\D+]}{}g;
+    return $number =~ m{ \A (?: 0 | \+44 ) 20 7219 }x;
+}
+
+sub is_parliamentary_address {
+    my $class   = shift;
+    my $address = shift;
+    return $address =~ m{ sw1a \s* 0aa }ixms;
 }
 
 1;
