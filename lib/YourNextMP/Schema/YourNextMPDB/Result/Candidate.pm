@@ -25,7 +25,7 @@ __PACKAGE__->table("candidates");
 =head2 id
 
   data_type: bigint
-  default_value: nextval('global_id_seq'::regclass)
+  default_value: SCALAR(0xa00a60)
   is_auto_increment: 1
   is_nullable: 0
 
@@ -107,7 +107,7 @@ __PACKAGE__->table("candidates");
 =head2 can_scrape
 
   data_type: boolean
-  default_value: true
+  default_value: SCALAR(0xa06f0c)
   is_nullable: 0
 
 =head2 last_scraped
@@ -122,7 +122,7 @@ __PACKAGE__->add_columns(
     "id",
     {
         data_type         => "bigint",
-        default_value     => "nextval('global_id_seq'::regclass)",
+        default_value     => \"nextval('global_id_seq'::regclass)",
         is_auto_increment => 1,
         is_nullable       => 0,
     },
@@ -202,7 +202,7 @@ __PACKAGE__->add_columns(
         size          => 300,
     },
     "can_scrape",
-    { data_type => "boolean", default_value => "true", is_nullable => 0 },
+    { data_type => "boolean", default_value => \"true", is_nullable => 0 },
     "last_scraped",
     {
         data_type     => "timestamp without time zone",
@@ -216,6 +216,20 @@ __PACKAGE__->add_unique_constraint( "candidates_scrape_source_key",
     ["scrape_source"] );
 
 =head1 RELATIONS
+
+=head2 bad_details
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::BadDetail>
+
+=cut
+
+__PACKAGE__->has_many(
+    "bad_details",
+    "YourNextMP::Schema::YourNextMPDB::Result::BadDetail",
+    { "foreign.candidate_id" => "self.id" },
+);
 
 =head2 candidacies
 
@@ -260,8 +274,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:16:22
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:u8wWXj1phz6esL7nAQ+5aA
+# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-26 17:55:34
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EHpKrJRmdXz9CFSn5mqpNw
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
