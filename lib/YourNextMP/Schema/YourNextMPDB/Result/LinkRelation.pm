@@ -54,6 +54,13 @@ __PACKAGE__->table("link_relations");
   default_value: undef
   is_nullable: 0
 
+=head2 id
+
+  data_type: bigint
+  default_value: SCALAR(0xa070e0)
+  is_auto_increment: 1
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -85,8 +92,19 @@ __PACKAGE__->add_columns(
         default_value => undef,
         is_nullable   => 0,
     },
+    "id",
+    {
+        data_type         => "bigint",
+        default_value     => \"nextval('global_id_seq'::regclass)",
+        is_auto_increment => 1,
+        is_nullable       => 0,
+    },
 );
-__PACKAGE__->set_primary_key( "foreign_id", "link_id" );
+__PACKAGE__->set_primary_key("id");
+__PACKAGE__->add_unique_constraint(
+    "link_relations_link_id_foreign_id_key",
+    [ "link_id", "foreign_id" ],
+);
 
 =head1 RELATIONS
 
@@ -104,8 +122,8 @@ __PACKAGE__->belongs_to(
     { id => "link_id" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-23 12:11:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2P62PvqPqFq4ZDMg2WnIgg
+# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-26 11:37:42
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:99IFtdsnfi2rbDasi2RFEw
 
 =head2 edits
 
