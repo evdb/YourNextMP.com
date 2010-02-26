@@ -333,9 +333,10 @@ sub update_by_scraping {
     foreach my $title ( keys %$links ) {
         my $url  = $links->{$title};
         my $link = $links_rs->find_or_create(
-            url       => $url,     #
-            title     => $title,
-            link_type => 'info',
+            url           => $url,           #
+            title         => $title,
+            link_type     => 'info',
+            foreign_table => 'candidates',
         );
         $self->find_or_create_related(
             link_relations => { link_id => $link->id } );
@@ -344,10 +345,10 @@ sub update_by_scraping {
     # If there is a photo deal with it
     if ($photo_url) {
 
-        my $image = $self          #
-          ->result_source          #
-          ->schema                 #
-          ->resultset('Image')     #
+        my $image = $self                    #
+          ->result_source                    #
+          ->schema                           #
+          ->resultset('Image')               #
           ->find_or_create( { source_url => $photo_url, } );
 
         for (1) {
