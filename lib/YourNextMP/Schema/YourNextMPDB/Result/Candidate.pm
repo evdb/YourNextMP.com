@@ -327,24 +327,26 @@ sub update_by_scraping {
     $data->{last_scraped} = DateTime->now;
     $self->update($data);
 
+    my $links_rs = $self->result_source->schema->resultset('Link');
+
     # Make sure all the links exist
     foreach my $title ( keys %$links ) {
-        my $url = $links->{$title};
-        $self->find_or_create_related(
-            links => {
-                url   => $url,     #
-                title => $title,
-            }
+        my $url  = $links->{$title};
+        my $link = $links_rs->find_or_create(
+            url   => $url,     #
+            title => $title,
         );
+        $self->find_or_create_related(
+            link_relations => { link_id => $link->id } );
     }
 
     # If there is a photo deal with it
     if ($photo_url) {
 
-        my $image = $self          #
-          ->result_source          #
-          ->schema                 #
-          ->resultset('Image')     #
+        my $image = $self         #
+          ->result_source         #
+          ->schema                #
+          ->resultset('Image')    #
           ->find_or_create( { source_url => $photo_url, } );
 
         for (1) {
