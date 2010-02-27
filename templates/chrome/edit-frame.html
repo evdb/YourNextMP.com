@@ -36,10 +36,9 @@
                     [% IF debug %]
                         <a href="[% iframe_src %]">[% iframe_src | html %]</a>
                         <hr />
-                        <textarea style="width: 100%; height: 100%;">
-[% content | html %]</textarea>
+                        <textarea style="width: 100%; height: 100%;">[% content | html %]</textarea>
                     [% ELSE %]
-                    <iframe src="[% iframe_src %]" frameborder="0"></iframe>
+                    <iframe id="iframe" src="[% iframe_src %]" frameborder="0"></iframe>
                     [% END %]
                 </td>
             </tr>

@@ -65,7 +65,7 @@ iframe {
 	text-align:center;
 	background-color:#ccf;
 	border:3px solid #88f;
-	margin:0.3em;
+    margin: 4px;
 	padding:0.3em;
 }
 
@@ -74,10 +74,27 @@ iframe {
 }
 
 #main_content div {
-	margin:0.3em;
 	padding:0.3em;
 }
 
 form table {
 	width:100%;
+}
+
+a img {
+    border-width: 0;
+}
+
+ul.canned_searches {
+    text-align: center;
+}
+
+ul.canned_searches li {
+    list-style-type: none;
+    display: inline;
+    padding: 0 0.5em;
+}
+
+ul.canned_searches a {
+    text-decoration: none;
 }

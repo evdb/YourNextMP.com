@@ -1,12 +1,49 @@
 [%
-    query = '"' _ candidate.name _ '"' _ ' ' _ candidate.party.name | uri;
 
-    WRAPPER
-        'chrome/edit-frame.html',
-        debug        => 1,
-        title        => 'Correct bad candidate details',
-        instructions => "Please correct these details",
-        iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
+    USE google = url('http://www.google.co.uk/search');
+
+    query_base = "\"${candidate.name}\" ${candidate.party.name}";
+    queries = [
+        "",
+        bad_detail.detail,
+        "contact details",
+    ];
 %]
-    [% form.render %]    
+[% instructions = BLOCK %]
+
+<strong>[% candidate.name | html %]</strong><br>
+<small>[% candidate.party.name | html %]</small>
+
+<br><br>
+
+We need their <strong>[% bad_detail.detail %]</strong>.
+
+<br><br>
+
+<a href="[% c.uri_for('bad_details') %]">Skip to the next one.</a>
+
+[% END %]
+
+[%-  WRAPPER
+        'chrome/edit-frame.html',
+        debug        => 0,
+        title        => 'Correct bad candidate details',
+        instructions => instructions,
+        iframe_src   => google( q => query_base ),
+%]
+    [% form.render %]
+    
+    
+    <!--
+    <ul class="canned_searches">
+        [% FOREACH q IN queries %]
+        <li><a target="iframe" href="[% google( q => "$query_base $q" ) %]">
+            <img src="/static/icons/magnifier.png" alt="search">
+            [% q || 'default' %]
+        </a></li>
+        [% END %]
+    </ul>
+    -->
+    
+      
 [% END %]
