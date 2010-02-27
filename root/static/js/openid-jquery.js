@@ -25,6 +25,7 @@ var providers_large = {
         url: null
     }
 };
+
 var providers_small = {
     myopenid: {
         name: 'MyOpenID',
@@ -78,6 +79,7 @@ var providers_small = {
     }
 
 };
+
 var providers = $.extend({}, providers_large, providers_small);
 
 var openid = {
@@ -106,7 +108,7 @@ var openid = {
            	openid_btns.append(this.getBoxHTML(providers_large[id], 'large', '.gif'));
         }
         if (providers_small) {
-        	openid_btns.append('<br/>');
+            // openid_btns.append('<br/>');
         	
 	        for (id in providers_small) {
 	        

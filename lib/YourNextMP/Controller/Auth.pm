@@ -7,6 +7,9 @@ use parent qw/Catalyst::Controller/;
 sub login : Local {
     my ( $self, $c ) = @_;
 
+    # FIXME - abstract this slightly
+    $c->stash->{reason} = $c->session->{__diversion}{reason};
+
     # FIXME - add smarts to try correct login method based on parameters present
 
     my $reauth_user_args = undef;
@@ -16,17 +19,21 @@ sub login : Local {
     my $openid_identifier    #
       = $c->req->param('openid_identifier')
       || $c->req->param('openid.identity');
+
     if ($openid_identifier) {
+
+        # put this message on the stash - if login works we will be redirected
+        # away
+        $c->stash->{auth_error} =
+            "Could not login using '$openid_identifier'..."
+          . " - please check and try again.";
+
         if ( $c->authenticate( {}, $realm ) ) {
 
-          # We are logged in using openid, but lets do it again so that we get a
-          # proper user object
+            # We are logged in using openid, but lets do it again so that we get
+            # a proper user object
             $reauth_user_args = { openid_identifier => $c->user->url };
 
-        }
-        else {
-            $c->stash->{auth_error} =
-"Could not login using '$openid_identifier'... - please check and try again.";
         }
     }
 
@@ -45,10 +52,6 @@ sub login : Local {
             }
         );
     }
-
-    # FIXME - abstract this slightly
-    $c->stash->{reason} = $c->session->{__diversion}{reason};
-
 }
 
 sub logout : Local {
