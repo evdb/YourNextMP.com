@@ -67,6 +67,8 @@ release it into the public domain.
 sub grant_copyright : Local {
     my ( $self, $c ) = @_;
 
+    $c->require_user();
+
     # set the xsrf_token if needed
     my $xsrf_token                   #
       = $c->session->{xsrf_token}    #
