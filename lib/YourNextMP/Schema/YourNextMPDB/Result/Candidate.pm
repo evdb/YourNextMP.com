@@ -459,7 +459,7 @@ sub update_bad_details {
 sub _find_detail_issue_for_email {
     my $self = shift;
     my $val  = $self->email;
-    return 'parliament' if $val =~ m{\@parliament\.uk}i;
+    return 'parliament' if $self->is_parliamentary_email($val);
     return '';
 }
 
@@ -484,6 +484,12 @@ sub _find_detail_issue_for_address {
     return 'parliament' if $self->is_parliamentary_address($val);
 
     return '';
+}
+
+sub is_parliamentary_email {
+    my $class = shift;
+    my $email = shift;
+    return $email =~ m{\@parliament\.uk}i;
 }
 
 sub is_parliamentary_number {
