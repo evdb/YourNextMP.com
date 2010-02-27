@@ -143,4 +143,23 @@ sub new {
     return $class->next::method( $args, @_ );
 }
 
+=head2 others_for_candidate
+
+    $details = $detail->others_for_candidate(  );
+
+Returns a rs with all the other bad_details for the candidate.
+
+=cut
+
+sub others_for_candidate {
+    my $self = shift;
+
+    return $self->result_source->resultset->search(
+        {
+            candidate_id => $self->candidate_id,
+            id           => { '!=' => $self->id },
+        }
+    );
+}
+
 1;
