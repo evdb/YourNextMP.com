@@ -20,7 +20,7 @@ We need their <strong>[% bad_detail.detail %]</strong>.
 
 <br><br>
 
-<a href="[% c.uri_for('bad_details') %]">Skip to the next one.</a>
+<a href="[% c.uri_for('bad_details', { skip_detail => bad_detail.id } ) %]">Skip to the next one.</a>
 
 [% END %]
 

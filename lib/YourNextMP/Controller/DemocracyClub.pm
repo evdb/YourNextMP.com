@@ -41,6 +41,9 @@ sub get_bad_detail : Private {
         candidate  => $bad_detail->candidate
     );
 
+    # store the bad_detail id in the session
+    $c->session->{bad_detail_id} = $bad_detail->id;
+
     return $bad_detail;
 }
 
@@ -58,14 +61,26 @@ sub get_new_bad_detail : Private {
 sub get_existing_bad_detail : Private {
     my ( $self, $c ) = @_;
 
-    my $id = $c->req->param('bad_detail_id') || '';     #
+    my $stored_id = delete $c->session->{bad_detail_id}; # delete now, set later
+
+    my $id = $c->req->param('bad_detail_id')             # from request
+      || $stored_id                                      # from previous request
+      || '';                                             # nothing found
+
+    # check we're not being fed garbage
     $id =~ s{\D+}{}g;
 
+    # check that we should not skip this one
+    if ( my $id_to_skip = $c->req->param('skip_detail') ) {
+        $id = '' if $id_to_skip eq $id;
+    }
+
+    # If there was no id then we can't find it
     return unless $id;
 
     # get the bad detail to work on
-    return $c                                           #
-      ->db('BadDetail')                                 #
+    return $c              #
+      ->db('BadDetail')    #
       ->find($id);
 }
 
