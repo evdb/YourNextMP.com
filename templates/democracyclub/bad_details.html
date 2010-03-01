@@ -3,29 +3,33 @@
     USE google = url('http://www.google.co.uk/search');
 
     query_base = "\"${candidate.name}\" ${candidate.party.name}";
+
     queries = [
-        "",
-        bad_detail.detail,
-        "contact details",
+        { "name and party"  => "$query_base",                 },        
+        { "contact details" => "$query_base contact details", },
+
+        { "current phone"   => candidate.phone,   },
+        { "current address" => candidate.address, },
+        { "current fax"     => candidate.fax,     },
+        { "current email"   => candidate.email,   },
     ];
+
 %]
 [% instructions = BLOCK %]
-
-<strong>[% candidate.name | html %]</strong><br>
-<small>[% candidate.party.name | html %]</small>
-
-<br><br>
-
-We need their <strong>[% bad_detail.detail %]</strong>.
-
-<br><br>
-
-<a href="[% c.uri_for('bad_details', { skip_detail => bad_detail.id } ) %]">Skip to the next one.</a>
+    
+    <strong>[% candidate.name | html %]</strong><br>
+    <small>[% candidate.party.name | html %]</small>
+    
+    <br><br>
+    
+    We need their <strong>[% bad_detail.detail %]</strong>.
+    
+    <br><br>
+    
+    <a href="[% c.uri_for('bad_details', { skip_detail => bad_detail.id } ) %]">Skip to the next candidate</a>
 
 [% END %]
-
-[%-  WRAPPER
-        'chrome/edit-frame.html',
+[%-  WRAPPER 'chrome/edit-frame.html',
         debug        => 0,
         title        => 'Correct bad candidate details',
         instructions => instructions,
@@ -33,18 +37,24 @@ We need their <strong>[% bad_detail.detail %]</strong>.
         javascript_libraries => ['jquery'],
 %]
     [% form.render %]
-    
-    
-    <!--
+        
     <ul class="canned_searches">
         [% FOREACH q IN queries %]
-        <li><a target="iframe" href="[% google( q => "$query_base $q" ) %]">
+            [% q = q.pairs.0 %]
+            [% NEXT UNLESS q.value %]
+        <li><a href="javascript:open_in_iframe('[% google( q => "${q.value}" ) %]')">
             <img src="/static/icons/magnifier.png" alt="search">
-            [% q || 'default' %]
+            [% q.key || 'default' %]
         </a></li>
         [% END %]
     </ul>
-    -->
-    
       
+    <script type="text/javascript" charset="utf-8">
+    
+        function open_in_iframe ( url ) {
+            $('iframe').attr({ "src" : url });
+        }
+
+    </script>
+
 [% END %]

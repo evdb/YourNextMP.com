@@ -93,8 +93,14 @@ ul.canned_searches li {
     list-style-type: none;
     display: inline;
     padding: 0 0.5em;
+    margin: 0;
 }
 
 ul.canned_searches a {
     text-decoration: none;
+    color: green;
+}
+
+ul.canned_searches a img {
+    vertical-align: middle;
 }
