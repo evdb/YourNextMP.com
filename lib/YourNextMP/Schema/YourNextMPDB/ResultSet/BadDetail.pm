@@ -34,7 +34,13 @@ sub grab {
             # search for a matching detail
             $detail = $rs->search(    #
                 { act_after => { '<=' => $now } },    #
-                { rows => 1 }
+                {
+                    order_by => [
+                        'priority',                   # most important first
+                        'act_count',                  # less attempted first
+                    ],
+                    rows => 1,
+                }
               )->first
               || return;
 

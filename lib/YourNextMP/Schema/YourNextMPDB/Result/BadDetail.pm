@@ -62,6 +62,12 @@ __PACKAGE__->table("bad_details");
   default_value: undef
   is_nullable: 0
 
+=head2 priority
+
+  data_type: integer
+  default_value: undef
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -101,6 +107,8 @@ __PACKAGE__->add_columns(
     },
     "act_count",
     { data_type => "integer", default_value => undef, is_nullable => 0 },
+    "priority",
+    { data_type => "integer", default_value => undef, is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint(
@@ -124,8 +132,8 @@ __PACKAGE__->belongs_to(
     { id => "candidate_id" }, {},
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-26 17:55:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YUEyxzbPOWEpf+3Yt4UuBg
+# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-01 13:27:47
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:BB1dEvkwikD5WtOPFzz9lA
 
 use DateTime;
 
@@ -141,6 +149,25 @@ sub new {
     $args->{act_count} ||= 0;
 
     return $class->next::method( $args, @_ );
+}
+
+my %PRIORITIES = (
+    email   => 10,
+    phone   => 20,
+    address => 30,
+    fax     => 40,
+);
+
+sub insert {
+    my $self = shift;
+
+    unless ( $self->priority ) {
+        my $priority = $PRIORITIES{ $self->detail }
+          || die "Can't find priority for detail " . $self->detail;
+        $self->priority($priority);
+    }
+
+    return $self->next::method(@_);
 }
 
 =head2 others_for_candidate

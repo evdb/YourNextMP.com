@@ -34,4 +34,13 @@ create index bad_details_candidate_id_key
 create index bad_details_act_after_key
     on bad_details( act_after );
 
+-- add the priority
+alter table bad_details add column priority integer;
+update bad_details set priority = 10 where detail = 'email';
+update bad_details set priority = 20 where detail = 'phone';
+update bad_details set priority = 30 where detail = 'address';
+update bad_details set priority = 40 where detail = 'fax';
+alter table bad_details alter priority set not null;
+
+
 commit;
