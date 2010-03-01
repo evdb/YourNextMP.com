@@ -7,7 +7,7 @@ use YourNextMP;
 use LWP::UserAgent;
 use Path::Class;
 
-my $bucket = YourNextMP->s3bucket;
+my $bucket = YourNextMP->s3_bucket;
 isa_ok $bucket, 'Net::Amazon::S3::Client::Bucket';
 
 # save a file to the store and retrieve it

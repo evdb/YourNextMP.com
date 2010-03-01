@@ -155,7 +155,7 @@ sub create {
             copy( $src_file, $destination->openw );
         }
         elsif ( $file_store eq 's3' ) {
-            my $bucket = YourNextMP->s3bucket;
+            my $bucket = YourNextMP->s3_bucket;
             my $object = $bucket->object(
                 key          => $path,
                 acl_short    => 'public-read',

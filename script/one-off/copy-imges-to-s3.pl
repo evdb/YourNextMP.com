@@ -14,7 +14,7 @@ die "Usage: $0 path_to_images/\n" unless $dir && -d $dir;
 
 my @files = sort File::Finder->type('f')->depth->in($dir);
 
-my $bucket = YourNextMP->s3bucket;
+my $bucket = YourNextMP->s3_bucket;
 
 foreach my $file (@files) {
     my ($key) = $file =~ m{ / ( images / .* ) \z }xms;

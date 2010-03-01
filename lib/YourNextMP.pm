@@ -232,20 +232,20 @@ sub uri_for_no_image {
     return $c->uri_for("/static/no-photo-$format.png");
 }
 
-=head2 s3bucket
+=head2 s3_bucket
 
-    $bucket = $c->s3bucket(  );
+    $bucket = $c->s3_bucket(  );
 
 Returns a L<Net::Amazon::S3::Client::Bucket> object which is correctly set up
 according to the config.
 
 =cut
 
-my $CACHED_S3_OBJECT        = undef;
-my $CACHED_S3_CLIENT        = undef;
-my $CACHED_S3_PUBLIC_BUCKET = undef;
+my $CACHED_S3_OBJECT       = undef;
+my $CACHED_S3_CLIENT       = undef;
+my %CACHED_S3_BUCKET_CACHE = ();
 
-sub s3object {
+sub s3_object {
     my $c = shift;
 
     return $CACHED_S3_OBJECT ||=    #
@@ -256,21 +256,23 @@ sub s3object {
       );
 }
 
-sub s3client {
+sub s3_client {
     my $c = shift;
 
     return $CACHED_S3_CLIENT ||=    #
       Net::Amazon::S3::Client       #
-      ->new( s3 => $c->s3object );
+      ->new( s3 => $c->s3_object );
 }
 
-sub s3bucket {
+sub s3_bucket {
     my $c = shift;
 
-    return $CACHED_S3_PUBLIC_BUCKET ||=    #
-      $c                                   #
-      ->s3client                           #
-      ->bucket( name => $c->config->{aws}{public_bucket_name} );
+    my $bucket_name = shift || $c->config->{aws}{public_bucket_name};
+
+    return $CACHED_S3_BUCKET_CACHE{$bucket_name} ||=    #
+      $c                                                #
+      ->s3_client                                        #
+      ->bucket( name => $bucket_name );
 }
 
 my $EDIT_USER    = undef;

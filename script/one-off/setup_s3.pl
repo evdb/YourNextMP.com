@@ -7,7 +7,7 @@ use lib '../../lib';
 
 use YourNextMP;
 
-my $client = YourNextMP->s3client;
+my $client = YourNextMP->s3_client;
 
 print "creating public bucket\n";
 $client->create_bucket(
