@@ -10,9 +10,10 @@
             [% "(${link.published.dmy('/')})" IF link.published %]
             <a href="[% c.uri_for( '/links', link.id, 'edit' ) %]" title="Edit this link"><img class="icon discreet" src="/static/icons/pencil.png" alt="edit"></img></a>
             <br />
-            [% link.summary.length <= 280
-                ? link.summary
-                : link.summary.substr(0, 280).replace('\s+\S+$', '') _ ' ...' 
+            [% summary = link.summary || ''; %]
+            [% summary.length <= 280
+                ? summary
+                : summary.substr(0, 280).replace('\s+\S+$', '') _ ' ...' 
                 %]
             <br clear="both" />
         </li>
