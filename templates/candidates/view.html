@@ -1,5 +1,14 @@
 [% candidate = result %]
-[% PROCESS 'chrome/header.html', title => candidate.name %]
+[%
+    title
+        = candidate.name
+         _ ' (' _ candidate.party.name _ ') '
+         _ '- PPC for '
+         _ candidate.seat_names.join(', ')
+        | html;
+    
+    PROCESS 'chrome/header.html';
+%]
 
     <style type="text/css" media="screen">
         #candidate_hero_photo {
