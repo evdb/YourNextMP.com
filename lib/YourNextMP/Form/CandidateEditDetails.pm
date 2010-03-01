@@ -51,7 +51,7 @@ has_field 'address' => (
     type  => 'TextArea',
     label => 'Postal address',
     cols  => 60,
-    rows  => 4,
+    rows  => 3,
     apply => [
         {
             check => sub { !$candidate_rs->is_parliamentary_address( $_[0] ) },

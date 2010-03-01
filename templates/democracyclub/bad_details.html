@@ -18,7 +18,10 @@
 [% instructions = BLOCK %]
     
     <strong>[% candidate.name | html %]</strong><br>
-    <small>[% candidate.party.name | html %]</small>
+
+    <small>[% candidate.party.name | html %]</small><br>
+
+    <small>[% candidate.seat_names.join(', ') | html %]</small>
     
     <br><br>
     
@@ -34,7 +37,7 @@
         title        => 'Correct bad candidate details',
         instructions => instructions,
         iframe_src   => google( q => query_base ),
-        javascript_libraries => ['jquery'],
+        javascript_libraries => [ 'jquery', 'bad_details.js' ],
 %]
     [% form.render %]
         
@@ -49,12 +52,4 @@
         [% END %]
     </ul>
       
-    <script type="text/javascript" charset="utf-8">
-    
-        function open_in_iframe ( url ) {
-            $('iframe').attr({ "src" : url });
-        }
-
-    </script>
-
 [% END %]

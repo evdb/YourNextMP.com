@@ -505,4 +505,19 @@ sub is_parliamentary_address {
     return $address =~ m{ sw1a \s* 0aa }ixms;
 }
 
+=head2 seat_names
+
+    @seat_names = $candidate->seat_names(  );
+
+Returns a list of all the seat names for this candidate
+
+=cut
+
+sub seat_names {
+    my $self = shift;
+
+    return map { $_->name } $self->seats;
+
+}
+
 1;

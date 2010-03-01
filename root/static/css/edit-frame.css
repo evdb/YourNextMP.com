@@ -104,3 +104,12 @@ ul.canned_searches a {
 ul.canned_searches a img {
     vertical-align: middle;
 }
+
+.discreet {
+    opacity: 0.5;
+}    
+
+.discreet:hover {
+    opacity: 1;
+}
+

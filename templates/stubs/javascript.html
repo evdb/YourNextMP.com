@@ -13,6 +13,10 @@
 
 
 [% FOREACH j IN javascript_libraries %]
-    [% src = javascript_data.${j}.${c.config.javascript_source} %]
+    [%
+        src
+            = javascript_data.${j}.${c.config.javascript_source}
+            || "/static/js/$j";
+    %]
     <script src="[% src %]" type="text/javascript"></script>
 [% END %]

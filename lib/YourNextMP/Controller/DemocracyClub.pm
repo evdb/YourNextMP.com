@@ -99,10 +99,21 @@ sub prepare_bad_detail_form : Private {
 
     # hide all the fields apart from the detail we want
     foreach my $detail (qw( email phone fax address )) {
+
         my $field = $form->field($detail);
+
+        my $existing_value_is_bad = $bad_detail    #
+          ->others_for_candidate                   #
+          ->search( { detail => $detail } )        #
+          ->first;
 
         if ( $detail eq $bad_detail->detail ) {
             $field->required(1);
+            $field->value('');
+        }
+        elsif ($existing_value_is_bad) {
+            $field->css_class('discreet');
+            $field->value('');
         }
         else {
             $field->inactive(1);
