@@ -184,15 +184,16 @@ ul.search_results .extra {
 }
 
 .left_column {
-    width: 48%;
+    width: 349px;
     float: left;
-    padding-right: 2%;
+    padding-right: 10px;
+    border-right: 1px dotted #bbb;
 }
 
 .right_column {
-    width: 48%;
+    width: 350px;
     float: right;
-    padding-left: 2%;
+    padding-left: 10px;
 }
 
 .centered {
@@ -213,7 +214,7 @@ ul.search_results .extra {
 
 .hints {
     font-family: Helvetica;
-    font-size: 80%;
+    font-size: 80% !important;
     color: #444;
 }
 

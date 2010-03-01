@@ -6,7 +6,7 @@
     <br>
 
     <form action="/seats/search" method="get">
-        <input type="text" name="query" value="postcode or name" />
+        <input type="text" name="query" value="postcode or constituency" />
         <input type="submit" value="search" />
         <p class="hints">eg. '<a href="/seats/search?query=sw1a+1aa">SW1A 1AA</a>' or '<a href="/seats/search?query=luton">Luton</a>'</p>
     </form>
@@ -19,43 +19,43 @@
 
 <div class="left_column">
 
-    <div class="box">
-        <h2>Parties</h2>
+    <h2>Parties</h2>
 
-        <table class="lined">
-            <tr>
-                <th>Name</td>
-                <th>#</td>
-            </tr>
+    <table class="lined">
+        <tr>
+            <th>Name</td>
+            <th>#</td>
+        </tr>
 
-        [% FOREACH party = top_parties %]        
+    [% FOREACH party = top_parties %]        
 
-            <tr class="[% loop.count % 2 ? 'odd' : 'even' %]">
-                <td><a href="[% c.uri_for('/parties', party.code) %]">[% party.name %]</a></td>
-                <td>[% party.candidate_count %]</td>
-            </tr>
-        [% END %]
-        </table> 
-        
-        <p style="text-align:right"><a href="/parties/all/1">All parties...</a></p>       
-
-    </div>
+        <tr class="[% loop.count % 2 ? 'odd' : 'even' %]">
+            <td><a href="[% c.uri_for('/parties', party.code) %]">[% party.name %]</a></td>
+            <td>[% party.candidate_count %]</td>
+        </tr>
+    [% END %]
+    </table> 
+    
+    <p style="text-align:right"><a href="/parties/all/1">All parties...</a></p>       
 
 </div>
 
 <div class="right_column">
 
-<div class="box">
     <h2>About us</h2>
 
-    [% # FIXME - terrible wording - needs improving %]
-
-    <p>We want to make it easier to choose who to vote for by listing all the
-    candidates and where you can learn more about them. We are completely
-    neutral, you have to make your own choice.</p>
+    <p>
+        This is a place where you can <strong>learn more</strong> about your
+        candidates and <strong>share</strong> information with other
+        voters.
+    </p>
     
-    </div>
-
+    <p>
+        We have <strong>no political bias</strong> or affiliation - we just
+        want you to be <strong>informed</strong> when you go to vote.
+    </p>
+    
+    
 </div>
 
 
