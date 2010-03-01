@@ -7,7 +7,7 @@ body {
     font-family: Georgia;
     width: 960px;
     margin: 0 auto;
-    background-color: #888;
+    background: url('/static/chrome/main-background.jpg') repeat-x #060;
 }
 
 a img {
@@ -53,7 +53,8 @@ p {
 
 #header {
     margin-top: 20px;
-    background: #000 url('/static/parliament.jpg') top left;
+    background: #3d2213 url('/static/parliament.jpg') top left;
+    border-bottom: none;
     -moz-border-radius-topleft : 10px;
     -moz-border-radius-topright: 10px;
 }
@@ -169,13 +170,17 @@ ul.search_results .extra {
     text-align: center;
     font-size: 130%;
     padding: 0.5em;
-    background-color: #fff7ad;
+    background: url('/static/chrome/fff7ad-gradient.jpg') repeat-x #fff7ad;
     border: 1px solid #dcad82;
     margin-bottom: 0.5em;
 }
 
 .callout strong {
     font-size: 120%;
+}
+
+.callout form * {
+    font-size: inherit;
 }
 
 .left_column {
