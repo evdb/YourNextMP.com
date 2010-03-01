@@ -30,6 +30,7 @@ We need their <strong>[% bad_detail.detail %]</strong>.
         title        => 'Correct bad candidate details',
         instructions => instructions,
         iframe_src   => google( q => query_base ),
+        javascript_libraries => ['jquery'],
 %]
     [% form.render %]
     

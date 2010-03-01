@@ -1,0 +1,18 @@
+[%
+
+    # http://code.google.com/apis/ajaxlibs/documentation/#jquery
+    
+    javascript_data = {
+        jquery => {
+            local  => '/static/js/jquery-1.4.2.min.js',
+            cdn    => 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js',
+        }
+    }
+
+%]
+
+
+[% FOREACH j IN javascript_libraries %]
+    [% src = javascript_data.${j}.${c.config.javascript_source} %]
+    <script src="[% src %]" type="text/javascript"></script>
+[% END %]
