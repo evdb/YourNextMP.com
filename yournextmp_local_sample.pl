@@ -6,6 +6,8 @@
     # if there is a Google analytics key here then the analytics gets loaded
     google_analytics_code => '',
 
+    javascript_source => 'local',
+
     # should we display the warning banner?
     show_dev_warning => 1,
 
