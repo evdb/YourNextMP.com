@@ -126,6 +126,10 @@ p {
     text-align: center;
 }
 
+#footer ul {
+    margin-bottom: 0.5em;
+}
+
 #footer li {
     display: inline;
     padding: 0 0.4em;
