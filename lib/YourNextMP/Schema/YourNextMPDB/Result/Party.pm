@@ -158,6 +158,13 @@ __PACKAGE__->belongs_to(
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
+sub public_fields {
+    return (
+        'code', 'updated',    #
+        'path', 'name', 'image',
+    );
+}
+
 __PACKAGE__->has_many(
     "link_relations",
     "YourNextMP::Schema::YourNextMPDB::Result::LinkRelation",

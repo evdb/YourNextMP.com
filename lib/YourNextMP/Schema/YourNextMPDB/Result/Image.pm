@@ -164,6 +164,12 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 19:36:14
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vVIctUSHn6Jqm147RVhbDw
 
+use YourNextMP;
+
+sub public_fields {
+    return ( 'small_url', 'medium_url', 'large_url' );
+}
+
 =head2 edits
 
 Type: has_many
@@ -231,6 +237,21 @@ sub delete {
 
     return $result;
 }
+
+sub _s3_url {
+    my $self   = shift;
+    my $format = shift;
+
+    return
+        'http://'
+      . YourNextMP->config->{aws}{public_bucket_name}
+      . '.s3.amazonaws.com/'
+      . $self->key_for($format);
+}
+
+sub small_url  { $_[0]->_s3_url('small') }
+sub medium_url { $_[0]->_s3_url('medium') }
+sub large_url  { $_[0]->_s3_url('large') }
 
 1;
 

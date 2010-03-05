@@ -271,7 +271,7 @@ sub s3_bucket {
 
     return $CACHED_S3_BUCKET_CACHE{$bucket_name} ||=    #
       $c                                                #
-      ->s3_client                                        #
+      ->s3_client                                       #
       ->bucket( name => $bucket_name );
 }
 

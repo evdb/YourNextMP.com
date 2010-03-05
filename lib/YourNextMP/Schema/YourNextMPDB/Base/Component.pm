@@ -79,22 +79,56 @@ sub delete {
     return $result;
 }
 
-=head2 extract_fields
+=head2 as_data
 
-    \%hash = $result->extract_fields( qw( list of fields ) );
+    $data = $row->as_data(  );
 
-Extracts and returns the database values for the given fields.
+Returns the data for this row as data
 
 =cut
 
-sub extract_fields {
-    my $self   = shift;
-    my @fields = @_;
-    my %data   = ();
+sub as_data {
+    my $self          = shift;
+    my $args          = shift || {};
+    my @public_fields = $self->public_fields;
+    my %data          = ();
 
-    $data{$_} = $self->get_column($_) for @fields;
+    # Sometimes we don't want to follow relationships as it might cause loops
+    my $no_relationships = $args->{no_relationships} || 0;
+
+    foreach my $field (@public_fields) {
+        my $val    = $self->$field;
+        my $output = undef;
+        my $ref    = ref $val;
+
+        if ( !defined $val ) {    # nulls go straight through
+
+            $output = undef;
+        }
+
+        elsif ( $ref =~ m{^YourNextMP::Model::DB::} ) {    # rows
+            next if $no_relationships;
+            $output = $val->as_data( { no_relationships => 1 } );
+        }
+
+        elsif ( $ref =~ m{^YourNextMP::Schema::YourNextMPDB::ResultSet::} ) {
+            next if $no_relationships;
+            $output = $val->as_data( { no_relationships => 1 } );
+        }
+
+        else {    # stringify all remaining values
+            $output = $val . "";
+        }
+
+        $data{$field} = $output;
+    }
 
     return \%data;
+}
+
+sub path {
+    my $self = shift;
+    return join '/', '', $self->table, $self->code;
 }
 
 1;

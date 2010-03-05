@@ -69,4 +69,16 @@ sub extract_rows {
     return \@results;
 }
 
+sub as_data {
+    my $self = shift;
+    my $args = shift || {};
+    my @rows = ();
+
+    while ( my $r = $self->next ) {
+        push @rows, $r->as_data($args);
+    }
+
+    return \@rows;
+}
+
 1;

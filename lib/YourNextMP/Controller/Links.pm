@@ -33,7 +33,7 @@ sub edit : PathPart('edit') Chained('result_find') Args(0) {
     return unless $form->process( params => $c->req->params );
 
     # $c->flash->{info_msg} = "Article saved!";
-    $c->res->redirect( $c->uri_for(  $link->id ) );
+    $c->res->redirect( $c->uri_for( $link->id ) );
 }
 
 =head1 AUTHOR

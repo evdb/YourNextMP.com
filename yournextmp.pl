@@ -3,7 +3,7 @@
 
     general_email_address => 'hello@yournextmp.com',
 
-    # use 'local' to serve from '/root/js', or 'cdn' for Google etc CDN 
+    # use 'local' to serve from '/root/js', or 'cdn' for Google etc CDN
     javascript_source => 'cdn',
 
     'Plugin::Session' => {

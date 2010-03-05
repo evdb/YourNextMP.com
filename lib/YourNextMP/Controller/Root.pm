@@ -114,7 +114,11 @@ sub end : Private {
     if ( $c->output_is('json') ) {
 
         # get the current json_data
-        my $json_result = $c->stash->{json_result} || {};
+        my $json_result =
+             $c->stash->{json_result}
+          || $c->forward('create_json_results')
+          || $c->forward('create_json_result')
+          || {};
 
         # augment it with some extra details
         my $uri = $c->req->uri;
@@ -127,6 +131,25 @@ sub end : Private {
             },
             license => 'http://creativecommons.org/licenses/by-nc-sa/2.0/uk/',
         };
+
+        # If there is a pager then add its details too
+        if ( my $pager = $c->stash->{pager} ) {
+            my $page_json = {
+                first_page           => 1,
+                previous_page        => $pager->previous_page,
+                current_page         => $pager->current_page,
+                next_page            => $pager->next_page,
+                last_page            => $pager->last_page,
+                entries_per_page     => $pager->entries_per_page,
+                entries_on_this_page => $pager->entries_on_this_page,
+                total_entries        => $pager->total_entries,
+            };
+
+            # turn all numbers into numbers
+            $_ += 0 for grep { defined $_ } values %$page_json;
+
+            $c->stash->{json_data}{pager} = $page_json;
+        }
 
         $c->detach('View::JSON');
     }
@@ -152,6 +175,28 @@ sub end : Private {
     }
 
     $c->forward('View::Web');
+}
+
+sub create_json_result : Private {
+    my ( $self, $c, $result ) = @_;
+
+    $result ||= $c->stash->{result};
+    return undef unless $result;
+
+    return $result->as_data;
+}
+
+sub create_json_results : Private {
+    my ( $self, $c ) = @_;
+
+    my $results = $c->stash->{results} || return;
+    my @json_results = ();
+
+    while ( my $r = $results->next ) {
+        push @json_results, $r->as_data;
+    }
+
+    return \@json_results;
 }
 
 =head1 AUTHOR

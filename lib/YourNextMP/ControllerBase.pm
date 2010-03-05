@@ -6,6 +6,7 @@ use parent 'Catalyst::Controller';
 
 sub result_find : PathPart('') Chained('result_base') CaptureArgs(1) {
     my ( $self, $c, $value ) = @_;
+    $c->can_do_output('json');
 
     # If the value is numeric assume it is an id - otherwise a code
     my $key = $value =~ m{\D} ? 'code' : 'id';
@@ -16,7 +17,7 @@ sub result_find : PathPart('') Chained('result_base') CaptureArgs(1) {
     # Check that we can do a code lookup
     $c->detach('/page_not_found')
       if $key ne 'id'
-          && ! $rs->result_source->has_column($key);
+          && !$rs->result_source->has_column($key);
 
     my $result =    #
       $rs->find( { $key => $value } )
@@ -33,26 +34,25 @@ sub index : PathPart('') Chained('result_base') Args(0) {
 sub search : PathPart('search') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 
+    $c->can_do_output('json');
+
     my $results = $c->db( $self->source_name );
 
     my $query = lc( $c->req->param('query') || '' );
     $query =~ s{\s+}{ }g;
     $query =~ s{[^a-z0-9 ]}{}g;
+    $c->stash->{query} = $query;
 
     if ($query) {
         $results = $self->search_for_results( $results, $query );
+        $c->stash->{results} = $results;
     }
 
-    # If there is only one result then redirect to it
-    if ( $results->count == 1 ) {
+    # If there is only one result then redirect to it (if web page)
+    if ( $results->count == 1 && $c->output_is('html') ) {
         $c->res->redirect( $c->uri_for( $results->first->code ) );
         $c->detach;
     }
-
-    $c->stash->{view_all} = $c->req->param('view_all') || 0;
-    $c->stash->{query}    = $query;
-    $c->stash->{results}  = $results;
-
 }
 
 sub all_empty : PathPart('all') Chained('result_base') {

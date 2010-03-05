@@ -43,14 +43,21 @@
                 title="Discussion about this site, the election and democracy in general"
             >Blog</a>
         </li>
-
-    [% FOREACH format = available_output_formats %]
-        <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>
-    [% END %]
-
-    [% END %]
+        [% END %]
 
     </ul>
+    
+    
+    [% UNLESS no_links %]
+        [% FOREACH format = available_output_formats %]
+            [% IF loop.first %]
+                <ul>
+                <li>Alternative output formats:</li>
+            [% END %]
+            <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>
+            [% "</ul>" IF loop.last %]
+        [% END %]
+    [% END %]
     
     
 </div>

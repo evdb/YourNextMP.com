@@ -9,9 +9,8 @@ use warnings;
 use base 'DBIx::Class::Core';
 
 __PACKAGE__->load_components(
-  "+YourNextMP::Schema::YourNextMPDB::Base::Component",
-  "InflateColumn::DateTime",
-);
+    "+YourNextMP::Schema::YourNextMPDB::Base::Component",
+    "InflateColumn::DateTime", );
 
 =head1 NAME
 
@@ -91,59 +90,59 @@ __PACKAGE__->table("suggestions");
 =cut
 
 __PACKAGE__->add_columns(
-  "id",
-  {
-    data_type         => "bigint",
-    default_value     => \"nextval('global_id_seq'::regclass)",
-    is_auto_increment => 1,
-    is_nullable       => 0,
-  },
-  "user_id",
-  {
-    data_type      => "bigint",
-    default_value  => undef,
-    is_foreign_key => 1,
-    is_nullable    => 1,
-  },
-  "email",
-  { data_type => "text", default_value => undef, is_nullable => 1 },
-  "ip",
-  {
-    data_type => "character varying",
-    default_value => undef,
-    is_nullable => 1,
-    size => 20,
-  },
-  "referer",
-  { data_type => "text", default_value => undef, is_nullable => 1 },
-  "suggestion",
-  { data_type => "text", default_value => undef, is_nullable => 0 },
-  "type",
-  {
-    data_type => "character varying",
-    default_value => undef,
-    is_nullable => 0,
-    size => 20,
-  },
-  "status",
-  {
-    data_type => "character varying",
-    default_value => undef,
-    is_nullable => 0,
-    size => 20,
-  },
-  "created",
-  {
-    data_type     => "timestamp without time zone",
-    default_value => undef,
-    is_nullable   => 0,
-  },
-  "updated",
-  {
-    data_type     => "timestamp without time zone",
-    default_value => undef,
-    is_nullable   => 0,
-  },
+    "id",
+    {
+        data_type         => "bigint",
+        default_value     => \"nextval('global_id_seq'::regclass)",
+        is_auto_increment => 1,
+        is_nullable       => 0,
+    },
+    "user_id",
+    {
+        data_type      => "bigint",
+        default_value  => undef,
+        is_foreign_key => 1,
+        is_nullable    => 1,
+    },
+    "email",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "ip",
+    {
+        data_type     => "character varying",
+        default_value => undef,
+        is_nullable   => 1,
+        size          => 20,
+    },
+    "referer",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "suggestion",
+    { data_type => "text", default_value => undef, is_nullable => 0 },
+    "type",
+    {
+        data_type     => "character varying",
+        default_value => undef,
+        is_nullable   => 0,
+        size          => 20,
+    },
+    "status",
+    {
+        data_type     => "character varying",
+        default_value => undef,
+        is_nullable   => 0,
+        size          => 20,
+    },
+    "created",
+    {
+        data_type     => "timestamp without time zone",
+        default_value => undef,
+        is_nullable   => 0,
+    },
+    "updated",
+    {
+        data_type     => "timestamp without time zone",
+        default_value => undef,
+        is_nullable   => 0,
+    },
 );
 __PACKAGE__->set_primary_key("id");
 
@@ -158,12 +157,11 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::User>
 =cut
 
 __PACKAGE__->belongs_to(
-  "user",
-  "YourNextMP::Schema::YourNextMPDB::Result::User",
-  { id => "user_id" },
-  { join_type => "LEFT" },
+    "user",
+    "YourNextMP::Schema::YourNextMPDB::Result::User",
+    { id        => "user_id" },
+    { join_type => "LEFT" },
 );
-
 
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-25 15:59:02
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vk/A75DGKsn5YtLp7WtZUA
