@@ -7,13 +7,13 @@ use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
 with 'YourNextMP::Form::Render::Table';
 
-# has_field 'email' => (
-#     type  => 'Email',
-#     label => 'Your Email',
-# );
-
 has_field 'referer' => (    #
     type => 'Hidden',
+);
+
+has_field 'email' => (
+    type  => 'Email',
+    label => 'Email (optional)',
 );
 
 has_field 'type' => (
@@ -29,9 +29,9 @@ has_field 'type' => (
 
 has_field 'suggestion' => (
     type             => 'TextArea',
-    label            => 'Suggestion',
+    label            => 'Message',
     required         => 1,
-    required_message => 'Please enter a suggestion',
+    required_message => 'Please enter a message',
 );
 
 has_field 'submit' => ( type => 'Submit' );
