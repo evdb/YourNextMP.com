@@ -72,7 +72,7 @@ sub index : Path : Args(0) {
     );
 
     $c->stash->{top_parties} = $c->get_or_set(
-        'top_parties',
+        'home_page_top_parties',
         sub {
             my $rs = $c->db('Party')->search(
                 undef,    #
