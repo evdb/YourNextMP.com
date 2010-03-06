@@ -100,13 +100,22 @@ sub scrape_parties {
 
         my $link_title = 'Electoral Commission Entry';
         $link_title .= ' (Northern Ireland)' if !$frmGB;
-        $p->add_to_links(
-            {
-                url   => $commision_url,
-                title => $link_title,
-            }
-        ) unless $p->links( { title => $link_title } )->first;
 
+        my $link = YourNextMP->db('Link')->find_or_create(
+            {
+                link_type => 'info',
+                url       => $commision_url,
+                title     => $link_title,
+            }
+        );
+
+        $p->find_or_create_related(
+            'link_relations',
+            {
+                foreign_table => 'parties',
+                link_id       => $link->id,
+            }
+        );
     }
 
 }
