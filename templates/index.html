@@ -8,13 +8,14 @@
     <form action="/seats/search" method="get">
         <input type="text" name="query" value="postcode or constituency" />
         <input type="submit" value="search" />
-        <p class="hints">eg. '<a href="/seats/search?query=sw1a+1aa">SW1A 1AA</a>' or '<a href="/seats/search?query=luton">Luton</a>'</p>
+        <p class="hints">eg. '<a href="/seats/search?query=sw1a+1aa">SW
+            1A 1AA</a>' or '<a href="/seats/search?query=luton">Luton</a>'</p>
     </form>
 
     Watching 
-    <strong>[% candidates.count %]</strong> candidates from 
-    <strong>[% parties.count %]</strong> parties standing for 
-    <strong>[% seats.count %]</strong> seats.
+    <strong>[% counts.candidates %]</strong> candidates from 
+    <strong>[% counts.parties %]</strong> parties standing for 
+    <strong>[% counts.seats %]</strong> seats.
 </div>
 
 <div class="left_column">

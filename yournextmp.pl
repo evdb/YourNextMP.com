@@ -6,6 +6,14 @@
     # use 'local' to serve from '/root/js', or 'cdn' for Google etc CDN
     javascript_source => 'cdn',
 
+    'Plugin::Cache' => {
+        backend => {
+            class   => "Cache::Memcached::libmemcached",
+            servers => ['127.0.0.1:11211'],
+            debug   => 2,
+        },
+    },
+
     'Plugin::Session' => {
         dbic_class   => 'DB::Session',
         expires      => 3600 * 24 * 365,    # 1 year

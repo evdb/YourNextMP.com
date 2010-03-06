@@ -16,6 +16,7 @@ use Catalyst (
     'Unicode',
     'Compress::Gzip',
     'Static::Simple',
+    'Cache',
 
     'Authentication',
     'Authorization::Roles',
@@ -304,6 +305,42 @@ sub finalize {
     my $result = $c->next::method(@_);
     $c->clear_edit_details;
     return $result;
+}
+
+sub get_or_set {
+    my $c       = shift;
+    my $key     = shift;
+    my $code    = shift;
+    my $timeout = shift || 600;
+
+    my $val = $c->cache->get($key);
+
+    # return it if we can
+    if ( defined $val ) {
+        $c->log->debug("cache hit for '$key'");
+    }
+    else {
+        use Time::HiRes qw(time);
+        my $start_time = time;
+        $val = $c->_set_cache( $key => $code, $timeout );
+        my $time_taken = time - $start_time;
+        $c->log->debug("cache miss for '$key' ( $time_taken seconds )");
+    }
+
+    return $val;
+
+}
+
+sub _set_cache {
+    my $c       = shift;
+    my $key     = shift;
+    my $code    = shift;
+    my $timeout = shift;
+
+    my $value = $code->();
+
+    $c->cache->set( $key => $value, $timeout );
+    return $value;
 }
 
 =head1 NAME

@@ -59,32 +59,47 @@ sub auto : Private {
 sub index : Path : Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->stash->{seats}      = $c->db('Seat')->search();
-    $c->stash->{parties}    = $c->db('Party')->search();
-    $c->stash->{candidates} = $c->db('Candidate')->search();
-
-    # generate the list of top parties
-    my $top_parties = $c->db('Party')->search(
-        undef,    #
-        {
-            join   => 'candidates',
-            select => [
-                'me.code',    #
-                'me.name',    #
-                { count => 'candidates.id' }
-            ],
-            as       => [qw( code name candidate_count )],
-            group_by => [ 'me.code', 'me.name' ],
-
-            order_by => 'count desc, me.code',
-            rows     => 10,
-        }
+    $c->stash->{counts} = $c->get_or_set(
+        'home_page_item_counts',
+        sub {
+            return {
+                seats      => $c->db('Seat')->search()->count,
+                parties    => $c->db('Party')->search()->count,
+                candidates => $c->db('Candidate')->search()->count,
+            };
+        },
+        600
     );
-    $c->stash->{top_parties} = [
-        map {
-            { $_->get_columns }
-          } $top_parties->all
-    ];
+
+    $c->stash->{top_parties} = $c->get_or_set(
+        'top_parties',
+        sub {
+            my $rs = $c->db('Party')->search(
+                undef,    #
+                {
+                    join   => 'candidates',
+                    select => [
+                        'me.code',    #
+                        'me.name',    #
+                        { count => 'candidates.id' }
+                    ],
+                    as       => [qw( code name candidate_count )],
+                    group_by => [ 'me.code', 'me.name' ],
+
+                    order_by => 'count desc, me.code',
+                    rows     => 10,
+                }
+            );
+
+            return [
+                map {
+                    { $_->get_columns }
+                  } $rs->all
+            ];
+        },
+        600
+    );
+
 }
 
 sub default : Path {
@@ -190,13 +205,7 @@ sub create_json_results : Private {
     my ( $self, $c ) = @_;
 
     my $results = $c->stash->{results} || return;
-    my @json_results = ();
-
-    while ( my $r = $results->next ) {
-        push @json_results, $r->as_data;
-    }
-
-    return \@json_results;
+    return $results->as_data;
 }
 
 =head1 AUTHOR

@@ -5,8 +5,8 @@ use inc::Module::Install;
 
 name 'YourNextMP';
 all_from 'lib/YourNextMP.pm';
-
 requires 'App::Cache';
+requires 'Cache::Memcached::libmemcached';
 requires 'Carp';
 requires 'Catalyst';
 requires 'Catalyst::Action::RenderView';
@@ -18,6 +18,7 @@ requires 'Catalyst::Model::Adaptor';
 requires 'Catalyst::Model::DBIC::Schema';
 requires 'Catalyst::Plugin::Authentication';
 requires 'Catalyst::Plugin::Authorization::Roles';
+requires 'Catalyst::Plugin::Cache';
 requires 'Catalyst::Plugin::Compress::Gzip';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Session::State::Cookie';
@@ -80,6 +81,7 @@ requires 'Term::ProgressBar::Simple';
 requires 'Test::More';
 requires 'Test::WWW::Mechanize';
 requires 'Test::WWW::Mechanize::Catalyst';
+requires 'Time::HiRes';
 requires 'URI';
 requires 'Web::Scraper';
 requires 'WebService::TWFY::API';
