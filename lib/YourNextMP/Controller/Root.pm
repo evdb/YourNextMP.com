@@ -87,7 +87,7 @@ sub index : Path : Args(0) {
                     group_by => [ 'me.code', 'me.name' ],
 
                     order_by => 'count desc, me.code',
-                    rows     => 10,
+                    rows     => 15,
                 }
             );
 

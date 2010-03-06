@@ -25,7 +25,7 @@
     <table class="lined">
         <tr>
             <th>Name</td>
-            <th>#</td>
+            <th><img class="icon" src="/static/icons/group.png" alt="#" title="number of candidates"></td>
         </tr>
 
     [% FOREACH party = top_parties %]        
@@ -35,9 +35,13 @@
             <td>[% party.candidate_count %]</td>
         </tr>
     [% END %]
+
+        <tr class="[% top_parties.size+1 % 2 ? 'odd' : 'even' %]">
+            <td colspan=2 style="text-align: right">
+                ...and <a href="/parties/all/1">[% counts.parties - top_parties.size %] other smaller parties</a>
+            </td>
+        </tr>
     </table> 
-    
-    <p style="text-align:right"><a href="/parties/all/1">All parties...</a></p>       
 
 </div>
 
