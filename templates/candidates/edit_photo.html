@@ -1,4 +1,12 @@
-[%
+[% instructions = BLOCK %]
+
+Please find a photo for <strong>[% result.name | html %]</strong> that is free to use.
+
+<hr>
+
+<small>Photo will be scaled to fit - JPEG, PNG and GIF formats accepted.</small>
+
+[% END %][%
 
     query = '"' _ result.name _ '"' _ ' ' _ result.party.name | uri;
 
@@ -6,12 +14,14 @@
         'chrome/edit-frame.html',
         debug        => 0,
         title        => 'Edit candidate photo',
-        instructions => "Please find a photo for ${result.name} that is free to use.",
+        instructions => instructions,
         iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
         return_url => {
             url => c.uri_for( result.path ),
             text => "Return to ${result.name} overview",
         }
 %]
+
+
     [% form.render %]    
 [% END %]
