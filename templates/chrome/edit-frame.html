@@ -17,6 +17,13 @@
 
                     <div id="top_bar">
                         <strong><a href="/">YourNextMP.com</a></strong>
+
+                        [% IF return_url %]
+                            <a href="[% return_url.url %]">&lt;&lt;&lt; [% return_url.text %]</a>
+                        [% END %]
+                        
+                        <br style="clear: both">
+
                     </div>
 
                     <div id="instructions">

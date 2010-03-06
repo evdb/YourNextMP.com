@@ -5,6 +5,10 @@
         title        => 'Edit link',
         instructions => 'Please complete the details for this link - it will load below to help you.',
         iframe_src   => result.url,
+        return_url => {
+            url => c.uri_for( '/links', result.id ),
+            text => "Return to ${result.title} overview",
+        }    	
 %]
     [% form.render %]    
 [% END %]

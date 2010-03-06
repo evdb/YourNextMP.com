@@ -8,6 +8,10 @@
         title        => 'Edit candidate photo',
         instructions => "Please find a photo for ${result.name} that is free to use.",
         iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
+        return_url => {
+            url => c.uri_for( result.path ),
+            text => "Return to ${result.name} overview",
+        }
 %]
     [% form.render %]    
 [% END %]

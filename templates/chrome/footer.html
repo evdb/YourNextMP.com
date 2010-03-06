@@ -27,6 +27,17 @@
     </ul>
     [% END %]
 
+    [% UNLESS no_links %]
+        [% FOREACH format = available_output_formats %]
+            [% IF loop.first %]
+                <ul>
+                <li>Alternative output formats:</li>
+            [% END %]
+            <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>
+            [% "</ul>" IF loop.last %]
+        [% END %]
+    [% END %]
+
     <ul>
         <li>&copy; 2010 YourNextMP.com</li>
 
@@ -45,21 +56,8 @@
         </li>
         [% END %]
 
-    </ul>
-    
-    
-    [% UNLESS no_links %]
-        [% FOREACH format = available_output_formats %]
-            [% IF loop.first %]
-                <ul>
-                <li>Alternative output formats:</li>
-            [% END %]
-            <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>
-            [% "</ul>" IF loop.last %]
-        [% END %]
-    [% END %]
-    
-    
+    </ul>    
+
 </div>
 
 [% PROCESS 'stubs/google_analytics.html' %]

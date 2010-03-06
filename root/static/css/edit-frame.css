@@ -37,13 +37,12 @@ iframe {
 #top_bar {
 	background-color:#222;
 	opacity:0.8;
-	color:#fff;
+	color:#ccc;
 	padding:0 0.2em;
 }
 
-#top_bar ul {
+#top_bar strong {
 	float:right;
-	color:#ccc;
 }
 
 #top_bar * {
