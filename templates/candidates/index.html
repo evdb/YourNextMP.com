@@ -1,15 +1,9 @@
 [% PROCESS 'chrome/header.html', title => 'Candidates' %]
 
-    <h1>Candidates</h1>
-
-    <div>
-        <form method="GET" action="[% c.uri_for('search') %]">
-            <label for="query">Candidate's name:</label>
-            <input name="query" id="query" type="text" value="[% query %]"/>
-            <input type="submit" value="Search" />
-        </form>
-    </div>
-
-    <p><a href="[% c.uri_for( 'all', 1 ) %]">View all candidates</a></p>
+    [% PROCESS 'stubs/big_search_box.html',
+        title         => 'Find your candidates:',
+        default_value => 'candidate name',
+        view_all_text => 'View all candidates',
+    %]
 
 [% PROCESS 'chrome/footer.html' %]

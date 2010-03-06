@@ -1,15 +1,11 @@
 [% parties = results %]
 [% PROCESS 'chrome/header.html', title => 'Parties' %]
 
-    <h1>Search for Parties</h1>
-
-    <div>
-    <form method="GET" action="[% c.uri_for('search') %]">
-        <label for="query">Party name:</label>
-        <input name="query" id="query" type="text" value="[% query %]"/>
-        <input type="submit" value="Search" />
-    </form>
-    </div>
+[% PROCESS 'stubs/big_search_box.html',
+    title         => 'Political Parties:',
+    default_value => 'party name',
+    view_all_text => 'View all parties',
+%]
 
     [% IF query %]
 

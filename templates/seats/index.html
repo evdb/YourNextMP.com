@@ -1,16 +1,10 @@
 [% seats = results %]
 [% PROCESS 'chrome/header.html', title => 'Seats' %]
 
-    <h1>Seats</h1>
-
-    <div>
-    <form name="seat_search" method="GET" action="[% c.uri_for('search') %]">
-        <label for="query">Place or postcode:</label>
-        <input name="query" id="query" type="text" value="[% query %]"/>
-        <input type="submit" value="Search" />
-    </form>
-    </div>
-
-    <p><a href="[% c.uri_for( 'all', 1 ) %]">View all seats</a></p>
+[% PROCESS 'stubs/big_search_box.html',
+    title         => 'Constituencies:',
+    default_value => 'name or full postcode',
+    view_all_text => 'View all constituencies',
+%]
 
 [% PROCESS 'chrome/footer.html' %]

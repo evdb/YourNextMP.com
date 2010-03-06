@@ -1,0 +1,10 @@
+<div class='callout'>
+    <h2>[% title %]</h2>
+
+    <form method="GET" action="[% c.uri_for('search') %]">
+        <input name="query" id="query" type="text" value="[% query || default_value %]"/>
+        <input type="submit" value="Search" />
+    </form>
+
+    <a href="[% c.uri_for( 'all', 1 ) %]">[% view_all_text %]</a>
+</div>
