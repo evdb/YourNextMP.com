@@ -10,6 +10,13 @@ body {
     background: url('/static/chrome/main-background.jpg') repeat-x #8c8;
 }
 
+a:hover span { cursor: pointer }
+
+a:active {
+    position: relative;
+    top: 2px;
+}
+
 a img {
     border-width: 0;
 }
@@ -64,6 +71,11 @@ p {
     font-variant: small-caps;
     padding: 0.3em;
     opacity: 0.8;
+}
+
+#header h1 a {
+    color: inherit;
+    text-decoration: none;
 }
 
 #tabs {
