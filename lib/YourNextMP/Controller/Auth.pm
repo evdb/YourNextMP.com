@@ -60,6 +60,8 @@ sub logout : Local {
     # only actually do the logout if the form was posted
     $c->logout if $c->req->method eq 'POST';
 
+    # really blow the session away so that there is no cookie
+    $c->delete_session('logout');
 }
 
 =head1 AUTHOR
