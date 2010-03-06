@@ -11,6 +11,9 @@
     # should we display the warning banner?
     show_dev_warning => 1,
 
+    'Plugin::Cache' =>
+      { backend => { namespace => die('choose a namespace'), } },
+
     aws => {
         aws_access_key_id     => die('need aws_access_key_id'),
         aws_secret_access_key => die('need aws_secret_access_key'),
