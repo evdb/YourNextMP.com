@@ -1,0 +1,36 @@
+[% PROCESS 'chrome/header.html', title => 'Thanks' %]
+
+<h1>Acknoledgements</h1>
+
+<p>Thank you to the following people for making this site possible.</p>
+
+
+<h3>DemocracyClub</h3>
+
+<p><a href="http://www.democracyclub.org.uk/aboutus/">DemocracyClub</a> is a
+<i>"non-party-political group of volunteers"</i>. YourNextMP is working closely with DC to avoid duplicating work. The DC
+volunteers will use YourNextMP to store the candidates and their details.</p>
+
+
+
+<img style="float: right;" src="http://a3.twimg.com/profile_images/372127643/mark_bigger.jpg">
+
+<h3>Mark James</h3>
+<p>Creator of the icons ( eg: 
+[% FOREACH icon IN [ 'group', 'pencil', 'newspaper' ] %]
+<img class="icon" src="/static/icons/[% icon %].png" >
+[% END %]
+) that we use on this site - <a
+href="http://famfamfam.com/lab/icons/silk/">http://famfamfam.com/lab/icons/silk/</a>.
+You can also follow him on <a href="http://twitter.com/markjames">Twitter</a>.
+</p>
+
+
+<h3>and many others...</h3>
+
+<p>... who have helped add and correct the candidate entries and provided
+support. If I've left anyone out please let me know.</p>
+
+[% PROCESS 'chrome/footer.html' %]
+
+
