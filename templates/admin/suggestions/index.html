@@ -1,0 +1,68 @@
+[% PROCESS 'chrome/header.html', title => 'Suggestions' %]
+
+<style type="text/css" media="screen">
+     tr {
+         vertical-align: top;
+     }
+</style>
+
+<h1>Suggestions</h1>
+
+<p>Found [% results.count %] new suggestion(s):</p>
+
+<table class="lined">
+
+    <!-- <thead>
+        <tr>
+            <th>Email</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead> -->
+
+    <tbody>
+
+[% WHILE (s = results.next) %]
+
+<tr>
+
+
+    <td>[% s.status %]</td>
+    <td><img class="icon"title="[% s.type %]" src="/static/icons/[% s.type == 'correction' ? 'exclamation' : 'lightbulb' %].png"></td>
+
+    <td>
+        [% IF s.user %]
+            <a href="[% c.uri_for('/users/', s.user.id ) %]" title="[% s.user.screen_name | html %]"><img class="icon"src="/static/icons/user_gray.png"></a>
+        [% ELSE %]
+            &nbsp;
+        [% END %]
+    </td>
+
+    <td>
+        [% IF s.email %]
+            <a href="mailto:[% s.email | html %]" title="[% s.email | html %]"><img class="icon"src="/static/icons/email.png"></a>
+        [% ELSE %]
+            &nbsp;
+        [% END %]
+    </td>
+
+
+    <td>
+        [% s.suggestion | html_break %]
+        [% IF s.referer %]
+            <a class="discreet" style="float: right" href="[% s.referer | html %]"><tt>[% s.referer | html %]</tt></a>
+        [% END %]
+    </td>
+
+    <td><a href="[% c.uri_for( '', { mark_as_done => s.id } ) %]"><img class="icon"title="[% s.type %]" src="/static/icons/tick.png"></a></td>
+
+</tr>
+[% END %]
+
+    </tbody>
+</table>
+
+
+[% PROCESS 'chrome/footer.html' %]
