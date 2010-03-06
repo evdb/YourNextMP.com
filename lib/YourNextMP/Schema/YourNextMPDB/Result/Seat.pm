@@ -132,11 +132,13 @@ __PACKAGE__->has_many(
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 sub public_fields {
-    return (
-        'code', 'updated',    #
-        'path', 'name',
-        'candidates',
-    );
+    return {
+        code     => {},
+        updated  => {},
+        path     => {},
+        name     => {},
+        candidates => { is_rel => 1 },
+    };
 }
 
 __PACKAGE__->has_many(

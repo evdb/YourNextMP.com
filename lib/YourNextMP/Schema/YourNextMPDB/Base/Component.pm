@@ -87,40 +87,77 @@ Returns the data for this row as data
 
 =cut
 
+my $AS_DATA_CACHE = undef;
+
+sub zap_as_data_cache {
+    $AS_DATA_CACHE = undef;
+}
+
 sub as_data {
     my $self          = shift;
     my $args          = shift || {};
-    my @public_fields = $self->public_fields;
+    my $public_fields = $self->public_fields;
     my %data          = ();
 
     # Sometimes we don't want to follow relationships as it might cause loops
     my $no_relationships = $args->{no_relationships} || 0;
 
-    foreach my $field (@public_fields) {
-        my $val    = $self->$field;
-        my $output = undef;
+    # should we zap the cache
+    $self->zap_as_data_cache unless $args->{keep_cache};
+
+    foreach my $field ( keys %$public_fields ) {
+
+        my $spec = $public_fields->{$field} || {};
+
+        # overide no relationships for some fields
+        my $follow_relationships = 1;
+        $follow_relationships = 0 if $no_relationships && $spec->{is_rel};
+
+        # can this value be cached - if so create a cache key for it?
+        my $cache_on = $spec->{cache_on} || '';
+        my $cache_key = '';
+        $cache_key = sprintf( '%s:%s', $field, $self->$cache_on )
+          if $cache_on && $self->$cache_on;
+
+        if ( $cache_key && exists $AS_DATA_CACHE->{$cache_key} ) {    # cached
+            $data{$field} = $AS_DATA_CACHE->{$cache_key};
+            next;
+        }
+
+        my $field_method = $spec->{method} || $field;
+
+        my $val    = $self->$field_method;
         my $ref    = ref $val;
+        my $output = undef;
 
         if ( !defined $val ) {    # nulls go straight through
-
             $output = undef;
         }
 
         elsif ( $ref =~ m{^YourNextMP::Model::DB::} ) {    # rows
-            next if $no_relationships;
-            $output = $val->as_data( { no_relationships => 1 } );
+            next unless $follow_relationships;
+            $output                                        #
+              = $val->as_data( { no_relationships => 1, keep_cache => 1 } );
         }
 
         elsif ( $ref =~ m{^YourNextMP::Schema::YourNextMPDB::ResultSet::} ) {
-            next if $no_relationships;
-            $output = $val->as_data( { no_relationships => 1 } );
+            next unless $follow_relationships;
+            $output =
+              $val->as_data( { no_relationships => 1, keep_cache => 1 } );
         }
 
-        else {    # stringify all remaining values
+        elsif ( $ref eq 'HASH' ) {    # simple hashes can be possed through
+            $output = $val;
+        }
+
+        else {                        # stringify all remaining values
             $output = $val . "";
         }
 
         $data{$field} = $output;
+
+        # store in cache
+        $AS_DATA_CACHE->{$cache_key} = $output if $cache_key;
     }
 
     return \%data;

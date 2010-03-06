@@ -167,7 +167,11 @@ __PACKAGE__->has_many(
 use YourNextMP;
 
 sub public_fields {
-    return ( 'small_url', 'medium_url', 'large_url' );
+    return {
+        small  => { method => 'small_spec' },
+        medium => { method => 'medium_spec' },
+        large  => { method => 'large_spec' },
+    };
 }
 
 =head2 edits
@@ -190,6 +194,20 @@ sub suffix {
     my $format = shift;
     my @meta   = split /,/, $self->$format, 3;
     return $meta[2];
+}
+
+sub height {
+    my $self   = shift;
+    my $format = shift;
+    my @meta   = split /,/, $self->$format, 3;
+    return $meta[1];
+}
+
+sub width {
+    my $self   = shift;
+    my $format = shift;
+    my @meta   = split /,/, $self->$format, 3;
+    return $meta[0];
 }
 
 sub key_for {
@@ -249,9 +267,20 @@ sub _s3_url {
       . $self->key_for($format);
 }
 
-sub small_url  { $_[0]->_s3_url('small') }
-sub medium_url { $_[0]->_s3_url('medium') }
-sub large_url  { $_[0]->_s3_url('large') }
+sub _image_details {
+    my $self   = shift;
+    my $format = shift;
+
+    return {
+        url    => $self->_s3_url($format),
+        width  => $self->width($format),
+        height => $self->height($format)
+    };
+}
+
+sub small_spec  { $_[0]->_image_details('small') }
+sub medium_spec { $_[0]->_image_details('medium') }
+sub large_spec  { $_[0]->_image_details('large') }
 
 1;
 

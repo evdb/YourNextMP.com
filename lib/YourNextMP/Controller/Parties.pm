@@ -32,8 +32,8 @@ sub candidates : PathPart('candidates') Chained('result_find') Args(1) {
     my $results = $c->stash->{result}->candidates->search(
         undef,    # find everything
         {
-            rows => $results_per_page,
-            page => $page_number,
+            rows     => $results_per_page,
+            page     => $page_number,
         }
     );
 

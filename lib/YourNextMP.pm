@@ -13,10 +13,10 @@ use Net::Amazon::S3::Client;
 
 use Catalyst (
     'ConfigLoader',
+    'Cache',
     'Unicode',
     'Compress::Gzip',
     'Static::Simple',
-    'Cache',
 
     'Authentication',
     'Authorization::Roles',

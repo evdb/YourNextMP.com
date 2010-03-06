@@ -193,17 +193,13 @@ sub end : Private {
 }
 
 sub create_json_result : Private {
-    my ( $self, $c, $result ) = @_;
-
-    $result ||= $c->stash->{result};
-    return undef unless $result;
-
+    my ( $self, $c ) = @_;
+    my $result = $c->stash->{result} || return;
     return $result->as_data;
 }
 
 sub create_json_results : Private {
     my ( $self, $c ) = @_;
-
     my $results = $c->stash->{results} || return;
     return $results->as_data;
 }

@@ -159,10 +159,15 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 sub public_fields {
-    return (
-        'code', 'updated',    #
-        'path', 'name', 'image',
-    );
+    return {
+
+        code    => {},
+        name    => {},
+        updated => {},
+        path    => {},
+        image   => { cache_on => 'image_id' },
+
+    };
 }
 
 __PACKAGE__->has_many(

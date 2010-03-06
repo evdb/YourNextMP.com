@@ -280,12 +280,19 @@ __PACKAGE__->belongs_to(
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 sub public_fields {
-    return (
-        'code', 'updated',                             # system
-        'name', 'email', 'phone', 'fax', 'address',    # details
-        'path',                                        #
-        'image', 'party', 'seats',                     # relationships
-    );
+    return {
+        code    => {},
+        updated => {},
+        path    => {},
+        name    => {},
+        email   => {},
+        phone   => {},
+        fax     => {},
+        address => {},
+        image   => { cache_on => 'image_id' },
+        party   => { cache_on => 'party_id' },
+        seats   => { is_rel => 1 },
+    };
 }
 
 __PACKAGE__->has_many(

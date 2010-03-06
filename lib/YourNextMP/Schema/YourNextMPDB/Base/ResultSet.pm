@@ -44,38 +44,22 @@ sub fuzzy_search {
     return $rs;
 }
 
-sub extract_rows {
-    my $rs      = shift;
-    my $args    = shift;
-    my @results = ();
-
-    while ( my $row = $rs->next ) {
-
-        my $result = {};
-
-        foreach my $key ( keys %$args ) {
-            my $value     = $args->{$key};
-            my $value_ref = ref $value;
-
-            $result->{$key} =
-                $value_ref eq ''     ? $row->get_column($key)
-              : $value_ref eq 'CODE' ? $value->($row)
-              :   die "Can't process $key - bad ref $value_ref";
-        }
-
-        push @results, $result;
-    }
-
-    return \@results;
-}
-
 sub as_data {
     my $self = shift;
     my $args = shift || {};
     my @rows = ();
 
+    my $should_cache_be_zapped = $args->{keep_cache} ? 0 : 1;
+
     while ( my $r = $self->next ) {
-        push @rows, $r->as_data($args);
+
+        # zap the cache on the first item if needed
+        if ($should_cache_be_zapped) {
+            $r->zap_as_data_cache;
+            $should_cache_be_zapped = 0;
+        }
+
+        push @rows, $r->as_data( { %$args, keep_cache => 1 } );
     }
 
     return \@rows;
