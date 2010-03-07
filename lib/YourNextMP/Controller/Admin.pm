@@ -12,4 +12,10 @@ sub auto : Private {
     return 1;
 }
 
+sub index : Path('') {
+    my ( $self, $c ) = @_;
+
+    # passthrough
+}
+
 1;
