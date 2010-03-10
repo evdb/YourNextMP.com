@@ -36,7 +36,8 @@ sub view : Chained('get_item') PathPart('') Args(0) {
     my $item          = $c->stash->{item};
     my $result_source = $item->result_source;
 
-    $c->stash->{item_columns} = [ $result_source->columns ];
+    $c->stash->{item_columns}  = [ $result_source->columns ];
+    $c->stash->{relationships} = [ $result_source->relationships ];
 }
 
 sub edit : Chained('get_item') PathPart('edit') Args(0) {

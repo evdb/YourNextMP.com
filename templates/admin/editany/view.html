@@ -8,6 +8,17 @@
     }
 </style>
 
+<h2>[% item.name || item.code || item.id %]</h2>
+
+<ul class="item_details">
+[% IF ( path = item.path ) %]
+    <li><a href="[% c.uri_for( path )%]">[% c.uri_for( path )%]</a></li>
+[% END %]
+
+<li><a href="[% c.req.uri _ '/edit' %]">edit</a></li>
+</ul>
+<br>
+
 <table class="lined">
     [% FOREACH key = item_columns %]
     <tr>
@@ -17,6 +28,21 @@
     [% END %]
 </table>
 
-<p><a href="[% c.req.uri _ '/edit' %]">edit</a></p>
+
+[% FOREACH rel = relationships %]
+    [% NEXT IF rel == 'edits' %]
+
+    [% info = item.result_source.relationship_info(rel) %]
+
+    <h2>[% rel %]</h2>
+
+    <ul>
+        [% FOREACH r = item.$rel %]
+            <li><a href="[% c.uri_for( info.class.match('([^:]+)$').0, r.id ) %]">[% r.name || r.code || r.id %]</a></li>
+        [% END %]
+    </ul>
+
+[% END %]
+
 
 [% INCLUDE 'chrome/footer.html' %]

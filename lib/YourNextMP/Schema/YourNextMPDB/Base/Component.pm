@@ -165,6 +165,7 @@ sub as_data {
 
 sub path {
     my $self = shift;
+    return unless $self->can('code');
     return join '/', '', $self->table, $self->code;
 }
 
