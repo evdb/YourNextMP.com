@@ -14,6 +14,10 @@ sub index : Path Args(0) {
         sub {
             return {
 
+                all_parties    => $c->db('Party')->count,
+                all_seats      => $c->db('Seat')->count,
+                all_candidates => $c->db('Candidate')->count,
+
                 # select count( DISTINCT party_id)
                 #     from candidates, candidacies
                 #     where candidates.id = candidacies.candidate_id;
@@ -21,24 +25,24 @@ sub index : Path Args(0) {
                   ->search(
                     undef,
                     {
-                        select   => 'me.party_id',        #
+                        select   => 'me.party_id',    #
                         distinct => 1,
                         join     => 'candidacies',
                         order_by => '',
                     }
-                  )                                 #
+                  )                                   #
                   ->count,
 
                 seats => $c->db('Candidacy')->search(
-                    undef,                          #
+                    undef,                            #
                     {
-                        select   => 'seat_id',      #
+                        select   => 'seat_id',        #
                         distinct => 1
                     }
                   )->count,
 
                 candidates => $c->db('Candidacy')->search(
-                    undef,                          #
+                    undef,                            #
                     {
                         select   => 'candidate_id',    #
                         distinct => 1
