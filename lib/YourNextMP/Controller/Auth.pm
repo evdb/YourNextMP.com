@@ -37,6 +37,11 @@ sub login : Local {
         }
     }
 
+    # FIXME - temporary hack to work on a plane when no openid was available
+    if ( $c->debug && $c->req->param('become_user_id') ) {
+        $reauth_user_args = { id => $c->req->param('become_user_id') };
+    }
+
     if ($reauth_user_args) {
 
         my $user = $c->db('User')->find_or_create($reauth_user_args)

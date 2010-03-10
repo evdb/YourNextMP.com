@@ -170,15 +170,31 @@ sub require_admin_user {
     my $reason = shift;
 
     # If we have a user and they are in the admin role
-    return 1
-      if $c->user_exists
-          && $c->check_user_roles('admin');
+    return 1 if $c->user_is_admin;
 
     # no user - divert to login
     $c->divert_to(
         $c->uri_for('/auth/login'),    #
         { reason => $reason }
     );
+}
+
+=head2 user_is_admin
+
+    $bool = $c->user_is_admin(  );
+
+Returns true if there is a user and they are an admin user.
+
+=cut
+
+sub user_is_admin {
+    my $c = shift;
+
+    return 1
+      if $c->user_exists
+          && $c->check_user_roles('admin');
+
+    return;
 }
 
 =head2 uri_for_image

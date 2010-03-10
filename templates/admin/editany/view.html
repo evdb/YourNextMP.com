@@ -1,12 +1,22 @@
 [% INCLUDE 'chrome/header.html', title => 'Edit anything' %]
 
-<table>
+<style type="text/css" media="screen">
+    th, td {
+        text-align: left;
+        vertical-align: top;
+        padding: 0 0.2em;
+    }
+</style>
+
+<table class="lined">
     [% FOREACH key = item_columns %]
     <tr>
-        <th>[% key %]</th>
+        <th>[% key %]:</th>
         <td>[% item.$key | html %]</td>
     </tr>
     [% END %]
 </table>
+
+<p><a href="[% c.req.uri _ '/edit' %]">edit</a></p>
 
 [% INCLUDE 'chrome/footer.html' %]
