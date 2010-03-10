@@ -13,9 +13,38 @@ sub index : Path Args(0) {
         'home_page_item_counts',
         sub {
             return {
-                seats      => $c->db('Seat')->search()->count,
-                parties    => $c->db('Party')->search()->count,
-                candidates => $c->db('Candidate')->search()->count,
+
+                # select count( DISTINCT party_id)
+                #     from candidates, candidacies
+                #     where candidates.id = candidacies.candidate_id;
+                parties => $c->db('Candidate')    #
+                  ->search(
+                    undef,
+                    {
+                        select   => 'me.party_id',        #
+                        distinct => 1,
+                        join     => 'candidacies',
+                        order_by => '',
+                    }
+                  )                                 #
+                  ->count,
+
+                seats => $c->db('Candidacy')->search(
+                    undef,                          #
+                    {
+                        select   => 'seat_id',      #
+                        distinct => 1
+                    }
+                  )->count,
+
+                candidates => $c->db('Candidacy')->search(
+                    undef,                          #
+                    {
+                        select   => 'candidate_id',    #
+                        distinct => 1
+                    }
+                  )->count,
+
             };
         },
         600
