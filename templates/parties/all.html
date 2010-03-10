@@ -1,5 +1,5 @@
 [% parties = results %]
-[% PROCESS 'chrome/header.html', title => 'All Parties' %]
+[% INCLUDE 'chrome/header.html', title => 'All Parties' %]
 
     <h1>All parties</h1>
 
@@ -23,4 +23,4 @@
     
     [% pager_text %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]

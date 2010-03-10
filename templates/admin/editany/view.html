@@ -1,0 +1,12 @@
+[% INCLUDE 'chrome/header.html', title => 'Edit anything' %]
+
+<table>
+    [% FOREACH key = item_columns %]
+    <tr>
+        <th>[% key %]</th>
+        <td>[% item.$key | html %]</td>
+    </tr>
+    [% END %]
+</table>
+
+[% INCLUDE 'chrome/footer.html' %]

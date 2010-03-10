@@ -1,5 +1,5 @@
 [% party = result %]
-[% PROCESS 'chrome/header.html', title => "${party.name} Candidates" %]
+[% INCLUDE 'chrome/header.html', title => "${party.name} Candidates" %]
 
 <h1>[% party.name %] Candidates</h1>
 
@@ -46,5 +46,5 @@
 
     <p>If we are missing a candidate for this party <a href="[% c.uri_for('/candidates/add', {party => party.id}) %]">please add them</a>.</p>
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]
 

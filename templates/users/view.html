@@ -1,4 +1,4 @@
-[% PROCESS 'chrome/header.html', title => user.screen_name %]
+[% INCLUDE 'chrome/header.html', title => user.screen_name %]
 
 <h1>[% user.screen_name | html %]</h1>
 
@@ -6,4 +6,4 @@
     <a href="[% c.uri_for( user.id, 'edit' ) %]">edit</a>
 [% END %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]

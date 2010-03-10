@@ -1,5 +1,5 @@
 [% parties = results %]
-[% PROCESS 'chrome/header.html', title => 'Parties' %]
+[% INCLUDE 'chrome/header.html', title => 'Parties' %]
 
 [% PROCESS 'stubs/big_search_box.html',
     title         => 'Political Parties:',
@@ -7,4 +7,4 @@
     view_all_text => 'View all parties',
 %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]

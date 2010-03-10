@@ -1,5 +1,5 @@
 [% seats = results %]
-[% PROCESS 'chrome/header.html', title => 'Seats' %]
+[% INCLUDE 'chrome/header.html', title => 'Seats' %]
 
 [% PROCESS 'stubs/big_search_box.html',
     title         => 'Constituencies:',
@@ -52,4 +52,4 @@
 
     [% END %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]

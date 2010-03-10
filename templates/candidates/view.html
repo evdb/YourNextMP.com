@@ -7,7 +7,7 @@
          _ candidate.seat_names.join(', ')
         | html;
     
-    PROCESS 'chrome/header.html';
+    INCLUDE 'chrome/header.html';
 %]
 
     <style type="text/css" media="screen">
@@ -96,4 +96,4 @@
 
 [% PROCESS 'links/main_listing.html' %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]

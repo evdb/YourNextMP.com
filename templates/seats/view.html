@@ -1,5 +1,5 @@
 [% seat = result %]
-[% PROCESS 'chrome/header.html', title => seat.name %]
+[% INCLUDE 'chrome/header.html', title => seat.name %]
 
     <h1>[% seat.name %]</h1>
 
@@ -33,4 +33,4 @@
 
 [% PROCESS 'links/main_listing.html' %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]

@@ -1,4 +1,4 @@
-[% PROCESS 'chrome/header.html', title => 'Logout' %]
+[% INCLUDE 'chrome/header.html', title => 'Logout' %]
 
     [% IF c.user %]
 
@@ -14,4 +14,4 @@
     
     [% END %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]

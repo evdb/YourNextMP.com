@@ -1,4 +1,4 @@
-[% PROCESS 'chrome/header.html', title => 'Candidates' %]
+[% INCLUDE 'chrome/header.html', title => 'Candidates' %]
 
     [% PROCESS 'stubs/big_search_box.html',
         title         => 'Find your candidates:',
@@ -6,4 +6,4 @@
         view_all_text => 'View all candidates',
     %]
 
-[% PROCESS 'chrome/footer.html' %]
+[% INCLUDE 'chrome/footer.html' %]
