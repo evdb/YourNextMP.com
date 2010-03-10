@@ -40,7 +40,7 @@ sub view : Chained('get_item') PathPart('') Args(0) {
     $c->stash->{relationships} = [ $result_source->relationships ];
 }
 
-sub edit : Chained('get_item') PathPart('edit') Args(0) {
+sub edit : Chained('get_item') Args(0) {
     my ( $self, $c ) = @_;
 
     my $rs            = $c->stash->{rs};
@@ -71,6 +71,25 @@ sub edit : Chained('get_item') PathPart('edit') Args(0) {
         ? $c->uri_for( $item->path )
         : $c->req->referer
     );
+    $c->detach;
+
+}
+
+sub delete : Chained('get_item') Args(0) {
+    my ( $self, $c ) = @_;
+
+    my $rs            = $c->stash->{rs};
+    my $item          = $c->stash->{item};
+    my $result_source = $item->result_source;
+
+    return    #
+      unless $c->req->method eq 'POST'    #
+          && $c->req->param('confirm_delete');
+
+    $item->delete;
+
+    $c->flash->{message} = "Item has been deleted!";
+    $c->res->redirect( $c->req->referer );
     $c->detach;
 
 }

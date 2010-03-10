@@ -15,7 +15,8 @@
     <li><a href="[% c.uri_for( path )%]">[% c.uri_for( path )%]</a></li>
 [% END %]
 
-<li><a href="[% c.req.uri _ '/edit' %]">edit</a></li>
+    <li><a href="[% c.req.uri _ '/edit' %]">edit</a></li>
+    <li><a href="[% c.req.uri _ '/delete' %]">delete</a></li>
 </ul>
 <br>
 

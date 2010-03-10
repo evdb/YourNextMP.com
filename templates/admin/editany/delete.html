@@ -1,0 +1,15 @@
+[% INCLUDE 'chrome/header.html', title => 'Edit anything' %]
+
+<div class="callout">
+    <h1>Confirm delete</h1>
+
+    <p>Do you really want to delete [% item.resultset_class %] with id [% item.id %]?</p>
+
+    <form method="post" action="?">
+        <label for="confirm_delete">Yes - I want to delete it</label>
+        <input type="checkbox" name="confirm_delete" id="confirm_delete" /><br>
+        <input type="submit" />        
+    </form>
+</div>
+
+[% INCLUDE 'chrome/footer.html' %]
