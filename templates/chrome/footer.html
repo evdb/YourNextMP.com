@@ -61,8 +61,17 @@
         </li>
         [% END %]
 
+
     </ul>    
 
+    [% IF cache_info.hits %]
+    <ul>
+        <li>
+            <img class="icon" src="/static/icons/time.png">
+            Some content was cached - <a href="/auth/login">log in</a> to disable.
+        </li>        
+    </ul>
+    [% END %]
 </div>
 
 [% PROCESS 'stubs/google_analytics.html' %]

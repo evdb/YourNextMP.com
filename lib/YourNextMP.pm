@@ -362,6 +362,7 @@ sub smart_cache {
     # do we have a value from the cache?
     if ( defined $val ) {
         $c->log->debug("cache hit for '$key'");
+        $c->stash->{cache_info}{hits}++;
     }
     else {
         $val = $c->_set_cache( $key => $code, $expires );
