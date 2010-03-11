@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Catalyst::Runtime;    # 5.80;
+use Carp;
 use List::MoreUtils 'uniq';
 use Net::Amazon::S3;
 use Net::Amazon::S3::Client;
@@ -323,24 +324,47 @@ sub finalize {
     return $result;
 }
 
-sub get_or_set {
-    my $c       = shift;
-    my $key     = shift;
-    my $code    = shift;
-    my $timeout = shift || 600;
+=head2 smart_cache
 
-    my $val = $c->cache->get($key);
+    $value = $c->smart_cache(
+        {
+            key  => 'foo_bar',
+            code => sub {
+                return { this => 'is cached' };
+            },
+            expires => 3600,    # how long to cache in seconds
+        }
+    );
 
-    # return it if we can
+Checks for a valid entry in the cache and returns it. If there is no valid entry then the 'code' is executed and the returned value is cached and returned.
+
+If the user is logged in the code is always executed and the result cached. This means that logged-in users never see cached values and update the cached values for others. This is a cheap form of cache invalidation as after edits the user is normally redirected back to the overview page of whatever they edited.
+
+By default C<expires> is set to one hour.
+
+=cut
+
+sub smart_cache {
+    my $c    = shift;
+    my $args = shift;
+
+    # Extract values from args and sanity check
+    my $key     = $args->{key}     || croak "Need a key to cache on";
+    my $code    = $args->{code}    || croak "Need code in case of cache miss";
+    my $expires = $args->{expires} || 3600;
+    my $have_user = $c->user_exists;
+
+    # get value from cache
+    my $val = $have_user         # if user is logged in...
+      ? undef                    # ... don't use cache
+      : $c->cache->get($key);    # ... only for anonymous users
+
+    # do we have a value from the cache?
     if ( defined $val ) {
         $c->log->debug("cache hit for '$key'");
     }
     else {
-        use Time::HiRes qw(time);
-        my $start_time = time;
-        $val = $c->_set_cache( $key => $code, $timeout );
-        my $time_taken = time - $start_time;
-        $c->log->debug("cache miss for '$key' ( $time_taken seconds )");
+        $val = $c->_set_cache( $key => $code, $expires );
     }
 
     return $val;
@@ -348,14 +372,29 @@ sub get_or_set {
 }
 
 sub _set_cache {
-    my $c       = shift;
-    my $key     = shift;
-    my $code    = shift;
-    my $timeout = shift;
+    my ( $c, $key, $code, $expires ) = @_;
 
+    use Time::HiRes qw(time);
+    my $start_time = time;
+
+    # execute the code to generate the value
     my $value = $code->();
 
-    $c->cache->set( $key => $value, $timeout );
+    # store value in the cache (if needed)
+    $c->cache->set( $key => $value, $expires ) if defined $value;
+
+    my $stop_time   = time;
+    my $time_taken  = $stop_time - $start_time;
+    my $req_per_sec = 1 / $time_taken;
+
+    $c->log->debug(
+        sprintf(
+            "cache miss for '%s' ( %0.6fs - %0.3f/s )",
+            $key, $time_taken, $req_per_sec
+        )
+    );
+
+    # and return
     return $value;
 }
 
