@@ -20,10 +20,11 @@ my %FORMATS = (    #
 );
 
 my %MIME_TO_SUFFIX = (
-    'image/jpeg' => 'jpg',
-    'image/jpg'  => 'jpg',
-    'image/gif'  => 'gif',
-    'image/png'  => 'png'
+    'image/jpeg'  => 'jpg',
+    'image/pjpeg' => 'jpg',    # IE use this for progressive jpegs
+    'image/jpg'   => 'jpg',
+    'image/gif'   => 'gif',
+    'image/png'   => 'png'
 );
 
 my %SUFFIX_TO_MIME = reverse %MIME_TO_SUFFIX;
