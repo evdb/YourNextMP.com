@@ -1,40 +1,14 @@
 [ NOW ]
 
-Combine all the name_to_code methods so that they are standard
-
-Enable JSON output for certain pages
-
-Get the bios and contact details for the labour candidates
-
 scrape plaid: http://www.plaidcymru.org/content.php?nID=564;lID=1
-
-fix conservative numbers where several are given: http://www.conservatives.com/People/Members_of_Parliament/Bone_Peter.aspx
-
-get the larger photos for the conservative bigwigs
-
-Strip off silly bits from the conservative names
 
 Contact Francis Davey - barrister with interest in intelectual property and copyright to clarify copyright issues.
 
-Add social networks: facebook, twitter, linked in
-
-Add wikipedia links
-
 Add more details: dob, previous elections, gender, profession, school, university
-
-Prevent codes from being changed except via explicit method
-
-Fix http://cindy.local:3000/candidates/michael_foster (two people with same name)
-
-bios ala  http://www.wildlifenearyou.com/animals/llama/
 
 add hints to seach engines in the header so that list pages don't get indexed.
 
 [ NEXT ]
-
-sane way to serve images (s3)
-
-google analytics
 
 break out (party/seat/candid) page to index/search/all pages
 
