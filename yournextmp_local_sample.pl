@@ -38,6 +38,10 @@
         },
     },
 
+    democracy_club => {    #
+        login_secret => die('set the login signature'),
+    },
+
     # Leave this for testing
     local_test_key => 'local_test_value',
 

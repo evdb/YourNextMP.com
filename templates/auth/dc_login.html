@@ -1,0 +1,28 @@
+[% INCLUDE 'chrome/header.html', title => 'DemocracyClub login', no_links => 1 %]
+
+<div class="callout">
+
+    <h2>Something went wrong...</h2>
+    <br>
+
+    [% IF error_code == 'missing_details' %]
+        <p>We need a DemocracyClub ID, a task and a security signature to log you in.</p>
+    [% ELSIF error_code == 'bad_sig' %]
+        <p>We could not verify that you user id is correct.</p>
+    [% END %]
+
+    <p>
+        Please try again by going to the <a href="http://www.democracyclub.org.uk/">DemocracyClub</a> website<br>
+        and follow links from there.
+    </p>
+
+    <p>
+        If you think this should not have happened please <a href="mailto:hello@yournextmp.com">email us</a>,<br>
+        let us know what you did and we'll fix it.
+    </p>
+
+    <tt>name: '[% c.user.name %]'</tt>
+
+</div>
+
+[% INCLUDE 'chrome/footer.html', no_links => 1  %]

@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use parent qw/Catalyst::Controller/;
 
+use Digest::MD5 qw( md5_hex );
+
 sub login : Local {
     my ( $self, $c ) = @_;
 
@@ -68,6 +70,54 @@ sub logout : Local {
         $c->logout;
         $c->delete_session('logout');
     }
+}
+
+sub dc_login : Local {
+    my ( $self, $c ) = @_;
+    my $params = $c->req->params;
+
+    my $dc_id = delete( $params->{dc_user_id} ) || 0;
+    my $sig   = delete( $params->{sig} )        || '';
+    my $task  = delete( $params->{task} )       || '';
+
+    # check that we have the user_id that we need.
+    unless ($dc_id && $task && $sig) {
+        $c->stash->{error_code} = 'missing_details';
+        return;
+    }
+
+    # check that the signature is correct
+    my $login_secret = $c->config->{democracy_club}{login_secret}
+      || die "need 'login_secret'";
+    my $expected_sig = md5_hex( $dc_id . $login_secret );
+    unless ( $sig eq $expected_sig ) {
+        warn "DC sig mismatch: expected '$expected_sig'"
+          . " but got '$sig' for dc_id '$dc_id'";
+        $c->stash->{error_code} = 'bad_sig';
+        return;
+    }
+
+    # Get the user
+    my $user = $c->db('User')->find_or_create( { dc_id => $dc_id } );
+
+    # set the name if we need to
+    if ( my $name = delete $params->{name} ) {
+        $user->update( { name => $name } )
+          unless $user->name && $user->name eq $name;
+    }
+    elsif ( !$user->name ) {
+        $user->update( { name => "DemocracyClub User " . $user->dc_id } );
+    }
+
+    # re-auth using default realm
+    $c->authenticate( { id => $user->id } )
+      || die "Error authenticating after dc login";
+
+    # now send the user where they need to go
+    my $url = $c->uri_for( '/democracyclub', $task, $params );
+    $c->res->redirect($url);
+    return;
+
 }
 
 sub need_dc_user : Local {
