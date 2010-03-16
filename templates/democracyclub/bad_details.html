@@ -5,51 +5,244 @@
     query_base = "\"${candidate.name}\" ${candidate.party.name}";
 
     queries = [
-        { "name and party"  => "$query_base",                 },        
-        { "contact details" => "$query_base contact details", },
-
-        { "current phone"   => candidate.phone,   },
-        { "current address" => candidate.address, },
-        { "current fax"     => candidate.fax,     },
-        { "current email"   => candidate.email,   },
+        { "name and party"  => google( q => $query_base                   ) },        
+        { "contact details" => google( q => "$query_base contact details" ) },
     ];
+    
+   FOREACH n IN [ 'email', 'phone', 'address', 'fax' ];
+        NEXT UNLESS candidate.$n;
+        query_title = "current $n";
+        queries.push( { $query_title => google( q => candidate.$n ) } );
+    END;
+
+    FOREACH l IN candidate.links;
+        queries.push( { ${l.title} => l.url } );
+    END;
 
 %]
-[% instructions = BLOCK %]
-    
-    <strong>[% candidate.name | html %]</strong><br>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
-    <small>[% candidate.party.name | html %]</small><br>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        [% PROCESS 'stubs/javascript.html',
+            javascript_libraries => [ 'jquery' ]
+         %]
+    
+        <title>Correct bad candidate details</title>
 
-    <small>[% candidate.seat_names.join(', ') | html %]</small>
-    
-    <br><br>
-    
-    We need their <strong>[% bad_detail.detail %]</strong>.
-    
-    <br><br>
-    
-    <a href="[% c.uri_for('bad_details', { skip_detail => bad_detail.id } ) %]">Skip to the next candidate</a>
+        <script type="text/javascript" charset="utf-8">
+            function open_in_iframe ( url ) {
+                $('iframe').attr({ "src" : url });
+            }
 
-[% END %]
-[%-  WRAPPER 'chrome/edit-frame.html',
-        debug        => 0,
-        title        => 'Correct bad candidate details',
-        instructions => instructions,
-        iframe_src   => google( q => query_base ),
-        javascript_libraries => [ 'jquery', 'bad_details.js' ],
-%]
-    [% form.render %]
-        
-    <ul class="canned_searches">
-        [% FOREACH q IN queries %]
-            [% q = q.pairs.0 %]
-            [% NEXT UNLESS q.value %]
-        <li><a href="javascript:open_in_iframe('[% google( q => "${q.value}" ) %]')">
-            <img src="/static/icons/magnifier.png" alt="search">
-            [% q.key || 'default' %]
-        </a></li>
-        [% END %]
-    </ul>
-      
-[% END %]
+            $( function () {
+                
+                // create the extra field links
+                $('div.secondary').each(
+                    function ( index, element ) {
+                        var a     = $('<a href="#"/>');
+                        var li    = $('<li></li>');
+                        var name = $('label', element ).attr('for');
+
+                        if ( !name )
+                            return true ;
+
+                        a.html( name );
+                        a.click(function() {
+                            $(element).slideToggle();
+                            return false;
+                        });
+
+                        li.append( a );
+
+                        $('#extra_fields').append( li ).show();
+                    }
+                );
+                    
+            } );
+
+        </script>
+
+        <style type="text/css" media="screen">
+            * {
+            	margin:0;
+            	padding:0;
+            }
+
+            html,body {
+            	height:100%;
+            	width:100%;
+            	overflow:hidden;
+            }
+
+            body {
+            	font-family:Georgia;
+            }
+
+            table.layout {
+            	height:100%;
+            	width:100%;
+            	table-layout:static;
+            	border-collapse:collapse;
+            }
+
+            .header {
+            	border-bottom:4px solid #444;
+            	background:#444 url('/static/icons/frame-tile.png');
+            }
+
+            .content {
+            	height:100%;
+            }
+
+            iframe {
+            	height: 100%;
+            	width:  100%;
+            }
+
+            td {
+                vertical-align: top;
+                text-align: center;
+            }
+
+            /*-----------------------*/
+
+            #instructions {
+            	width:20%;
+            }
+
+            #main_content {
+                width: 50%;
+            }
+
+            #dc-scoreboard {
+            	width:30%;
+            	background: url('/static/duck-house.jpg');
+            	text-align: left;
+            	padding: 0.5em 1em;
+            }
+
+            /*------------------------------*/
+
+            #instructions div {
+            	font-size:120%;
+            	text-align:center;
+            	background-color:#ccf;
+            	border:3px solid #88f;
+                margin: 4px;
+            	padding:0.3em;
+            }
+
+            #main_content div {
+            	padding:0.3em;
+            }
+
+            form table {
+            	width:100%;
+            }
+            
+            label, input {
+                font-size: 140%;
+            }
+
+            .secondary {
+                display: none;
+            }
+            
+            div.error {
+                display: block;
+            }
+            
+            span.error_message {
+                display: block;
+                font-size: 80%;
+                color: red;
+            }
+            
+            #extra_fields {
+                display: none;                
+            }
+            
+            #extra_fields li {
+                display: inline;
+                padding: 0 0.5em;
+            }
+            
+            .discreet {
+                opacity: 0.5;
+                font-size: 70%;
+            }
+            
+            .discreet:hover {
+                opacity: 1;
+            }
+            
+
+        </style>
+    </head>
+    <body>
+        <table class="layout">
+            <tr class="header">
+                <td id="instructions">
+                    <div>
+                        Your next task is to find the <strong>[% bad_detail.detail %]</strong> for <strong>[% candidate.name | html %]</strong> - worth XXX points.
+                    </div>
+                </td>
+
+                <td id="main_content">
+                    <div>
+                        [% form.render_start %]
+                        [% FOREACH f = form.fields %]
+                            [% NEXT IF f.inactive %]
+                            [% f.render %]
+
+                        [% END %]
+
+                        <ul id="extra_fields">
+                            <li>Find for extra points:</li>
+                        </ul>
+
+                        [% form.render_end %]
+
+                        Helpful searches: <select>
+                            [% FOREACH q IN queries %]
+                                [% q = q.pairs.0 %]
+                                [% NEXT UNLESS q.value %]
+                                <option onclick="open_in_iframe('[% q.value %]')">
+                                    [% q.key || 'default' %]
+                                </option>
+                            [% END %]
+                        </select>
+                        
+                    </div>
+                </td>
+                
+                <td id="dc-scoreboard">
+
+
+                    <h3>You now have <strong>123</strong> points!</h3>
+
+                    <ul>
+                        <li><strong>Leaderboard</strong></li>
+                        <li>Abbi</li>
+                        <li>Duncan</li>
+                        <li>Matthew</li>
+                    </ul>
+
+
+                </td>
+                
+            </tr>
+            <tr>
+                <td class="content" colspan=3>
+                    <iframe id="search-iframe" src="[% google( q => query_base ) %]" frameborder="0"></iframe>
+                </td>
+            </tr>
+        </table>
+
+        [% PROCESS 'stubs/google_analytics.html' %]
+
+    </body>
+</html>
+

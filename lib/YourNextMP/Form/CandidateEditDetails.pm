@@ -50,7 +50,7 @@ has_field 'fax' => (
 has_field 'address' => (
     type  => 'TextArea',
     label => 'Postal address',
-    cols  => 60,
+    cols  => 40,
     rows  => 3,
     apply => [
         {

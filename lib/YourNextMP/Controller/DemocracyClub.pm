@@ -71,8 +71,12 @@ sub get_existing_bad_detail : Private {
     $id =~ s{\D+}{}g;
 
     # check that we should not skip this one
-    if ( my $id_to_skip = $c->req->param('skip_detail') ) {
-        $id = '' if $id_to_skip eq $id;
+    if ( $c->req->param('skip') ) {
+
+        # redirect to ourselves with no arguments - otherwise the bad_detail_id
+        # persists in the form
+        $c->res->redirect( $c->uri_for('bad_details') );
+        $c->detach;
     }
 
     # If there was no id then we can't find it
@@ -112,7 +116,7 @@ sub prepare_bad_detail_form : Private {
             $field->value('');
         }
         elsif ($existing_value_is_bad) {
-            $field->css_class('discreet');
+            $field->css_class('secondary');
             $field->value('');
         }
         else {
