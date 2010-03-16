@@ -164,7 +164,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-25 15:59:02
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:vk/A75DGKsn5YtLp7WtZUA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Qs+2o6HZSDJN+oAzcg7GbQ
 
 sub _store_edits { 0; }
 
