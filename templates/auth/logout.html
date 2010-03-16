@@ -1,17 +1,23 @@
 [% INCLUDE 'chrome/header.html', title => 'Logout' %]
 
+<div class="callout">
+
     [% IF c.user %]
 
-    <h1>Confirm logging out:</h1>
+    <h2>Confirm:</h2>
 
     <form method="post" action="[% c.uri_for('logout') %]">
-        <input type="submit" value="Log out"/>
+        <input type="submit" value="Yes - I want to log out."/>
     </form>
 
     [% ELSE %]
     
-    <h1>You are now logged out.</h1>
+    <h2>You are now logged out.</h2>
+    
+    <p>If you want you can <a href="/auth/login">login again</a>.</p>
     
     [% END %]
+
+</div>
 
 [% INCLUDE 'chrome/footer.html' %]
