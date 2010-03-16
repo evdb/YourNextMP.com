@@ -17,6 +17,22 @@ my $parliament_error_message    #
 has_field 'email' => (
     type  => 'Email',
     label => 'Email',
+
+    # Do this as a trim as otherwise the builtin 'is email' check runs before
+    # our transform
+    trim => {
+        transform => sub {
+            my $email = $_[0];
+            return undef unless defined $email;
+
+            for ($email) {
+                s{ \A \s+ }{}xms;         # trim
+                s{ \s+ \z }{}xms;         # trim
+                s{ \A mailto: }{}ixms;    # clean up drag and drop copies
+            }
+            return $email;
+        },
+    },
     apply => [
         {
             check => sub { !$candidate_rs->is_parliamentary_email( $_[0] ) },
