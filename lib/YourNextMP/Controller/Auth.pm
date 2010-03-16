@@ -63,10 +63,17 @@ sub logout : Local {
     my ( $self, $c ) = @_;
 
     # only actually do the logout if the form was posted
-    $c->logout if $c->req->method eq 'POST';
-
     # really blow the session away so that there is no cookie
-    $c->delete_session('logout');
+    if ( $c->req->method eq 'POST' ) {
+        $c->logout;
+        $c->delete_session('logout');
+    }
+}
+
+sub need_dc_user : Local {
+    my ( $self, $c ) = @_;
+
+    # pass thru
 }
 
 =head1 AUTHOR

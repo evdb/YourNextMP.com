@@ -94,6 +94,12 @@ __PACKAGE__->table("users");
   default_value: undef
   is_nullable: 1
 
+=head2 dc_id
+
+  data_type: integer
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -161,11 +167,18 @@ __PACKAGE__->add_columns(
         default_value => undef,
         is_nullable   => 1,
     },
+    "dc_id",
+    {
+        data_type     => "integer",
+        default_value => undef,
+        is_nullable   => 1,
+    },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "users_email_key", ["email"] );
 __PACKAGE__->add_unique_constraint( "users_openid_identifier_key",
     ["openid_identifier"] );
+__PACKAGE__->add_unique_constraint( "users_dc_id_key", ["dc_id"] );
 
 =head1 RELATIONS
 
@@ -199,7 +212,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:tA5Njw/zfgBv1JHlfYPsFg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dSQe6M3b27bkEN2BxIqmQA
 
 =head2 edits
 

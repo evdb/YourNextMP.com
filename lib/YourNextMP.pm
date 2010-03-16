@@ -143,7 +143,7 @@ sub return_from_diversion {
     $c->detach;
 }
 
-=head2 require_user, require_admin_user
+=head2 require_user, require_dc_user, require_admin_user
 
     $c->require_user( "Reason user is required - passed to login template" );
 
@@ -178,6 +178,20 @@ sub require_admin_user {
         $c->uri_for('/auth/login'),    #
         { reason => $reason }
     );
+}
+
+sub require_dc_user {
+    my $c      = shift;
+    my $reason = shift;
+
+    # If we have a user return
+    return 1
+      if $c->user_exists
+          && $c->user->dc_id;
+
+    # no user - explain the problem
+    $c->res->redirect( $c->uri_for('/auth/need_dc_user') );
+
 }
 
 =head2 user_is_admin

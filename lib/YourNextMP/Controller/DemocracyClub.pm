@@ -8,7 +8,7 @@ use YourNextMP::Form::CandidateEditBadDetails;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
-    $c->require_user('Please log in to access this section of the site');
+    $c->require_dc_user('Please log in to access this section of the site');
     return 1;
 }
 
