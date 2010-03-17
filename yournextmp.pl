@@ -60,6 +60,7 @@
     },
 
     democracy_club => {    #
+        points_url        => 'http://www.democracyclub.org.uk/ynmp/api',
         bad_detail_values => {
             email   => 4,
             phone   => 3,
