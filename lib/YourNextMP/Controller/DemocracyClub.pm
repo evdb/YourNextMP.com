@@ -118,7 +118,6 @@ sub prepare_bad_detail_form : Private {
           ->first;
 
         if ( $detail eq $bad_detail->detail ) {
-            $field->required(1);
             $field->value('');
         }
         elsif ($existing_value_is_bad) {
