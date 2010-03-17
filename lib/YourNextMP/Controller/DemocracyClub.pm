@@ -19,6 +19,12 @@ sub bad_details : Local {
     $c->forward('prepare_bad_detail_form');
     $c->forward('process_bad_detail_form');
 
+    # should we show the explanation
+    unless ( $c->session->{bad_details}{explanation_shown} ) {
+        $c->session->{bad_details}{explanation_shown} = 1;
+        $c->stash->{show_explanation} = 1;
+    }
+
     return 1;
 }
 

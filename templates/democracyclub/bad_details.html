@@ -105,6 +105,10 @@
                 vertical-align: top;
                 text-align: center;
             }
+            
+            p {
+                margin-bottom: 1em;
+            }
 
             /*-----------------------*/
 
@@ -178,6 +182,24 @@
                 opacity: 1;
             }
             
+            #explanation {
+                position: absolute;
+                width: 100%;
+                font-size: 120%;
+            }
+
+            #explanation div {
+                width: 60%;
+            	background-color:#ccf;
+            	border: 4px solid #88f;
+                opacity: 0.9;
+                margin: 3em auto 0 auto;
+                padding: 2em;
+            }
+
+            #explanation button {
+                font-size: 200%;
+            }
 
         </style>
     </head>
@@ -236,6 +258,23 @@
             </tr>
             <tr>
                 <td class="content" colspan=3>
+                    [% IF show_explanation %]
+                    <div id="explanation">
+                        <div>
+                        
+                            <h1>Welcome!</h1>
+                        
+                            <p>We need you to help us find contact details for the candidates so that we (and others) can contact them.</p>
+                        
+                            <p>Above is a form to enter the details into.</p>
+                            
+                            <p>Under this notice is a Google search that might help you.</p>
+                            
+                            <button onclick="$('#explanation').fadeOut();">Thanks - let me get started!</button>
+                        
+                        </div>
+                    </div>
+                    [% END %]
                     <iframe id="search-iframe" src="[% google( q => query_base ) %]" frameborder="0"></iframe>
                 </td>
             </tr>
