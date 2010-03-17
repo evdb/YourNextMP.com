@@ -8,8 +8,8 @@
 
     'Plugin::Cache' => {
         backend => {
-            class   => "Cache::Memcached::libmemcached",
-            servers => ['127.0.0.1:11211'],
+            class     => "Cache::Memcached::libmemcached",
+            servers   => ['127.0.0.1:11211'],
             namespace => 'default:',
         },
     },
@@ -56,6 +56,15 @@
                 },
                 store => { class => 'Null', },
             },
+        }
+    },
+
+    democracy_club => {    #
+        bad_detail_values => {
+            email   => 4,
+            phone   => 3,
+            address => 2,
+            fax     => 1,
         }
     },
 

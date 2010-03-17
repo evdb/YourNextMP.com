@@ -5,6 +5,8 @@ use warnings;
 use parent qw/Catalyst::Controller/;
 
 use YourNextMP::Form::CandidateEditBadDetails;
+use Digest::MD5 qw( md5_hex );
+use LWP::Simple;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
@@ -148,10 +150,76 @@ sub process_bad_detail_form : Private {
 sub bad_detail_succesfully_updated : Private {
     my ( $self, $c ) = @_;
 
+    my $bad_detail = $c->stash->{bad_detail};
+    my $form       = $c->stash->{form};
+
+    # Work out how much the user scored
+    my $scores = $c->config->{democracy_club}{bad_detail_values};
+
+    my @values_added = grep { $form->field($_)->value } keys %$scores;
+
+    if (@values_added) {
+
+        my $total_score = 0;
+        $total_score += $scores->{$_} for @values_added;
+
+        my $summary = sprintf "%s for %s (%s)", join( ', ', @values_added ),
+          $bad_detail->candidate->name, $bad_detail->candidate->party->name;
+
+        my $dc_args = {
+            points_awarded => $total_score,
+            summary        => $summary,
+        };
+
+        $c->forward( 'ping_dc', [$dc_args] );
+    }
+
     # Form was good - redirect back to ourselves to pick up a new bad_detail to
     # process
     $c->res->redirect( $c->uri_for( '/' . $c->req->action ) );
     $c->detach;
+}
+
+sub ping_dc : Private {
+    my ( $self, $c, $args ) = @_;
+
+    # get the arguments together and apply defaults
+    my $dc_args = {
+        dc_user_id     => $c->user->dc_id,
+        points_awarded => 0,
+        summary        => '',
+        task           => 'bad_details',
+        %$args
+    };
+
+    # generate the sig
+    my $login_secret = $c->config->{democracy_club}{login_secret}
+      || die "need 'login_secret'";
+    $dc_args->{sig} =
+      md5_hex( $dc_args->{dc_user_id} . $dc_args->{task} . $login_secret );
+
+    # create the URL
+    my $dc_url = URI->new( $c->config->{democracy_club}{points_url} );
+    $dc_url->query_form($dc_args);
+
+    eval {
+
+        # hit the url
+        my $content = get($dc_url);
+
+        # deal with a bad request
+        if ($content) {    # decode content and save data
+            $c->session->{dc_points} = JSON->new->decode($content);
+        }
+        else {
+            warn "No content returned for request to $dc_url";
+        }
+    };
+
+    warn $@ if $@;
+
+    return 1;
+
 }
 
 1;

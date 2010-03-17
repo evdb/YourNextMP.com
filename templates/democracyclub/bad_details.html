@@ -18,6 +18,11 @@
     FOREACH l IN candidate.links;
         queries.push( { ${l.title} => l.url } );
     END;
+    
+    bad_detail_values = c.config.democracy_club.bad_detail_values;    
+
+    total_points = c.session.dc_points.total_points || 0;
+    leader_board = c.session.dc_points.leader_board || [];
 
 %]
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -122,9 +127,9 @@
 
             #dc-scoreboard {
             	width:30%;
-            	background: url('/static/duck-house.jpg');
+            	background: url('/static/dc_logo_plain.jpg') no-repeat top left #fff;
             	text-align: left;
-            	padding: 0.5em 1em;
+            	padding: 30px 0 0 43px;
             }
 
             /*------------------------------*/
@@ -182,6 +187,10 @@
                 opacity: 1;
             }
             
+            #dc-scoreboard li {
+                list-style: none;
+            }
+            
             #explanation {
                 position: absolute;
                 width: 100%;
@@ -208,7 +217,7 @@
             <tr class="header">
                 <td id="instructions">
                     <div>
-                        Your next task is to find the <strong>[% bad_detail.detail %]</strong> for <strong>[% candidate.name | html %]</strong> - worth XXX points.
+                        Your next task is to find the <strong>[% bad_detail.detail %]</strong> for <strong>[% candidate.name | html %]</strong> - worth [% bad_detail_values.${bad_detail.detail} %] points.
                     </div>
                 </td>
 
@@ -242,16 +251,17 @@
                 
                 <td id="dc-scoreboard">
 
-
-                    <h3>You now have <strong>123</strong> points!</h3>
+                    <h3>You now have <strong>[% total_points %]</strong> points!</h3>
 
                     <ul>
                         <li><strong>Leaderboard</strong></li>
-                        <li>Abbi</li>
-                        <li>Duncan</li>
-                        <li>Matthew</li>
+                        [% FOREACH l IN leader_board %]
+                            <li>[% l.name | html %]</li>
+                            [% LAST IF loop.count > 4 %]
+                        [% END %]
                     </ul>
 
+                    <!-- <img style="float: right" width="128" height="77" alt="duckhouse" src="/static/duck-house.jpg"> -->
 
                 </td>
                 
