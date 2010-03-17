@@ -107,12 +107,7 @@ __PACKAGE__->add_columns(
     "email",
     { data_type => "text", default_value => undef, is_nullable => 1 },
     "ip",
-    {
-        data_type     => "character varying",
-        default_value => undef,
-        is_nullable   => 1,
-        size          => 20,
-    },
+    { data_type => "text", default_value => undef, is_nullable => 1, },
     "referer",
     { data_type => "text", default_value => undef, is_nullable => 1 },
     "suggestion",
@@ -164,7 +159,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-25 15:59:02
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:Qs+2o6HZSDJN+oAzcg7GbQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TlC59wDkEEoog177eirIiA
 
 sub _store_edits { 0; }
 
