@@ -169,6 +169,8 @@ sub bad_detail_succesfully_updated : Private {
         my $dc_args = {
             points_awarded => $total_score,
             summary        => $summary,
+            candidate_code => $bad_detail->candidate->code,
+            candidate_id   => $bad_detail->candidate->id,
             candidate_name => $bad_detail->candidate->name,
             party_name     => $bad_detail->candidate->party->name,
             details_added  => join( ',', @values_added ),
@@ -192,6 +194,8 @@ sub ping_dc : Private {
         points_awarded => 0,
         summary        => '',
         task           => 'bad_details',
+        candidate_code => '',
+        candidate_id   => '',
         candidate_name => '',
         party_name     => '',
         details_added  => '',
