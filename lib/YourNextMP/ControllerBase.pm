@@ -65,6 +65,8 @@ sub all_empty : PathPart('all') Chained('result_base') {
 sub all : PathPart('all') Chained('result_base') Args(1) {
     my ( $self, $c, $page_number ) = @_;
 
+    $c->can_do_output('json');
+
     my $results_per_page = 50;
 
     # clean up the page_number
