@@ -78,12 +78,29 @@ sub can_do_output {
     return 1;
 }
 
-sub output_is {
-    my $c      = shift;
-    my $format = shift;
+=head2 output_is
 
+    $bool = $c->output_is('json');
+
+Returns true if the output should be json. Requires both that this output was requested in the url and permitted in the controller.
+
+=cut
+
+sub output_is {
+    my $c       = shift;
+    my $desired = shift;
+
+    # 'html' always allowed
+    return 1 if $desired eq 'html';
+
+    # get the output that they want and the allowed outputs
     my $requested = $c->req->param('output') || 'html';
-    return $format eq $requested;
+    my @allowed = ( @{ $c->stash->{available_output_formats} || [] } );
+
+    # check that they asked for it and it is allowed
+    return    #
+      $desired eq $requested    #
+      && grep { $desired eq $_ } @allowed;
 }
 
 =head2 divert_to
