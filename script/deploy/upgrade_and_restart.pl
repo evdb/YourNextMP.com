@@ -42,7 +42,8 @@ my $control_script = '/etc/init.d/yournextmp_production.sh';
 
 # stop the server
 system $control_script, 'stop';
-system "rm $current_production_dir";
-system "ln -s $new_production_dir $current_production_dir";
+system "rm -v $current_production_dir";
+system "ln -s -v $new_production_dir $current_production_dir";
+system "chown -v www-data:www-data $current_production_dir";
 system $control_script, 'start';
 
