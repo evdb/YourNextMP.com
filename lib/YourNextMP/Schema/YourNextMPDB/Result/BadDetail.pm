@@ -152,10 +152,10 @@ sub new {
 }
 
 my %PRIORITIES = (
-    email   => 10,
-    phone   => 20,
-    address => 30,
-    fax     => 40,
+    email   => 1,
+    phone   => 3,
+    address => 5,
+    fax     => 10,
 );
 
 sub insert {

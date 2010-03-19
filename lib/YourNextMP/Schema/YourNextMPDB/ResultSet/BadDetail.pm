@@ -36,8 +36,7 @@ sub grab {
                 { act_after => { '<=' => $now } },    #
                 {
                     order_by => [
-                        'priority',                   # most important first
-                        'act_count',                  # less attempted first
+                        'priority + act_count', # most doable first
                     ],
                     rows => 1,
                 }
