@@ -36,7 +36,6 @@ iframe {
 
 td {
     vertical-align: top;
-    text-align: center;
 }
 
 p {
@@ -79,7 +78,21 @@ form table {
 	width:100%;
 }
 
-label, input {
+fieldset {
+    border: none;
+}
+
+#fields {
+    text-align: right;
+}
+
+label {
+    font-family: Helvetica;
+    position: absolute;
+    padding: 2px;
+}
+
+input {
     font-size: 140%;
 }
 
@@ -89,6 +102,13 @@ label, input {
 
 div.error {
     display: block;
+}
+
+.action_button input {
+    width: 10em;
+}
+
+.skip_state input {
 }
 
 span.error_message {
@@ -104,15 +124,6 @@ span.error_message {
 #extra_fields li {
     display: inline;
     padding: 0 0.5em;
-}
-
-.discreet {
-    opacity: 0.5;
-    font-size: 70%;
-}
-
-.discreet:hover {
-    opacity: 1;
 }
 
 #dc-scoreboard li {

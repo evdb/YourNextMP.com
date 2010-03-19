@@ -27,6 +27,11 @@ sub bad_details : Local {
         $c->stash->{show_explanation} = 1;
     }
 
+    # get the scoreboard details
+    unless ( $c->session->{dc_points} ) {
+        $c->forward( 'ping_dc', [ {} ] );
+    }
+
     return 1;
 }
 
@@ -79,7 +84,7 @@ sub get_existing_bad_detail : Private {
     $id =~ s{\D+}{}g;
 
     # check that we should not skip this one
-    if ( $c->req->param('skip') ) {
+    if ( $c->req->param('submit') && $c->req->param('submit') =~ m{skip}i ) {
 
         # redirect to ourselves with no arguments - otherwise the bad_detail_id
         # persists in the form

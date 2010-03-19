@@ -6,18 +6,18 @@
 
     queries = [
         { "name and party"  => google( q => $query_base                   ) },        
-        { "contact details" => google( q => "$query_base contact details" ) },
+#        { "contact details" => google( q => "$query_base contact details" ) },
     ];
     
-   FOREACH n IN [ 'email', 'phone', 'address', 'fax' ];
-        NEXT UNLESS candidate.$n;
-        query_title = "current $n";
-        queries.push( { $query_title => google( q => candidate.$n ) } );
-    END;
-
-    FOREACH l IN candidate.links;
-        queries.push( { ${l.title} => l.url } );
-    END;
+#   FOREACH n IN [ 'email', 'phone', 'address', 'fax' ];
+#        NEXT UNLESS candidate.$n;
+#        query_title = "current $n";
+#        queries.push( { $query_title => google( q => candidate.$n ) } );
+#    END;
+#
+#    FOREACH l IN candidate.links;
+#        queries.push( { ${l.title} => l.url } );
+#    END;
     
     bad_detail_values = c.config.democracy_club.bad_detail_values;    
 
@@ -42,36 +42,38 @@
             <tr class="header">
                 <td id="instructions">
                     <div>
-                        Your next task is to find the <strong>[% bad_detail.detail %]</strong> for <strong>[% candidate.name | html %]</strong> - worth [% bad_detail_values.${bad_detail.detail} %] points.
+                        Find the <strong>[% bad_detail.detail %]</strong> for:<br>
+                        <strong>[% candidate.name | html %]</strong><br>
+                        <small>[% candidate.party.name | html %]</small><br>
+                        <small>[% candidate.seat_names | html %]</small><br>
+                        worth [% bad_detail_values.${bad_detail.detail} %] points.
                     </div>
                 </td>
 
                 <td id="main_content">
-                    <div>
-                        [% form.render_start %]
+                    [% form.render_start %]
+                    <table>
+                        <tr>
+                            <td>
+                        
+                        <div id="fields">                        
                         [% FOREACH f = form.fields %]
                             [% NEXT IF f.inactive %]
+                            [% NEXT IF f.type == 'Submit' %]
                             [% f.render %]
-
                         [% END %]
-
-                        <ul id="extra_fields">
-                            <li>Find for extra points:</li>
-                        </ul>
-
-                        [% form.render_end %]
-
-                        Helpful searches: <select>
-                            [% FOREACH q IN queries %]
-                                [% q = q.pairs.0 %]
-                                [% NEXT UNLESS q.value %]
-                                <option onclick="open_in_iframe('[% q.value %]')">
-                                    [% q.key || 'default' %]
-                                </option>
-                            [% END %]
-                        </select>
-                        
-                    </div>
+                        </div>
+                    
+                        </td>
+                        <td>
+                            [% FOREACH f = form.fields %]
+                                [% NEXT IF f.type != 'Submit' %]
+                                [% f.render %]
+                            [% END %]                            
+                        </td>
+                        </tr>
+                   </table>
+                   [% form.render_end %]
                 </td>
                 
                 <td id="dc-scoreboard">
@@ -86,7 +88,7 @@
                         [% END %]
                     </ul>
 
-                    <!-- <img style="float: right" width="128" height="77" alt="duckhouse" src="/static/duck-house.jpg"> -->
+                    <img style="float: right" alt="duckhouse" src="/static/duck-house.jpg">
 
                 </td>
                 

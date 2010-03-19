@@ -12,14 +12,9 @@ has_field 'bad_detail_id' => (    #
 );
 
 has_field 'submit' => (           #
-    type  => 'Submit',
-    value => 'Done - show me the next one!',
-);
-
-has_field 'skip' => (             #
     type      => 'Submit',
-    value     => "Skip this one",
-    css_class => 'discreet',
+    value     => 'Skip',
+    css_class => 'action_button skip_state'
 );
 
 no HTML::FormHandler::Moose;
