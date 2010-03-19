@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use local::lib '/var/www/perl5';
+
 use autodie;
 
 use autodie qw(:all);
