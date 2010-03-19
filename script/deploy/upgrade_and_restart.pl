@@ -32,11 +32,7 @@ my ($highest_dir_name) =
   ->name('yournextmp_production_*')         #
   ->depth(1)                                #
   ->in('.');
-
-my ($dir_version_number) = $highest_dir_name =~ m{_(\d+)$};
-$dir_version_number++;
-my $new_production_dir =
-  $root_dir->subdir("yournextmp_production_$dir_version_number");
+my $new_production_dir = $root_dir->subdir($highest_dir_name);
 
 my $control_script = '/etc/init.d/yournextmp_production.sh';
 
@@ -44,6 +40,6 @@ my $control_script = '/etc/init.d/yournextmp_production.sh';
 system $control_script, 'stop';
 system "rm -v $current_production_dir";
 system "ln -s -v $new_production_dir $current_production_dir";
-system "chown -v www-data:www-data $current_production_dir";
 system $control_script, 'start';
 
+print "\n\nALL DONE\n\n";
