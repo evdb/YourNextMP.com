@@ -17,9 +17,14 @@
 
 <tr>
 
+    <td>
+        <a href="[% c.uri_for( 'view', s.id ) %]">
+            <img class="icon"title="[% s.type %]" src="/static/icons/[% s.type == 'correction' ? 'exclamation' : 'lightbulb' %].png">
+            [% s.id %]
+        </a>
+    </td>
 
     <td>[% s.status %]</td>
-    <td><img class="icon"title="[% s.type %]" src="/static/icons/[% s.type == 'correction' ? 'exclamation' : 'lightbulb' %].png"></td>
 
     <td>
         [% IF s.user %]

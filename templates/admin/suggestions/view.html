@@ -1,0 +1,22 @@
+[% WRAPPER
+        'chrome/edit-frame.html',
+        debug        => 0,
+        title        => 'Suggestion',
+        instructions => "Suggestion",
+        iframe_src   => result.referer,
+        return_url => {
+            url => c.uri_for( '' ),
+            text => "Return to list of suggestions",
+        }
+%]
+
+    <p>[% result.user.screen_name || 'Anonymous user' %] ([% result.created.dmy('/') %])</p>
+    <p><b>[% result.type %]:</b> [% result.suggestion %]</p>
+
+    <form action="" method="post">
+        <input type="submit" name="done" value="Mark as done" /> 
+        <input type="submit" name="skip" value="Skip on to the next one" /> 
+        <input type="submit" disabled=disabled name="email" value="Send user a message" /> 
+    </form>
+
+[% END %]
