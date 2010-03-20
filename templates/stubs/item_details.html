@@ -6,15 +6,20 @@
 
     <li class="[% item.class %] [% 'discreet' IF ! item.content %]">
         <img class="icon" src="[% item.src %]" alt="[% item.alt %]" title="[% item.alt %]" />
-        [% IF item.content %]
+
+        [% IF item.contents %]
+            [% FOREACH h IN item.contents -%]
+                [%- "<a href=\"${h.href}\">" IF h.href -%]
+                    [%- h.content || 'missing' _ item.alt | html -%]
+                [%- "</a>" IF h.href -%]
+            [%- END %]
+        [% ELSIF item.content %]
             [% "<a href=\"${item.href}\">" IF item.href -%]
                 [%- item.content | html -%]
             [%- "</a>" IF item.href %]
         [% ELSE %]
-            missing
+            [% 'missing ' _ item.alt | html %]
         [% END %]
     </li>
     [% END %]
-
-
 </ul>

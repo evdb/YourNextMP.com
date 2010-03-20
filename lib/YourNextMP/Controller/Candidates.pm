@@ -7,6 +7,7 @@ use parent 'YourNextMP::ControllerBase';
 use YourNextMP::Form::CandidateAdd;
 use YourNextMP::Form::CandidateEditDetails;
 use YourNextMP::Form::CandidateEditPhoto;
+use YourNextMP::Form::CandidateEditPersonal;
 
 sub result_base : PathPart('candidates') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -94,15 +95,31 @@ sub edit_photo : PathPart('edit_photo') Chained('result_find') Args(0) {
     my $upload = $c->req->upload('photo_upload');
     $params->{photo_upload} = $upload if $upload;
 
-    use Data::Dumper;
-    local $Data::Dumper::Sortkeys = 1;
-    warn Dumper($params);
-
     # process the form and return if there were errors
     return if !$form->process( params => $params );
 
     # We have a new candidate
     $candidate->update( { can_scrape => 0 } );
+    $c->res->redirect( $c->uri_for( '/candidates', $candidate->code ) );
+    $c->detach;
+
+}
+
+sub edit_personal : PathPart('edit_personal') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
+
+    # We need logged in users to create candidates
+    $c->require_user("Please log in to edit candidate's personal details");
+
+    # create the form and place it on the stash
+    my $candidate = $c->stash->{result};
+    my $form =
+      YourNextMP::Form::CandidateEditPersonal->new( item => $candidate );
+    $c->stash( form => $form );
+
+    # process the form and return if there were errors
+    return if !$form->process( params => $c->req->params );
+
     $c->res->redirect( $c->uri_for( '/candidates', $candidate->code ) );
     $c->detach;
 

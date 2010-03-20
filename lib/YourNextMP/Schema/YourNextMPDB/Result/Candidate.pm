@@ -25,7 +25,7 @@ __PACKAGE__->table("candidates");
 =head2 id
 
   data_type: bigint
-  default_value: SCALAR(0xa00a60)
+  default_value: SCALAR(0xa0741c)
   is_auto_increment: 1
   is_nullable: 0
 
@@ -107,12 +107,42 @@ __PACKAGE__->table("candidates");
 =head2 can_scrape
 
   data_type: boolean
-  default_value: SCALAR(0xa06f0c)
+  default_value: SCALAR(0xa07128)
   is_nullable: 0
 
 =head2 last_scraped
 
   data_type: timestamp without time zone
+  default_value: undef
+  is_nullable: 1
+
+=head2 dob
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
+=head2 gender
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
+=head2 school
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
+=head2 university
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
+=head2 positions
+
+  data_type: text
   default_value: undef
   is_nullable: 1
 
@@ -209,6 +239,16 @@ __PACKAGE__->add_columns(
         default_value => undef,
         is_nullable   => 1,
     },
+    "dob",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "gender",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "school",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "university",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "positions",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "candidates_code_key", ["code"] );
@@ -274,24 +314,29 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-02-26 17:55:34
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3JMAKgHTyh2MEfu45apa/w
+# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-20 16:46:38
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:64Z0JkNKaDTBtQP24eBrNQ
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 sub public_fields {
     return {
-        code    => {},
-        updated => {},
-        path    => {},
-        name    => {},
-        email   => {},
-        phone   => {},
-        fax     => {},
-        address => {},
-        image   => { cache_on => 'image_id' },
-        party   => { cache_on => 'party_id' },
-        seats   => { is_rel => 1 },
+        code       => {},
+        updated    => {},
+        path       => {},
+        name       => {},
+        email      => {},
+        phone      => {},
+        fax        => {},
+        address    => {},
+        dob        => {},
+        gender     => {},
+        school     => {},
+        university => {},
+        positions  => {},
+        image      => { cache_on => 'image_id' },
+        party      => { cache_on => 'party_id' },
+        seats      => { is_rel => 1 },
     };
 }
 
@@ -534,6 +579,47 @@ sub seat_names {
 
     return map { $_->name } $self->seats;
 
+}
+
+=head2 age
+
+    $age_string = $candidate->age( $reference_dt );
+
+Returns a string representing the candidates age, or undef if no dob is stored. Returns 'xx years (dd/mm/yyyy)' if a full date given or 'xx/yy years (yyyy)' if only year is stored.
+
+If no C<$reference_dt> is provided uses today's date.
+
+=cut
+
+use DateTime;
+
+sub age {
+    my $self = shift;
+    my $reference_dt = shift || DateTime->now;
+
+    my $dob = $self->dob || return undef;
+
+    my $age = '';
+    if ( $dob =~ m{/} ) {
+        my ( $dd, $mm, $yyyy ) = split m{/}, $dob;
+
+        my $diff = $reference_dt -
+          DateTime->new( year => $yyyy, month => $mm, day => $dd );
+
+        $age = $diff->years;
+    }
+    else {
+        my $yyyy = $dob;
+
+        my $min_diff = $reference_dt -
+          DateTime->new( year => $yyyy, month => 12, day => 31 );
+        my $max_diff =
+          $reference_dt - DateTime->new( year => $yyyy, month => 1, day => 1 );
+
+        $age = $min_diff->years . ' or ' . $max_diff->years;
+    }
+
+    return "$age years old (born $dob)";
 }
 
 1;

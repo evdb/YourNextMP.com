@@ -1,7 +1,5 @@
 [ NOW ]
 
-Add more details: dob, previous elections, gender, profession, school, university
-
 Add smarts to upgrade script to apply new SQL change files to production db
 
 Apply Tim's design to the bad_details game
