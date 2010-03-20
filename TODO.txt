@@ -1,16 +1,43 @@
 [ NOW ]
 
-switch the edit_frame to use tables for layout
-
-scrape plaid: http://www.plaidcymru.org/content.php?nID=564;lID=1
-
-Contact Francis Davey - barrister with interest in intelectual property and copyright to clarify copyright issues.
-
 Add more details: dob, previous elections, gender, profession, school, university
 
-add hints to seach engines in the header so that list pages don't get indexed.
+Add smarts to upgrade script to apply new SQL change files to production db
+
+Apply Tim's design to the bad_details game
+
+Allow users to add links.
+
+Create a stand-down button for candidates for admins.
+
+make homepage search search everything
+
+find constituency by place name and latlng
+
+API access to data - supporters and saving to S3
+
+automated backups and other cron jobs
+
+google sitemap
+
+archive links
+
+send business cards to major media outlets
+
+email and password logins and reduce OpenID to just a few major players - test yahoo openid login
 
 [ NEXT ]
+
+switch the edit_frame to use tables for layout
+
+More scrapers:
+    http://www.plaidcymru.org/content.php?nID=564;lID=1
+    http://www.greensarecoming.org.uk/index.php?r=1
+    ukip
+    
+switch off analytics for admin pages
+
+add hints to search engines in the header so that list pages don't get indexed.
 
 break out (party/seat/candid) page to index/search/all pages
 
@@ -25,11 +52,10 @@ Add comments so that candidates that have stepped down can have a note added to 
 Add news/blog/web searches as tabs under the candidates using >>"Joe Blogs" Party Name <<<
   http://news.google.co.uk/news/search?q=%22david+jack%22+Liberal+Democrat
   http://code.google.com/apis/ajaxsearch/documentation/#SearchControlCallbacks
+
 For search results allow the to be included in main system as links etc
 
 [ LATER ]
-
-test in IE6 etc
 
 List nearby constituencies on the seats page
 
@@ -40,7 +66,3 @@ wrap address details in hcard microformat
 provide the candidate's address as a vcard
 
 Integrate with dods ( http://www.dodonline.co.uk/engine.asp?lev1=6&lev2=401&menu=401&biog=y&group=6&id=25618 ) ?????
-
-
-
-
