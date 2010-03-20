@@ -10,7 +10,7 @@ apply(
         {
             transform => sub {
                 my $dob = $_[0];
-                s{\D+}{/};
+                $dob =~ s{\D+}{/}g;
                 return $dob;
             },
         },
@@ -30,11 +30,11 @@ apply(
                 my ( $dd, $mm, $yyyy ) = split m{/}, $dob;
                 return 1
                   if eval {
-                          DateTime->new(
-                              year  => $yyyy,
-                              month => $mm,
-                              day   => $dd
-                          );
+                    DateTime->new(
+                        year  => $yyyy,
+                        month => $mm,
+                        day   => $dd
+                    );
                   };
                 return;
             },
