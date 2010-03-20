@@ -1,5 +1,7 @@
 [ NOW ]
 
+switch the edit_frame to use tables for layout
+
 scrape plaid: http://www.plaidcymru.org/content.php?nID=564;lID=1
 
 Contact Francis Davey - barrister with interest in intelectual property and copyright to clarify copyright issues.
