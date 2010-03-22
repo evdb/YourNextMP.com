@@ -20,8 +20,6 @@ API access to data - supporters and saving to S3
 
 automated backups and other cron jobs
 
-google sitemap
-
 archive links
 
 send business cards to major media outlets
