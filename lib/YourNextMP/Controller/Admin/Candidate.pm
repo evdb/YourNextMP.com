@@ -31,4 +31,24 @@ sub stand_down : Chained('get_candidate') PathPart('stand_down') Args(0) {
     $c->res->redirect( $c->uri_for( $candidate->path ) );
 }
 
+sub delete : Chained('get_candidate') PathPart('delete') Args(0) {
+    my ( $self, $c, $id ) = @_;
+    my $candidate = $c->stash->{result};
+
+    $c->stash->{template} = 'admin/confirm_action.html';
+    $c->stash->{message}  = "Really delete " . $candidate->name;
+
+    return unless $c->req->method eq 'POST';
+
+    # work out where to go after the delete
+    my $return_to = $candidate->seats->first || $candidate->party;
+    $c->res->redirect( $c->uri_for( $return_to->path ) );
+
+    # delete the candidacies and other relations
+    $_->delete for $candidate->candidacies;
+    $_->delete for $candidate->link_relations;
+    $candidate->delete;
+    $c->flash->{message} = "Deleted";
+}
+
 1;

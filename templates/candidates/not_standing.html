@@ -6,40 +6,5 @@
 
 <h1>[% candidate.name | html %]</h1>
 
-[% 
-    candidate_top_details = [
-        {
-            src     => '/static/icons/rosette-grey.png',
-            alt     => 'party',
-            href    => c.uri_for('/parties', candidate.party.code ),
-            content => candidate.party.name,
-        },
-    ];
+[% PROCESS 'candidates/details_general.html' %]
 
-    FOREACH seat IN candidate.seats;
-        candidate_top_details.push(
-            {
-                src     => '/static/icons/group.png',
-                alt     => 'seat',
-                href    => c.uri_for( '/seats', seat.code ),
-                content => seat.name,
-            }
-        );
-    END;
-
-    candidate_top_details.push(
-        {
-            class   => 'discreet',
-            src     => '/static/icons/comment.png',
-            alt     => 'suggest change',
-            href    => 
-                c.uri_for(
-                    '/suggestions/add',
-                    { type => 'correction', referer => c.req.uri }
-                ),
-            content => 'suggest change to name, party or seats',
-        }
-    );
-    
-    PROCESS 'stubs/item_details.html',details => candidate_top_details;
-%]<br>
