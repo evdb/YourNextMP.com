@@ -6,7 +6,7 @@ use parent qw/Catalyst::Controller/;
 
 use YourNextMP::Form::CandidateEditBadDetails;
 use Digest::MD5 qw( md5_hex );
-use LWP::Simple;
+use LWP::UserAgent;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
@@ -219,9 +219,26 @@ sub ping_dc : Private {
     $dc_url->query_form($dc_args);
 
     eval {
+        use Time::HiRes qw(time);
+        my $start_time = time;
 
         # hit the url
-        my $content = get($dc_url);
+        my $ua = LWP::UserAgent->new(
+            timeout => 10    #quite short
+        );
+        my $res = $ua->get($dc_url);
+        my $content = $res->is_success ? $res->decoded_content : '';
+
+        my $stop_time   = time;
+        my $time_taken  = $stop_time - $start_time;
+        my $req_per_sec = 1 / $time_taken;
+
+        $c->log->debug(
+            sprintf(
+                "DC update: %u %s ( %0.6fs - %0.3f/s )",
+                $res->code, $dc_url, $time_taken, $req_per_sec
+            )
+        );
 
         # deal with a bad request
         if ($content) {    # decode content and save data
