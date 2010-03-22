@@ -40,9 +40,13 @@ p {
 #instructions_wrapper {
 	width:20%;
     float:left;
-    text-align:right;
-    font-size:1.2em;
+}
+
+#instructions {
+    padding:0.25em;
+    margin-bottom: 0.25em;
     background:#FFF;
+    font-size:1.2em;
     -moz-border-radius:0.4em;
     -webkit-border-radius:0.4em;
 }
@@ -59,10 +63,6 @@ p {
 
 /*------------------------------*/
 
-#instructions {
-	text-align:left;
-    padding:0.25em;
-}
 
 form {
     padding-left:0.5em;
