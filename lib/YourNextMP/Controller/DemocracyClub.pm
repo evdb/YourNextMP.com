@@ -84,7 +84,7 @@ sub get_existing_bad_detail : Private {
     $id =~ s{\D+}{}g;
 
     # check that we should not skip this one
-    if ( $c->req->param('submit') && $c->req->param('submit') =~ m{skip}i ) {
+    if ( $c->req->param('skip') ) {
 
         # redirect to ourselves with no arguments - otherwise the bad_detail_id
         # persists in the form

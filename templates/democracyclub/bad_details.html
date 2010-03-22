@@ -25,100 +25,91 @@
     leader_board = c.session.dc_points.leader_board || [];
 
 %]
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         [% PROCESS 'stubs/javascript.html',
             javascript_libraries => [ 'jquery', 'bad_details.js' ]
          %]
-         <link rel="stylesheet" href="/static/css/bad_detail.css" type="text/css" media="screen" title="no title" charset="utf-8">
+         <link rel="stylesheet" href="/static/css/bad_details.css" type="text/css" media="screen" title="no title" charset="utf-8">
     
         <title>Correct bad candidate details</title>
     </head>
     <body>
-        <table class="layout">
-            <tr class="header">
-                <td id="instructions">
-                    <div>
-                        Find the <strong>[% bad_detail.detail %]</strong> for:<br>
-                        <strong>[% candidate.name | html %]</strong><br>
-                        <small>[% candidate.party.name | html %]</small><br>
-                        <small>[% candidate.seat_names | html %]</small><br>
-                        worth [% bad_detail_values.${bad_detail.detail} %] points.
-                    </div>
-                </td>
+        <div id="header">
+            <div id="instructions_wrapper">
+                <div id="instructions">
+                    Find the <strong>[% bad_detail.detail %]</strong> for:<br>
+                    <strong>[% candidate.name | html %]</strong><br>
+                    <small>[% candidate.party.name | html %]</small><br>
+                    <small>([% candidate.seat_names | html %])</small><br>
+                    for [% bad_detail_values.${bad_detail.detail} %] points.
+                </div>
+            </div>
+        
+            <div id="form_wrapper">
+                [% form.render_start %]
 
-                <td id="main_content">
-                    [% form.render_start %]
-                    <table>
-                        <tr>
-                            <td>
-                        
-                        <div id="fields">                        
+                    <div class="fields_wrapper">                        
+                        <div class="fields">                        
                         [% FOREACH f = form.fields %]
                             [% NEXT IF f.inactive %]
                             [% NEXT IF f.type == 'Submit' %]
                             [% f.render %]
                         [% END %]
                         </div>
-                    
-                        </td>
-                        <td>
-                            [% FOREACH f = form.fields %]
-                                [% NEXT IF f.type != 'Submit' %]
-                                [% f.render %]
-                            [% END %]                            
-                        </td>
-                        </tr>
-                   </table>
-                   [% form.render_end %]
-                </td>
+                    </div>
                 
-                <td id="dc-scoreboard">
-
-                    <h3>You now have <strong>[% total_points %]</strong> points!</h3>
-
-                    <ul>
-                        <li><strong>Leaderboard</strong></li>
-                        [% FOREACH l IN leader_board %]
-                            <li>[% l.name | html %]</li>
-                            [% LAST IF loop.count > 4 %]
-                        [% END %]
-                    </ul>
-
-                    <img style="float: right" alt="duckhouse" src="/static/duck-house.jpg">
-
-                </td>
-                
-            </tr>
-            <tr>
-                <td class="content" colspan=3>
-                    [% IF show_explanation %]
-                    <div id="explanation">
-                        <div>
-                        
-                            <h1>Welcome!</h1>
-                        
-                            <p>We need you to help us find contact details for the candidates so that we (and others) can contact them.</p>
-                        
-                            <p>Above is a form to enter the details into.</p>
-                            
-                            <p>Under this notice is a Google search that might help you.</p>
-                            
-                            <button onclick="$('#explanation').fadeOut();">Thanks - let me get started!</button>
-                        
+                    <div class="buttons_wrapper">
+                        <div class="buttons">
+                        [% FOREACH f = form.fields %]
+                            [% NEXT IF f.type != 'Submit' %]
+                            [% f.render %]
+                        [% END %]                            
                         </div>
                     </div>
+
+               [% form.render_end %]
+            </div>
+            
+            <div id="dc_scoreboard_wrapper">
+                <a href="http://www.democracyclub.org.uk/" target="_blank" class="linkback">back to Democracy Club</a>                
+                <h3>You now have <strong>[% total_points %]</strong> points!</h3>
+                <a href="http://www.democracyclub.org.uk/duckhouse/" target="_blank"><img style="float: right;" alt="duckhouse" src="/static/duck-house.jpg" border="0"></a>
+                <ul id="leaderboard">
+                    <li><strong>Leaderboard</strong></li>
+                    [% FOREACH l IN leader_board %]
+                        <li>[% l.name | html %]</li>
+                        [% LAST IF loop.count > 4 %]
                     [% END %]
-                    <iframe id="search-iframe" src="[% google( q => query_base ) %]" frameborder="0"></iframe>
-                </td>
-            </tr>
-        </table>
+                </ul>
+            </div>
+            <div class="clear"></div>
+            
+        </div>
+
+
+
+
+        <div style="clear:both;height:100%;">
+            <div id="explanation" [% 'style="display: none"' UNLESS show_explanation %]>
+                <div>
+                    <h1>Welcome!</h1>
+                
+                    <p>We need you to help us find contact details for the candidates so that we (and others) can contact them.</p>
+                
+                    <p>Above is a form to enter the details into.</p>
+                    
+                    <p>Under this notice is a Google search that might help you.</p>
+                    
+                    <button onclick="$('#explanation').fadeOut();" type="button">Return to game!</button>
+                </div>
+            </div>
+ 
+            <iframe id="search-iframe" src="[% google( q => query_base ) %]" frameborder="0"></iframe>
+        </div>
 
         [% PROCESS 'stubs/google_analytics.html' %]
 
     </body>
 </html>
-

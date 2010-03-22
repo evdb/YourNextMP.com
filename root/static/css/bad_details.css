@@ -1,0 +1,183 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+html,body {
+	height:100%;
+	width:100%;
+	overflow:hidden;
+}
+
+body {
+	font-family:sans-serif;
+}
+
+iframe {
+	height: 100%;
+	width:  100%;
+}
+
+td {
+    vertical-align: top;
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+.clear {
+    clear:both;
+}
+
+/*-----------------------*/
+#header {
+    padding:0.5em;
+    background:repeat-x #def0ff bottom left;
+    border-bottom:2px solid #b6deff;
+}
+
+#instructions_wrapper {
+	width:20%;
+    float:left;
+    text-align:right;
+    font-size:1.2em;
+    background:#FFF;
+    -moz-border-radius:0.4em;
+    -webkit-border-radius:0.4em;
+}
+
+#form_wrapper {
+    width: 50%;
+    float:left;
+}
+
+#dc_scoreboard_wrapper {
+	width:30%;
+    float:left;
+}
+
+/*------------------------------*/
+
+#instructions {
+	text-align:left;
+    padding:0.25em;
+}
+
+form {
+    padding-left:0.5em;
+}
+
+fieldset {
+    border: none;
+}
+
+.fields_wrapper {
+    width:70%;
+    float:left;
+}
+
+.fields {
+    padding:0.25em;
+}
+
+.buttons_wrapper {
+    width:30%;
+    float:left;
+}
+
+.buttons {
+    padding:0.25em;
+    padding-left:0;
+}
+
+label {
+    font-family: Helvetica;
+    position: absolute;
+    padding: 0.1em;
+    color: #666;
+    font-size:1.5em;
+}
+
+input, textarea {
+    font-size:1.5em;
+    margin-bottom:0.1em;
+    width:95%;
+}
+
+input#email {
+    font-size:1.8em;
+    padding:0.1em;
+}
+
+.secondary {
+    display: none;
+    font-size:0.9em;
+}
+
+div.error {
+    display: block;
+}
+
+.action_button input {
+
+}
+
+.save_state input {
+
+}
+
+.skip_state input {
+    font-size:0.8em;
+}
+
+button.show_more {
+    font-size:0.8em;
+}
+
+span.error_message {
+    display: block;
+    font-size: 80%;
+    color: red;
+}
+
+ul#leaderboard {
+  list-style-type:none;
+  padding: 0;
+  margin: 0;
+}
+
+ul#leaderboard li {
+  margin:0;
+  list-style: none;
+}
+
+.linkback
+{
+    float:right;
+    font-size:0.8em;
+}
+
+/* Splash */
+#explanation {
+    position: absolute;
+    width: 100%;
+    height:100%;
+    font-size: 120%;
+    background:rgba(0,0,0,0.3);
+}
+
+#explanation div {
+    width: 60%;
+	background-color:#FFF;
+	border: 5px solid rgba(0,0,0,0.5);
+    margin: 3em auto 0 auto;
+    padding: 2em;
+    -moz-border-radius:1em;
+    -webkit-border-radius:1em;
+}
+
+#explanation button {
+    font-size: 200%;
+}
+

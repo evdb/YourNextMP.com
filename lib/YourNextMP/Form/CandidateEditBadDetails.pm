@@ -13,7 +13,13 @@ has_field 'bad_detail_id' => (    #
 
 has_field 'submit' => (           #
     type      => 'Submit',
-    value     => 'Skip',
+    value     => 'Save',
+    css_class => 'action_button save_state'
+);
+
+has_field 'skip' => (             #
+    type      => 'Submit',
+    value     => "I can't find it! skip them.",
     css_class => 'action_button skip_state'
 );
 

@@ -7,12 +7,12 @@ $( function () {
     var submit_button_changed = false;
     var toggle_to_save_mode = function () {
 
-        if ( !submit_button_changed ) { 
+        /*if ( !submit_button_changed ) { 
             $('input[type=submit]')
                 .removeClass('skip_state')
                 .val('Save!');
             submit_button_changed = true;
-        }
+        }*/
             
         $(this)
             .siblings('label')
@@ -22,7 +22,7 @@ $( function () {
     $('input[type=text], textarea')
         .one('focus',    toggle_to_save_mode )
         .one('keypress', toggle_to_save_mode )
-        .one('change',   toggle_to_save_mode );
+       .one('change',   toggle_to_save_mode );
         
 
         // <button type="button" onclick="unhide_secondary_fields(this)">
@@ -31,14 +31,14 @@ $( function () {
 
     $('.secondary').each(function() {
        
-        var button = $('<button type="button" />');
-        button.html('Show more fields for more points');
+        var button = $('<button type="button" class="show_more"/>');
+        button.html('Found other contact details? Click here to add them all');
         button.click( function () {
             $('div.secondary').slideDown();
             button.hide();
         });        
 
-       $('#fields').append( button );
+       $('.fields').append( button );
        
        return false; // only do this once
     });
