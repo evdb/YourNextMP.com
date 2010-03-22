@@ -1,5 +1,11 @@
 [ NOW ]
 
+Clear the search boxes on entry
+
+Fix cache hit/miss debug statements
+
+Allow 'dd month yyyy' dates to make copy and paste from wikipedia easier
+
 Add smarts to upgrade script to apply new SQL change files to production db
 
 Apply Tim's design to the bad_details game
