@@ -43,13 +43,7 @@ sub index : Path Args(0) {
                         }
                       )->count,
 
-                    candidates => $c->db('Candidacy')->search(
-                        undef,                            #
-                        {
-                            select   => 'candidate_id',    #
-                            distinct => 1
-                        }
-                      )->count,
+                    candidates => $c->db('Candidate')->standing->count,
 
                 };
             },
@@ -62,12 +56,12 @@ sub index : Path Args(0) {
             expires => 600,
             code    => sub {
                 my $rs = $c->db('Party')->search(
-                    undef,    #
+                    { 'candidates.status' => ['standing'], },    #
                     {
                         join   => 'candidates',
                         select => [
-                            'me.code',    #
-                            'me.name',    #
+                            'me.code',                           #
+                            'me.name',                           #
                             { count => 'candidates.id' }
                         ],
                         as       => [qw( code name candidate_count )],

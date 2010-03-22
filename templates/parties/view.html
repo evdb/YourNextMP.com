@@ -13,7 +13,7 @@
             src     => '/static/icons/group.png',
             alt     => 'candidates',
             href    => c.uri_for( party.code, 'candidates', 1 ),
-            content => "View ${party.candidates_rs.count} candidates",
+            content => "View ${candidates.count} candidates",
         },
     ];
 %]

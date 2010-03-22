@@ -133,11 +133,14 @@ __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 sub public_fields {
     return {
-        code     => {},
-        updated  => {},
-        path     => {},
-        name     => {},
-        candidates => { is_rel => 1 },
+        code       => {},
+        updated    => {},
+        path       => {},
+        name       => {},
+        candidates => {
+            method => 'standing_candidates',
+            is_rel => 1
+        },
     };
 }
 
@@ -165,5 +168,8 @@ __PACKAGE__->has_many(
     { "foreign.source_id" => "self.id" },
     { cascade_delete      => 0 },
 );
+
+sub standing_candidates    { return $_[0]->candidates->standing; }
+sub standing_candidates_rs { return scalar $_[0]->candidates->standing; }
 
 1;

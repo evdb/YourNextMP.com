@@ -6,11 +6,7 @@ Allow 'dd month yyyy' dates to make copy and paste from wikipedia easier
 
 Add smarts to upgrade script to apply new SQL change files to production db
 
-Apply Tim's design to the bad_details game
-
 Allow users to add links.
-
-Create a stand-down button for candidates for admins.
 
 make homepage search search everything
 
@@ -68,3 +64,5 @@ wrap address details in hcard microformat
 provide the candidate's address as a vcard
 
 Integrate with dods ( http://www.dodonline.co.uk/engine.asp?lev1=6&lev2=401&menu=401&biog=y&group=6&id=25618 ) ?????
+
+stats page

@@ -16,8 +16,8 @@ sub setup_session {
 
     $c->maybe::next::method(@_);
 
-    $c->_session_plugin_config->{cookie_name}
-        ||= Catalyst::Utils::appprefix($c) . '_session';
+    $c->_session_plugin_config->{cookie_name} ||=
+      Catalyst::Utils::appprefix($c) . '_session';
 
 }
 
@@ -54,7 +54,7 @@ sub finalize_session {
     # to a bug where IE will not download files.
     # (http://support.microsoft.com/kb/812935/en-us)
     $c->response->header( 'Cache-control' => 'no-cache="set-cookie"' )
-        unless $c->req->secure;
+      unless $c->req->secure;
 }
 
 sub get_sesson_id_from_state {

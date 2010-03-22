@@ -331,6 +331,7 @@ sub public_fields {
     return {
         code       => {},
         updated    => {},
+        status     => {},
         path       => {},
         name       => {},
         email      => {},

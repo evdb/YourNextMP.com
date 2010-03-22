@@ -328,3 +328,8 @@ li.link h3 {
     border: 1px solid #888;
 }
 
+#candidate_hero_photo {
+    float: right;
+    margin: 0 0 0.5em 0.5em;
+    border: 1px solid #000;
+}

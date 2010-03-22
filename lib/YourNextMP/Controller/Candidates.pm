@@ -17,6 +17,11 @@ sub source_name {
     return 'Candidate';
 }
 
+sub search_for_results {
+    my ( $self, $results, $query ) = @_;
+    $results->standing->fuzzy_search( { name => $query } );
+}
+
 sub add : PathPart('add') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 

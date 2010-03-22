@@ -81,7 +81,7 @@ sub dc_login : Local {
     my $task  = delete( $params->{task} )       || '';
 
     # check that we have the user_id that we need.
-    unless ($dc_id && $task && $sig) {
+    unless ( $dc_id && $task && $sig ) {
         $c->stash->{error_code} = 'missing_details';
         return;
     }

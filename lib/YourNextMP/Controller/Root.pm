@@ -52,7 +52,6 @@ sub auto : Private {
     return 1;
 }
 
-
 sub default : Path {
     my ( $self, $c ) = @_;
 

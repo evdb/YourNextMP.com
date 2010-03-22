@@ -12,6 +12,12 @@ sub source_name {
     return 'Party';
 }
 
+sub view : PathPart('') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->stash->{candidates} = $c->stash->{result}->candidates->standing;
+}
+
 sub candidates_empty : PathPart('candidates') Chained('result_find') {
     my ( $self, $c ) = @_;
 
@@ -29,11 +35,11 @@ sub candidates : PathPart('candidates') Chained('result_find') Args(1) {
     $page_number =~ s{\D+}{}g;
     $page_number ||= 1;
 
-    my $results = $c->stash->{result}->candidates->search(
+    my $results = $c->stash->{result}->candidates->standing->search(
         undef,    # find everything
         {
-            rows     => $results_per_page,
-            page     => $page_number,
+            rows => $results_per_page,
+            page => $page_number,
         }
     );
 

@@ -10,9 +10,9 @@ use JSON;
 my %fetch_spec = (
     Candidate => {
         fields => [
-            'id',      'code',    'party_id', 'created',
-            'updated', 'name',    'email',    'phone',
-            'fax',     'address', 'image_id',
+            'id',      'code',    'status',  'party_id',
+            'created', 'updated', 'name',    'email',
+            'phone',   'fax',     'address', 'image_id',
         ],
         where => {},
     },
