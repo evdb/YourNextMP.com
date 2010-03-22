@@ -67,6 +67,7 @@ my $new_production_dir =
 system 'mv', '-v', $tmp_production_dir, $new_production_dir;
 
 # create the number that will be used to mark the static content
-print $new_production_dir->file('deployment_number.txt')->openw()
-  $dir_version_number;
-
+$new_production_dir                                                          #
+  ->file('deployment_number.txt')                                            #
+  ->openw()                                                                  #
+  ->print($dir_version_number);
