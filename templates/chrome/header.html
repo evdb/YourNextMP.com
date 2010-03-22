@@ -7,7 +7,7 @@
         <link rel="stylesheet" type="text/css" href="/static/css/main.css?[% c.deployment_number %]">
         <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
-        [% PROCESS 'stubs/javascript.html' %]
+        [% PROCESS 'stubs/javascript.html', javascript_libraries => [ 'jquery', 'main.js' ] %]
     </head>
     <body>
 
