@@ -392,7 +392,7 @@ sub smart_cache {
 
     # do we have a value from the cache?
     if ( defined $val ) {
-        $c->log->debug("cache hit for '$key'");
+        $c->log->debug("cache hit for '$key'") if $c->debug;
         $c->stash->{cache_info}{hits}++;
     }
     else {
@@ -424,7 +424,7 @@ sub _set_cache {
             "cache miss for '%s' ( %0.6fs - %0.3f/s )",
             $key, $time_taken, $req_per_sec
         )
-    );
+    ) if $c->debug;
 
     # and return
     return $value;
