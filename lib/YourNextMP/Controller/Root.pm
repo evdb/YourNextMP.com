@@ -94,7 +94,7 @@ sub end : Private {
                 path   => $uri->path,
                 params => { $uri->query_form },
             },
-            license => 'http://creativecommons.org/licenses/by-nc-sa/2.0/uk/',
+            license => 'http://creativecommons.org/licenses/by-sa/2.0/uk/',
         };
 
         # If there is a pager then add its details too
