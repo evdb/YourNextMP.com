@@ -270,12 +270,8 @@ img.icon {
 }
 
 .discreet {
-    opacity: 0.5;
+    color: #888;
 }    
-
-.discreet:hover {
-    opacity: 1;
-}
 
 ul.pager {
     text-align: center;
