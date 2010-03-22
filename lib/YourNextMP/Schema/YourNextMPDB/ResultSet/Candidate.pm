@@ -61,4 +61,9 @@ sub name_to_code {
     return $code;
 }
 
+sub standing {
+    my $rs = shift;
+    return $rs->search( { status => ['standing'] } );
+}
+
 1;

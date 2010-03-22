@@ -146,6 +146,12 @@ __PACKAGE__->table("candidates");
   default_value: undef
   is_nullable: 1
 
+=head2 status
+
+  data_type: text
+  default_value: undef
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -249,6 +255,8 @@ __PACKAGE__->add_columns(
     { data_type => "text", default_value => undef, is_nullable => 1 },
     "positions",
     { data_type => "text", default_value => undef, is_nullable => 1 },
+    "status",
+    { data_type => "text", default_value => 'standing', is_nullable => 0 },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "candidates_code_key", ["code"] );
@@ -315,7 +323,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-20 16:46:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:64Z0JkNKaDTBtQP24eBrNQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:2voS1+FllV0mBcQGpWPT3A
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
