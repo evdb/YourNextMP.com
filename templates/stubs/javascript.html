@@ -16,7 +16,7 @@
     [%
         src
             = javascript_data.${j}.${c.config.javascript_source}
-            || "/static/js/$j";
+            || "/static/js/$j?${c.deployment_number}";
     %]
     <script src="[% src %]" type="text/javascript"></script>
 [% END %]

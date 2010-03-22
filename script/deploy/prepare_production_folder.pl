@@ -65,3 +65,8 @@ my $new_production_dir =
   $root_dir->subdir("yournextmp_production_$dir_version_number");
 
 system 'mv', '-v', $tmp_production_dir, $new_production_dir;
+
+# create the number that will be used to mark the static content
+print $new_production_dir->file('deployment_number.txt')->openw()
+  $dir_version_number;
+

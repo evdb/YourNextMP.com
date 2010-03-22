@@ -430,6 +430,37 @@ sub _set_cache {
     return $value;
 }
 
+=head2 deployment_number
+
+    $number = $c->deployment_number(  );
+
+Returns a number that corresponds to the deloyment. Used to force a fefresh of css and js files.
+
+=cut
+
+my $DEPLOYMENT_NUMBER = undef;
+
+sub deployment_number {
+    my $c = shift;
+    return $DEPLOYMENT_NUMBER ||= $c->_get_deployment_number;
+}
+
+sub _get_deployment_number {
+    my $c = shift;
+
+    my $deployment_number_file = $c->path_to('deployment_number.txt');
+
+    # read from file or set to 1
+    my $number = -e $deployment_number_file    #
+      ? $deployment_number_file->slurp         #
+      : 1;
+
+    # tidy it up
+    $number =~ s{\D}{}g;
+
+    return $number;
+}
+
 =head1 NAME
 
 YourNextMP - Catalyst based application
