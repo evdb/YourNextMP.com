@@ -7,6 +7,8 @@ name 'YourNextMP';
 
 all_from 'lib/YourNextMP.pm';
 
+requires 'Net::IDN::Encode';
+requires 'IO::Socket::SSL';
 requires 'App::Cache';
 requires 'autodie';
 requires 'Cache::Memcached::libmemcached';
@@ -78,6 +80,7 @@ requires 'Moose';
 requires 'namespace::autoclean';
 requires 'Net::Amazon::S3';
 requires 'Net::OpenID::Consumer';
+requires 'Net::SMTP::SSL';
 requires 'Net::SSL';
 requires 'Net::SSLeay';
 requires 'parent';
