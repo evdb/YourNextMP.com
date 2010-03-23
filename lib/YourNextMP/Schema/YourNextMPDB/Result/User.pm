@@ -25,7 +25,7 @@ __PACKAGE__->table("users");
 =head2 id
 
   data_type: bigint
-  default_value: nextval('global_id_seq'::regclass)
+  default_value: SCALAR(0xa091b8)
   is_auto_increment: 1
   is_nullable: 0
 
@@ -64,7 +64,7 @@ __PACKAGE__->table("users");
 =head2 email_confirmed
 
   data_type: boolean
-  default_value: false
+  default_value: SCALAR(0xa12ed0)
   is_nullable: 0
 
 =head2 name
@@ -100,13 +100,25 @@ __PACKAGE__->table("users");
   default_value: undef
   is_nullable: 1
 
+=head2 password
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
+=head2 token
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
     "id",
     {
         data_type         => "bigint",
-        default_value     => "nextval('global_id_seq'::regclass)",
+        default_value     => \"nextval('global_id_seq'::regclass)",
         is_auto_increment => 1,
         is_nullable       => 0,
     },
@@ -139,7 +151,7 @@ __PACKAGE__->add_columns(
         size          => 200,
     },
     "email_confirmed",
-    { data_type => "boolean", default_value => "false", is_nullable => 0 },
+    { data_type => "boolean", default_value => \"false", is_nullable => 0 },
     "name",
     {
         data_type     => "character varying",
@@ -168,17 +180,17 @@ __PACKAGE__->add_columns(
         is_nullable   => 1,
     },
     "dc_id",
-    {
-        data_type     => "integer",
-        default_value => undef,
-        is_nullable   => 1,
-    },
+    { data_type => "integer", default_value => undef, is_nullable => 1 },
+    "password",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "token",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
 );
 __PACKAGE__->set_primary_key("id");
+__PACKAGE__->add_unique_constraint( "users_dc_id_key", ["dc_id"] );
 __PACKAGE__->add_unique_constraint( "users_email_key", ["email"] );
 __PACKAGE__->add_unique_constraint( "users_openid_identifier_key",
     ["openid_identifier"] );
-__PACKAGE__->add_unique_constraint( "users_dc_id_key", ["dc_id"] );
 
 =head1 RELATIONS
 
@@ -193,6 +205,20 @@ Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
 __PACKAGE__->has_many(
     "edits",
     "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.user_id" => "self.id" },
+);
+
+=head2 suggestions
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Suggestion>
+
+=cut
+
+__PACKAGE__->has_many(
+    "suggestions",
+    "YourNextMP::Schema::YourNextMPDB::Result::Suggestion",
     { "foreign.user_id" => "self.id" },
 );
 
@@ -211,8 +237,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:dSQe6M3b27bkEN2BxIqmQA
+# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-23 12:50:29
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TZF4PlCBclht2L7bLQWiow
 
 =head2 edits
 
