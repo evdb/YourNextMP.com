@@ -276,4 +276,7 @@ sub scrape_candidates {
     return 1;
 }
 
+sub standing_candidates    { return $_[0]->candidates->standing; }
+sub standing_candidates_rs { return scalar $_[0]->candidates->standing; }
+
 1;

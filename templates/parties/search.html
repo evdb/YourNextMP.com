@@ -22,7 +22,7 @@
                     name  => party.name.replace( "(?i)($query_regex)", "<b>\$1</b>"),
                     image_id => party.image_id,
                     href  => c.uri_for( party.code ),
-                    extra => (party.candidates_rs.count || 'no') _ " candidates",
+                    extra => (party.standing_candidates_rs.count || 'no') _ " candidates",
                 %]        
             [% END %]
             [% END %]
