@@ -10,15 +10,15 @@ var providers_large = {
         name: 'Google',
         url: 'https://www.google.com/accounts/o8/id'
     },
-    yahoo: {
-        name: 'Yahoo',      
-        url: 'http://yahoo.com/'
-    },    
-    aol: {
-        name: 'AOL',     
-        label: 'Enter your AOL screenname.',
-        url: 'http://openid.aol.com/{username}/'
-    },
+    // yahoo: {
+    //     name: 'Yahoo',      
+    //     url: 'http://yahoo.com/'
+    // },    
+    // aol: {
+    //     name: 'AOL',     
+    //     label: 'Enter your AOL screenname.',
+    //     url: 'http://openid.aol.com/{username}/'
+    // },
     openid: {
         name: 'OpenID',     
         label: 'Enter your OpenID.',

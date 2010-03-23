@@ -1,0 +1,13 @@
+[% INCLUDE 'chrome/header.html', title => '' %]
+
+<div class="callout">
+    <h2>Something went wrong</h2>
+
+    <p>[% auth_error %]</p>
+
+    <p>There may be issues with your OpenID provider. Try creating an account
+    using your email and password instead.</p>
+
+</div>
+
+[% INCLUDE 'chrome/footer.html' %]
