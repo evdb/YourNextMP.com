@@ -4,7 +4,9 @@
 use inc::Module::Install;
 
 name 'YourNextMP';
+
 all_from 'lib/YourNextMP.pm';
+
 requires 'App::Cache';
 requires 'autodie';
 requires 'Cache::Memcached::libmemcached';
@@ -45,6 +47,8 @@ requires 'DBI';
 requires 'DBIx::Class';
 requires 'DBIx::Class::Schema::Loader' => '0.05000';
 requires 'Digest::MD5';
+requires 'Email::Send';
+requires 'Email::Send::Gmail';
 requires 'Email::Valid';
 requires 'Encode';
 requires 'FCGI';

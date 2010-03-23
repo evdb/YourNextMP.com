@@ -255,6 +255,31 @@ __PACKAGE__->has_many(
     { cascade_delete      => 0 },
 );
 
+sub reset_random_token {
+    my $self = shift;
+
+    my @chars  = ( 'a' .. 'z', 0 .. 9 );
+    my $length = 20;
+    my $string = join '', map { $chars[ rand scalar @chars ] } ( 1 .. $length );
+
+    $self->update( { token => $string } );
+
+    return $string;
+}
+
+use Digest::MD5 ('md5_hex');
+
+sub crypt_password {
+    my $self       = shift;
+    my $plain_text = shift;
+    my $input      = $self->email . '-' . $plain_text;
+    my $md5        = md5_hex($input);
+
+    # warn "crypting: '$input' --> '$md5'\n";
+
+    return $md5;
+}
+
 =head2 screen_name
 
     $screen_name = $user->screen_name(  );

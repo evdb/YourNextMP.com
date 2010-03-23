@@ -1,5 +1,13 @@
 {
 
+    email => {
+        from        => 'hello@yournextmp.com',
+        mailer_args => [
+            username => 'foo@gmail.com',
+            password => 'XXX',
+        ]
+    },
+
     # where should the files be stored? ('local' or 's3')
     file_store => 's3',
 

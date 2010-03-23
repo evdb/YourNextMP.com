@@ -8,6 +8,9 @@ use Carp;
 use List::MoreUtils 'uniq';
 use Net::Amazon::S3;
 use Net::Amazon::S3::Client;
+use Email::Send;
+use Email::Send::Gmail;
+use Email::Simple::Creator;
 
 # use Moose;
 # use namespace::autoclean;
@@ -459,6 +462,45 @@ sub _get_deployment_number {
     $number =~ s{\D}{}g;
 
     return $number;
+}
+
+=head2 send_email
+
+    $c->send_email(
+        {
+            to      => $user->email,
+            subject => 'YourNextMP password reset',
+            body    => "blah blah",
+        }
+    );
+    
+Send the email.
+
+=cut
+
+sub send_email {
+    my $c = shift;
+    my $args = shift;
+
+    my $email = Email::Simple->create(
+        header => [
+            From    => $c->config->{email}{from},
+            To      => $args->{to},
+            Subject => $args->{subject},
+        ],
+        body => $args->{body},
+    );
+
+    my $sender = Email::Send->new(
+        {
+            mailer      => 'Gmail',
+            mailer_args => $c->config->{email}{mailer_args}
+        }
+    );
+    eval { $sender->send($email) };
+    die "Error sending email: $@" if $@;
+
+    return;
 }
 
 =head1 NAME

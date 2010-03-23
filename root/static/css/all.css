@@ -15,6 +15,7 @@ td.label_column {
 
 td.input_column {
 	width:50%;
+	text-align: left;
 }
 
 td.error_column {
@@ -32,6 +33,7 @@ tr.error {
 
 table.form input[type=text],
 table.form input[type=file],
+table.form input[type=password],
 table.form textarea {
 	width:100%;
 	border:1px solid #888;

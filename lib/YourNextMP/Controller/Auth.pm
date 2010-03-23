@@ -6,7 +6,136 @@ use parent qw/Catalyst::Controller/;
 
 use Digest::MD5 qw( md5_hex );
 
+use YourNextMP::Form::AuthLogin;
+use YourNextMP::Form::AuthCreateAccount;
+use YourNextMP::Form::AuthForgotPassword;
+use YourNextMP::Form::AuthResetPassword;
+
 sub login : Local {
+    my ( $self, $c ) = @_;
+
+    # set up and stash the forms
+    my $user = $c->db('User')->new_result( {} );
+    my $create_form = YourNextMP::Form::AuthCreateAccount->new( item => $user );
+    my $login_form = YourNextMP::Form::AuthLogin->new();
+    $c->stash->{login_form}          = $login_form;
+    $c->stash->{create_account_form} = $create_form;
+
+    # If not post then there is no farm submitted
+    return unless $c->req->method eq 'POST';
+
+    # choose which form we should process
+    if ( $c->req->param('create_account') ) {
+
+        $create_form->process( params => $c->req->params ) || return;
+    }
+    else {
+        $login_form->process( params => $c->req->params ) || return;
+
+        # try to load the user and check the password
+        $user =
+          $c->db('User')
+          ->find( { email => $login_form->field('email')->value } );
+
+        # check that the user exisist
+        if ( !$user ) {
+            push @{ $login_form->field('email')->errors },
+              "There is no account for this email address";
+            return;
+        }
+
+        # check that the password is correct
+        my $crypt =
+          $user->crypt_password( $login_form->field('password')->value );
+        if ( $user->password ne $crypt ) {
+            push @{ $login_form->field('password')->errors },
+              "This password is not correct";
+            return;
+        }
+
+    }
+
+    $c->authenticate( { email => $user->email } )
+      || die "Error authenticating after email login or create";
+
+    $c->return_from_diversion(
+        {
+            fallback_return_url => $c->uri_for( '/users', $user->id )    #
+        }
+    );
+}
+
+sub forgot_password : Local {
+    my ( $self, $c ) = @_;
+
+    my $form = YourNextMP::Form::AuthForgotPassword->new();
+    $c->stash->{form} = $form;
+
+    $form->process( params => $c->req->params ) || return;
+
+    my $email = $form->field('email')->value;
+
+    my $user = $c->db('User')->find( { email => $email } );
+    if ( !$user ) {
+        push @{ $form->field('email')->errors },
+          "There is no account for this email address";
+        return;
+    }
+
+    my $token = $user->reset_random_token;
+    my $reset_url = $c->uri_for( '/auth/reset_password', $user->id, $token );
+    $c->send_email(
+        {
+            to      => $user->email,
+            subject => 'YourNextMP password reset',
+            body    => "Hello,
+
+Please visit this link to reset your password:
+
+  $reset_url
+
+Any problems let us know by replying to this email.
+
+Yours,
+  The YourNextMP Team.
+
+",
+        }
+    );
+
+    $c->stash->{email_sent} = 1;
+}
+
+sub reset_password : Local {
+    my ( $self, $c, $user_id, $user_token ) = @_;
+
+    # get the user
+    $user_id =~ s{\D}{}g;
+    my $user = $c->db('User')->find( $user_id || 0 );
+
+    # no user or token wrong - 404
+    $c->detach('/page_not_found')
+      unless $user
+          && $user_token
+          && $user->token eq $user_token;
+
+    my $form = YourNextMP::Form::AuthResetPassword->new( item => $user );
+    $c->stash->{form} = $form;
+    $form->process( params => $c->req->params ) || return;
+
+    # password reset - auth the user and send them home
+    $c->authenticate( { id => $user->id } )
+      || die "Error authenticating after password reset";
+
+    $c->return_from_diversion(
+        {
+            fallback_return_url => $c->uri_for( '/users', $user->id )    #
+        }
+    );
+
+}
+
+sub login_openid : Local {
     my ( $self, $c ) = @_;
 
     # FIXME - abstract this slightly

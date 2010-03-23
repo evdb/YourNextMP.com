@@ -1,9 +1,12 @@
-[% INCLUDE 'chrome/header.html', title => 'login' %]
+[% INCLUDE 'chrome/header.html',
+    title                => 'login',
+    javascript_libraries => [ 'jquery', 'main.js', 'openid-jquery.js' ]
+%]
 	
 	<!-- Simple OpenID Selector -->
 	<link rel="stylesheet" href="/static/css/openid.css" />
-	<script type="text/javascript" src="/static/js/jquery-1.2.6.min.js"></script>
-	<script type="text/javascript" src="/static/js/openid-jquery.js"></script>
+
+
 	<script type="text/javascript">
 	$(document).ready(function() {
         openid.img_path = '/static/openid-images/';
@@ -22,9 +25,52 @@
     <div>ERROR: [% auth_error %]</div>
 [% END %]
 
-<form action="/auth/login" method="post" id="openid_form">
-	<fieldset>
-    		<legend>Sign in using OpenID</legend>
+<style type="text/css" media="screen">
+    #email_wrapper, #email_create_wrapper {
+        float: left;
+        width: 50%;
+    }
+
+    #email_wrapper        div { margin-right: 0.5em; }
+    #email_create_wrapper div { margin-left:  0.5em; }
+    
+    #openid_wrapper {
+        clear: both;
+    }
+    
+    fieldset {
+        margin-bottom: 1em;
+    }
+    
+    legend {
+        font-size: 120%;
+        font-weight: bold;
+    }
+
+    </style>
+
+<div id="email_wrapper">
+    <div class="boxed">
+        <h2>Sign in</h2>
+        
+        [% login_form.render %]
+        
+        <p><a href="/auth/forgot_password">I've forgotten my password</a></p>
+    </div>
+</div>
+
+<div id="email_create_wrapper">
+    <div class="boxed">
+        <h2>Create a new account</h2>
+        [% create_account_form.render %]
+    </div>
+</div>
+
+<div id="openid_wrapper">
+    <div class="boxed">
+		<h2>Sign in using OpenID</h2>
+
+        <form action="/auth/login_openid" method="post" id="openid_form">
 
     		<div id="openid_choice">
                 <p>Click on a site that you already have an account with:</p>
@@ -44,8 +90,7 @@
                 
                 <a href="http://openid.net/what/">More details</a>.
 			</p>
-
-	</fieldset>
-</form>
-
+        </form>
+    </div>
+</div>
 [% INCLUDE 'chrome/footer.html' %]

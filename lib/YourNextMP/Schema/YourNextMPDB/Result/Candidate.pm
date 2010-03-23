@@ -499,6 +499,8 @@ details table to match.
 
 =cut
 
+# FIXME - only do standing candidates
+
 sub update_bad_details {
     my $self             = shift;
     my @details_to_check = qw(email phone fax address);
