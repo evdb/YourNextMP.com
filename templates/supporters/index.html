@@ -21,6 +21,30 @@ BY-SA</a> license. You can use the data commercially if you want and can build
 on it. You just need to say it came form us (a small link will do) and if you pass
 it on again apply the some license.</p>
 
+[% FOREACH level IN ['platinum', 'gold', 'silver', 'bronze' ] %]
+    [% PROCESS supporters %]
+[% END %]
+
+[% BLOCK supporters %]
+
+    <h2>[% level | ucfirst %] supporters</h2>
+    
+    [% IF supporters.$level.size %]
+    <ul>
+        [% FOREACH supporter IN supporters.$level %]
+            <li>
+                <a href="[% c.uri_for( supporter.path ) %]">[% supporter.name | html %]</a>
+            </li>
+        [% END %]
+    </ul>
+    [% ELSE %]
+    
+        <p>None yet - be the first.</p>
+    
+    [% END %]
+
+
+[% END %]
 
 
 [% INCLUDE 'chrome/footer.html' %]

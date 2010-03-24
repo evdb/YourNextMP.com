@@ -28,14 +28,16 @@
     [% END %]
 
     [% UNLESS no_links %]
+    <ul>
+        <li><a href="/supporters">People who use our data</a></li>
+        <li><a href="/data">Use our data</a></li>
         [% FOREACH format = available_output_formats %]
             [% IF loop.first %]
-                <ul>
                 <li>Alternative output formats:</li>
             [% END %]
             <li><a href="[% c.req.uri_with({ output => format }) %]">[% format %]</a></li>
-            [% "</ul>" IF loop.last %]
         [% END %]
+    </ul>
     [% END %]
 
     <ul>
