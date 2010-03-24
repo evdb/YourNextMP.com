@@ -182,4 +182,62 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-24 09:21:18
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:xbwe8L/AOAj2153B5D4imA
 
+__PACKAGE__->resultset_attributes( { order_by => ['code'] } );
+
+sub public_fields {
+    return {
+        code     => {},
+        updated  => {},
+        level    => {},
+        path     => {},
+        name     => {},
+        summary  => {},
+        website  => {},
+        logo_url => {},
+    };
+}
+
+=head2 edits
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Edit>
+
+=cut
+
+__PACKAGE__->has_many(
+    "edits",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.source_id" => "self.id" },
+    { cascade_delete      => 0 },
+);
+
+sub insert {
+    my $self = shift;
+    my $args = shift;
+
+    unless ( $self->code ) {
+        my $name = $self->name;
+        my $code = lc $name;
+
+        $code =~ s{'}{}g;
+        $code =~ s{[^[:alpha:]]+}{_}g;
+
+        $code =~ s{é}{e}g;
+        $code =~ s{ö}{o}g;
+        $code =~ s{â}{a}g;
+
+        die "bad chars in '$code'" if $code =~ m{[^a-z_]};
+
+        $self->code($code);
+    }
+
+    $self->token( $self->_create_random_token(20) );
+    $self->level('bronze');
+
+    my $result = $self->next::method( $args, @_ );
+
+    return $result;
+}
+
 1;

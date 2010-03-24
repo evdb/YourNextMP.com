@@ -169,4 +169,12 @@ sub path {
     return join '/', '', $self->table, $self->code;
 }
 
+sub _create_random_token {
+    my $self   = shift;
+    my $length = shift || 20;
+    my @chars  = ( 'a' .. 'z', 0 .. 9 );
+    my $token  = join '', map { $chars[ rand scalar @chars ] } ( 1 .. $length );
+    return $token;
+}
+
 1;

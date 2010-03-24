@@ -1,0 +1,32 @@
+[% INCLUDE 'chrome/header.html', title => 'Data' %]
+
+<div class="boxed" style="float: right; width: 40%; margin: 0 0 1em 1em">
+    <h1>Use our data!</h1>
+
+    <p>Download all the candidate details as CSV (to use in Excel) or as JSON.</p>
+
+    <p>It is fast, easy and free.</p>
+    
+    <p><a href="/supporters/add">Get started now...</a></p>
+
+</div>
+
+<h1>Data</h1>
+
+<p>We are making all of our data freely available to everyone, subject to the <a
+href="http://creativecommons.org/licenses/by-sa/2.0/uk/">CreativeCommons
+BY-SA</a> license.</p>
+
+<p>This means that if you want to download the candidates details as a CSV to
+use in a spreadsheet you can. Or if you want the full structured data of
+parties, constituencies, candidates and images you can get the JSON.</p>
+
+<p>You just need to <a href="/supporters/add">get an API token</a> and go to
+<tt>[% c.uri_for('/data', 'api_token_goes_here' ) | html %]</tt>.</p>
+
+<p>Or if you just want go to a page on this site and look for the 'JSON' link in
+the footer - no API token needed.</p>
+
+
+
+[% INCLUDE 'chrome/footer.html' %]

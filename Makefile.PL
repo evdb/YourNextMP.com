@@ -7,8 +7,6 @@ name 'YourNextMP';
 
 all_from 'lib/YourNextMP.pm';
 
-requires 'Net::IDN::Encode';
-requires 'IO::Socket::SSL';
 requires 'App::Cache';
 requires 'autodie';
 requires 'Cache::Memcached::libmemcached';
@@ -69,7 +67,9 @@ requires 'HTML::FormHandler'              => '0.30002';
 requires 'HTML::FormHandler::Model::DBIC' => '0.08';
 requires 'HTTP::Date';
 requires 'Image::Imlib2';
+requires 'IO::Compress::Gzip';
 requires 'IO::Interactive';
+requires 'IO::Socket::SSL';
 requires 'IPC::System::Simple';
 requires 'JSON';
 requires 'JSON::XS';
@@ -79,6 +79,7 @@ requires 'Module::Install::Base';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'Net::Amazon::S3';
+requires 'Net::IDN::Encode';
 requires 'Net::OpenID::Consumer';
 requires 'Net::SMTP::SSL';
 requires 'Net::SSL';

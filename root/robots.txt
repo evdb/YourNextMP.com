@@ -2,3 +2,4 @@ User-agent: *
 Sitemap: http://yournextmp.s3.amazonaws.com/sitemap.xml.gz
 Allow: /
 Disallow: /suggestions
+Disallow: /data

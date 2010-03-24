@@ -1,0 +1,29 @@
+[%
+    title = result.name | html;
+    
+    INCLUDE 'chrome/header.html';
+%]
+
+[% IF c.user && c.user.id == result.user.id %]
+
+    <div class="callout">
+        <h2>API Token</h2>
+
+        <p>Your API token is below. Please keep it secret.</p>
+            
+        <p style="font-size: 200%"><tt>[% result.token%]</tt></p>
+
+        <p><a href="[% c.uri_for('/data', result.token ) %]">Go to data download page</a></p>
+    </div>
+
+[% END %]
+
+<h1>[% title %]</h1>
+
+[% IF result.website %]
+    <p><a href="[% result.website %]">[% result.website %]</a></p>
+[% END %]
+
+[% result.summary || "There is no summary for ${title}." | html_para %]
+
+[% INCLUDE 'chrome/footer.html' %]

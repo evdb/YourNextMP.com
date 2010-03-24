@@ -1,0 +1,64 @@
+[% INCLUDE 'chrome/header.html', title => 'List of Downloads' %]
+
+<style type="text/css" media="screen">
+    td {
+        vertical-align: top;
+    }
+</style>
+
+<div class="boxed" style="float: right; width: 40%">
+    <h3>Shhh!!!</h3>
+
+    <p>Remember to keep your API token a secret - don't share or publish it or
+    the urls on this page.</p>
+
+</div>
+
+<h1>Available data files</h1>
+
+<p>You can either grab a specific datafile or the latest one.</p>
+
+<p><strong>Technical note</strong>: The urls below will redirect to the file
+hosted on another server. Please use the URLs below in your code as they will
+always work rather than the url that you are redirected to. You do not need to
+be logged in for these urls to work.</p>
+
+<h2>Latest Files</h2>
+
+<p>The url always points to the latest file. Listed below are the details of the
+current latest files.</p>
+
+<table class="lined">
+[% WHILE (file = latest_data_files.next) %]
+    [% url = c.uri_for( '/data', api_token, 'latest', file.type ) %]
+    <tr>
+        <td>[% file.type %]</td>
+        <td>
+            [% file.name %]<br />
+            [% file.created.dmy('/') %] [% file.created.hms(':') %]
+        </td>
+        <td><a href="[% url %]">latest/[% file.type %]</a></td>
+    </tr>
+[% END %]
+</table>
+
+<h2>Recent Files</h2>
+
+<p>Recently created files - useful if you need to do a diff or something. We
+won't keep these forever. Better to use a 'latest' link above in your code.</p>
+
+<table class="lined">
+[% WHILE (file = recent_data_files.next) %]
+    [% url = c.uri_for( '/data', api_token, 'file', file.id ) %]
+    <tr>
+        <td>[% file.type %]</td>
+        <td>
+            [% file.name %]<br />
+            [% file.created.dmy('/') %] [% file.created.hms(':') %]
+        </td>
+        <td><a href="[% url %]">file/[% file.id %]</a></td>
+    </tr>
+[% END %]
+</table>
+
+[% INCLUDE 'chrome/footer.html' %]

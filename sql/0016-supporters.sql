@@ -16,4 +16,15 @@ create table supporters (
     updated     timestamp    not null
 );
 
+create table data_files (
+    id          bigint      default nextval('global_id_seq') primary key,
+    
+    name        varchar(200)    not null,    
+    type        varchar(40)     not null,
+    s3_key      varchar(200)    not null unique,
+    
+    created     timestamp    not null,
+    updated     timestamp    not null
+);
+
 commit;
