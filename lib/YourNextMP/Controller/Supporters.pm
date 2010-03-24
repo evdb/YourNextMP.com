@@ -27,7 +27,7 @@ sub add : PathPart('add') Chained('result_base') Args(0) {
 
     # create the form and place it on the stash
     my $item = $c->db('Supporter')->new_result( {} );
-    $item->user( $c->user->obj );
+    $item->user_id( $c->user->id );
     my $form = YourNextMP::Form::SupporterAdd->new( item => $item );
     $c->stash( form => $form );
 
