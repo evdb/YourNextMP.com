@@ -25,7 +25,7 @@ __PACKAGE__->table("users");
 =head2 id
 
   data_type: bigint
-  default_value: SCALAR(0xa091b8)
+  default_value: SCALAR(0xa0918c)
   is_auto_increment: 1
   is_nullable: 0
 
@@ -64,7 +64,7 @@ __PACKAGE__->table("users");
 =head2 email_confirmed
 
   data_type: boolean
-  default_value: SCALAR(0xa12ed0)
+  default_value: SCALAR(0xa11200)
   is_nullable: 0
 
 =head2 name
@@ -222,6 +222,20 @@ __PACKAGE__->has_many(
     { "foreign.user_id" => "self.id" },
 );
 
+=head2 supporters
+
+Type: has_many
+
+Related object: L<YourNextMP::Schema::YourNextMPDB::Result::Supporter>
+
+=cut
+
+__PACKAGE__->has_many(
+    "supporters",
+    "YourNextMP::Schema::YourNextMPDB::Result::Supporter",
+    { "foreign.user_id" => "self.id" },
+);
+
 =head2 seat
 
 Type: belongs_to
@@ -237,8 +251,8 @@ __PACKAGE__->belongs_to(
     { join_type => "LEFT" },
 );
 
-# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-23 12:50:29
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:TZF4PlCBclht2L7bLQWiow
+# Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-24 09:21:18
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:EgbcbMU0c8dE3RCItejctQ
 
 =head2 edits
 
@@ -256,14 +270,9 @@ __PACKAGE__->has_many(
 );
 
 sub reset_random_token {
-    my $self = shift;
-
-    my @chars  = ( 'a' .. 'z', 0 .. 9 );
-    my $length = 20;
-    my $string = join '', map { $chars[ rand scalar @chars ] } ( 1 .. $length );
-
+    my $self   = shift;
+    my $string = $self->_create_random_token(20);
     $self->update( { token => $string } );
-
     return $string;
 }
 
