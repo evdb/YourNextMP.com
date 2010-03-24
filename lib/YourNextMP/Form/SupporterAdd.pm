@@ -16,6 +16,12 @@ has_field 'name' => (
     required_message => 'Please enter a name',
 );
 
+my $add_http_if_needed_transform = {
+    transform => sub {
+        my $url = shift;
+        return $url =~ m{^http://} ? $url : "http://$url";
+    },
+};
 my $url_check = {
     check => sub {
         my $url = shift;
@@ -27,13 +33,13 @@ my $url_check = {
 has_field 'website' => (
     type  => 'Text',
     label => "Website URL",
-    apply => [$url_check],
+    apply => [ $add_http_if_needed_transform, $url_check ],
 );
 
 has_field 'logo_url' => (
     type  => 'Text',
     label => "Logo URL",
-    apply => [$url_check],
+    apply => [ $add_http_if_needed_transform, $url_check ],
 );
 
 has_field 'summary' => (
