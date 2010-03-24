@@ -29,8 +29,8 @@
 
     [% UNLESS no_links %]
     <ul>
-        <li><a href="/supporters">People who use our data</a></li>
         <li><a href="/data">Use our data</a></li>
+        <li><a href="/supporters">People who use our data</a></li>
         [% FOREACH format = available_output_formats %]
             [% IF loop.first %]
                 <li>Alternative output formats:</li>
