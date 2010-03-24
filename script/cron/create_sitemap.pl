@@ -8,7 +8,9 @@ use lib 'lib';
 use YourNextMP;
 use Search::Sitemap;
 use IO::Interactive qw( interactive );
+use File::Temp;
 use File::Slurp;
+
 
 my $URL_BASE = 'http://www.yournextmp.com';
 
