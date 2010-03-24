@@ -14,6 +14,9 @@ use YourNextMP::Form::AuthResetPassword;
 sub login : Local {
     my ( $self, $c ) = @_;
 
+    # FIXME - abstract this slightly
+    $c->stash->{reason} = $c->session->{__diversion}{reason};
+
     # set up and stash the forms
     my $user = $c->db('User')->new_result( {} );
     my $create_form = YourNextMP::Form::AuthCreateAccount->new( item => $user );
