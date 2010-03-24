@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use lib 'lib';
+
 use YourNextMP;
 use JSON;
 use DateTime;
@@ -95,8 +97,7 @@ sub upload_to_s3_and_save_to_db {
         content_type => 'application/gzip',
         acl_short    => 'private',
     );
-
-    # $object->put($compressed);
+    $object->put($compressed);
 
     # create an entry in the database
     YourNextMP->db('DataFile')->create(
