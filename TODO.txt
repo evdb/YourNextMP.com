@@ -1,6 +1,8 @@
 [ NOW ]
 
-CSV downloads
+add urls to ynmp to the CSV files
+
+
 
 get cron jobs running
 

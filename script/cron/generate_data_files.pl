@@ -66,7 +66,7 @@ sub generate_main_json {
     # Encode to JSON and print out
     my $json = JSON->new->pretty->utf8->encode( \%data );
 
-    # uplaod it to the server
+    # upload it to the server
     upload_to_s3_and_save_to_db(
         {
             type    => 'json_main',
@@ -101,6 +101,7 @@ sub generate_csv_files {
             'School'        => $row->school,
             'University'    => $row->university,
             'Gender'        => $row->gender,
+            'URL'           => "http://www.yournextmp.com" . $row->path,
         );
 
         # tidy ups
@@ -115,18 +116,20 @@ sub generate_csv_files {
 
     # create two CSV files - one is just contact details and the other has the
     # extra bits in
-    my @simple_fields = (
+    my @contact_fields = (
         'ID',      'Name',       'Email', 'Phone',
         'Address', 'Party Name', 'Seat Name(s)',
     );
     my @personal_fields =
       ( 'Date of Birth', 'Age', 'School', 'University', 'Gender', );
-    my @all_fields = ( @simple_fields, @personal_fields );
+
+    my @simple_fields = ( @contact_fields, 'URL' );
+    my @complete_fields = ( @contact_fields, @personal_fields, 'URL' );
 
     # create the complete file
     my $complete_csv = Text::CSV::Slurp->create(
         input       => \@candidates,
-        field_order => \@all_fields,
+        field_order => \@complete_fields,
     );
 
     # uplaod it to the server
@@ -151,7 +154,7 @@ sub generate_csv_files {
         field_order => \@simple_fields,
     );
 
-    # uplaod it to the server
+    # upload it to the server
     upload_to_s3_and_save_to_db(
         {
             type    => 'csv_contact_only',
