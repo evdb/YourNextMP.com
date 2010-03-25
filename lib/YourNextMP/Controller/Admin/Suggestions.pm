@@ -18,8 +18,8 @@ sub index : Path('') {
     }
 
     $c->stash->{results} = $rs->search(    #
-        { status => 'new' },               #
-                                           # { prefetch => ['user'] }
+        { status   => 'new' },             #
+        { order_by => 'created' },
     );
 }
 
