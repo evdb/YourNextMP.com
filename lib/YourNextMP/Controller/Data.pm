@@ -78,10 +78,13 @@ sub send_file : Private {
 
     if ( ref( $c->engine ) eq 'Catalyst::Engine::FastCGI' ) {
 
+        # FIXME - could be smart about not sending file again...
+
         # use X-Sendfile header and let lighttpd do the heavy lifting
         $c->res->header( "Content-Disposition" =>
               sprintf( 'attachment; filename="%s"', $file->filename ) );
-        $c->res->header( 'X-Sendfile' => "$tmp_file" );
+        $c->res->header( 'Content-Length' => -s "$tmp_file" );
+        $c->res->header( 'X-Sendfile'     => "$tmp_file" );
         $c->res->body('replaced by file');
     }
     else {
