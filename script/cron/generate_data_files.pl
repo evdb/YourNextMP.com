@@ -169,10 +169,16 @@ sub upload_to_s3_and_save_to_db {
     my $now  = DateTime->now;
 
     # s3 key
-    my $file_name = join( '-', $args->{type}, $now->ymd(''), $now->hms('') )   #
-      . ".$args->{suffix}.gz";
-    my $s3_key = join '/', "data_files", $args->{type}, $now->year, $now->month,
-      $now->day, $file_name;
+    my $file_name = sprintf(    #
+        'yournextmp-%s-%s-%s-.%s.gz',    #
+        $args->{type}, $now->ymd(''), $now->hms(''), $args->{suffix}
+    );
+    my $s3_key = join(
+        '/',                             #
+        "data_files", $args->{type},     #
+        $now->year, $now->month, $now->day,    #
+        $file_name
+    );
 
     # get the content and compress it
     my $uncomressed = $args->{content};

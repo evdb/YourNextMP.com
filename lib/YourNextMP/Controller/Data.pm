@@ -3,6 +3,7 @@ use parent 'Catalyst::Controller';
 
 use strict;
 use warnings;
+use Path::Class;
 
 sub result_base : PathPart('data') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -39,34 +40,56 @@ sub latest : PathPart('latest') Chained('get_token') Args(1) {
     my $file = $c->db('DataFile')->latest( $type || '-' )
       || $c->detach('page_not_found');
 
-    $c->forward( 'redirect_to_file', [$file] );
+    # redirect so that the file name is correct
+    $c->res->redirect(
+        $c->uri_for(
+            '/data', $c->stash->{api_token},
+            'file',  $file->id,
+            $file->filename
+        )
+    );
 }
 
-sub file : PathPart('file') Chained('get_token') Args(1) {
-    my ( $self, $c, $id ) = @_;
+sub get_file : PathPart('file') Chained('get_token') Args(2) {
+    my ( $self, $c, $id, $filename ) = @_;
 
     $id =~ s{\D+}{}g;
 
     my $file = $c->db('DataFile')->find( $id || 0 )
       || $c->detach('page_not_found');
 
-    $c->forward( 'redirect_to_file', [$file] );
+    $c->forward( 'send_file', [$file] );
 }
 
-sub redirect_to_file : Private {
+sub send_file : Private {
     my ( $self, $c, $file ) = @_;
 
-    my $five_minutes_hence =
-      DateTime->now + DateTime::Duration->new( minutes => 5 );
+    # create a tmp dir to store files in based on hostname
+    my $tmp_dir = dir( '/tmp', $c->req->uri->host, 'data_files' );
+    $tmp_dir->mkpath;
 
-    my $s3_object = $c->s3_bucket->object(
-        key     => $file->s3_key,
-        expires => $five_minutes_hence
-    );
+    my $tmp_file = $tmp_dir->file( $file->filename );
 
-    my $uri = $s3_object->query_string_authentication_uri();
+    # Fetch file from s3 if missing
+    unless ( -e $tmp_file ) {
+        my $s3_object = $c->s3_bucket->object( key => $file->s3_key, );
+        $s3_object->get_filename("$tmp_file");
+    }
 
-    $c->res->redirect($uri);
+    if ( ref( $c->engine ) eq 'Catalyst::Engine::FastCGI' ) {
+
+        # use X-Sendfile header and let lighttpd do the heavy lifting
+        $c->res->header( "Content-Disposition" =>
+              sprintf( 'attachment; filename="%s"', $file->filename ) );
+        $c->res->header( 'X-Sendfile' => "$tmp_file" );
+        $c->res->body('replaced by file');
+    }
+    else {
+
+        # dev server - do it ourselves
+        $c->serve_static_file($tmp_file);
+    }
+
 }
 
 1;

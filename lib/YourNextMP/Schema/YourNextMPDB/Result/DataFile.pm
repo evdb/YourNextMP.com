@@ -116,4 +116,21 @@ sub _store_edits { 0; }
 
 __PACKAGE__->resultset_attributes( { order_by => ['created DESC'] } );
 
+=head2 filename
+
+    $filename = $data_file->filename(  );
+
+Returns the last part of the s3_key which is a unique filename for this file.
+
+=cut
+
+sub filename {
+    my $self = shift;
+
+    my $filename = $self->s3_key;
+    $filename =~ s{^.*/}{};
+
+    return $filename;
+}
+
 1;

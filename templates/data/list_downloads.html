@@ -49,14 +49,14 @@ won't keep these forever. Better to use a 'latest' link above in your code.</p>
 
 <table class="lined">
 [% WHILE (file = recent_data_files.next) %]
-    [% url = c.uri_for( '/data', api_token, 'file', file.id ) %]
+    [% url = c.uri_for( '/data', api_token, 'file', file.id, file.filename ) %]
     <tr>
         <td>[% file.type %]</td>
         <td>
             [% file.name %]<br />
             [% file.created.dmy('/') %] [% file.created.hms(':') %]
         </td>
-        <td><a href="[% url %]">file/[% file.id %]</a></td>
+        <td><a href="[% url %]">[% file.filename %]</a></td>
     </tr>
 [% END %]
 </table>
