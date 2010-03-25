@@ -9,8 +9,11 @@ use YourNextMP;
 use JSON;
 use DateTime;
 use IO::Compress::Gzip qw(gzip $GzipError);
+use Text::CSV::Slurp;
+use Encode;
 
 generate_main_json();
+generate_csv_files();
 
 sub generate_main_json {
 
@@ -73,6 +76,93 @@ sub generate_main_json {
         }
     );
 }
+
+sub generate_csv_files {
+
+    # create an array of hashes for all the candidates
+    my $candidates_rs      #
+      = YourNextMP         #
+      ->db('Candidate')    #
+      ->standing           #
+      ->search( undef, { prefetch => 'party', order_by => 'me.code' } );
+    my @candidates = ();
+
+    while ( my $row = $candidates_rs->next ) {
+        my %data = (
+            'ID'            => $row->id,
+            'Name'          => $row->name,
+            'Email'         => $row->email,
+            'Phone'         => $row->phone,
+            'Address'       => $row->address,
+            'Party Name'    => $row->party->name,
+            'Seat Name(s)'  => join( ', ', $row->seat_names ),
+            'Date of Birth' => $row->dob,
+            'Age'           => $row->age,
+            'School'        => $row->school,
+            'University'    => $row->university,
+            'Gender'        => $row->gender,
+        );
+
+        # tidy ups
+        for ( grep { $_ } values %data ) {
+            s{\s*\n\s*}{, }g;    # newlines to spaces
+            s{\s+}{ }g;          # normalise spaces
+            $_ = encode_utf8($_);    # CSV module doesn't do this
+        }
+
+        push @candidates, \%data;
+    }
+
+    # create two CSV files - one is just contact details and the other has the
+    # extra bits in
+    my @simple_fields = (
+        'ID',      'Name',       'Email', 'Phone',
+        'Address', 'Party Name', 'Seat Name(s)',
+    );
+    my @personal_fields =
+      ( 'Date of Birth', 'Age', 'School', 'University', 'Gender', );
+    my @all_fields = ( @simple_fields, @personal_fields );
+
+    # create the complete file
+    my $complete_csv = Text::CSV::Slurp->create(
+        input       => \@candidates,
+        field_order => \@all_fields,
+    );
+
+    # uplaod it to the server
+    upload_to_s3_and_save_to_db(
+        {
+            type    => 'csv_complete',
+            suffix  => 'csv',
+            content => $complete_csv,
+            name =>
+              'CSV of candidates including contact details, schooling and age',
+        }
+    );
+
+    # delete all the extra info
+    foreach my $candidate (@candidates) {
+        delete $candidate->{$_} for @personal_fields;
+    }
+
+    # create the simple file
+    my $simple_csv = Text::CSV::Slurp->create(
+        input       => \@candidates,
+        field_order => \@simple_fields,
+    );
+
+    # uplaod it to the server
+    upload_to_s3_and_save_to_db(
+        {
+            type    => 'csv_contact_only',
+            suffix  => 'csv',
+            content => $simple_csv,
+            name    => 'CSV of candidates contact details',
+        }
+    );
+}
+
+##############################
 
 sub upload_to_s3_and_save_to_db {
     my $args = shift;
