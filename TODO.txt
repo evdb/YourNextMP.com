@@ -1,30 +1,33 @@
 [ NOW ]
 
-http://www.httrack.com/html/fcguide.html
+CSV downloads
+
+get cron jobs running
+
+Slurp in hustings.com links: http://www.hustings.com/candidates/feed.rss
+
+add place of birth
+
+record source (generic edit comment)
+
+Allow users to add links.
+
+archive links
+    http://www.httrack.com/html/fcguide.html
 
 attribution for photos
 
 Allow 'dd month yyyy' dates to make copy and paste from wikipedia easier
 
+stats page
+
 Add smarts to upgrade script to apply new SQL change files to production db
-
-Allow users to add links.
-
-Slurp in hustings.com links: http://www.hustings.com/candidates/feed.rss
 
 make homepage search search everything
 
 find constituency by place name and latlng
 
-API access to data - supporters and saving to S3
-
-automated backups and other cron jobs
-
-archive links
-
 send business cards to major media outlets
-
-email and password logins and reduce OpenID to just a few major players - test yahoo openid login
 
 lighttpd 500 error page for when fastcgi is down
 
@@ -40,16 +43,6 @@ More scrapers:
 switch off analytics for admin pages
 
 add hints to search engines in the header so that list pages don't get indexed.
-
-break out (party/seat/candid) page to index/search/all pages
-
-crawl http://ukpollingreport.co.uk/guide/seats-a-d and create links for all the seats
-
-add current mps as candidates and link them to the constituency. Might need to change the queries so that only current candidates show up in the search
-
-login via facebook
-
-Add comments so that candidates that have stepped down can have a note added to them.
 
 Add news/blog/web searches as tabs under the candidates using >>"Joe Blogs" Party Name <<<
   http://news.google.co.uk/news/search?q=%22david+jack%22+Liberal+Democrat
@@ -67,6 +60,3 @@ wrap address details in hcard microformat
 
 provide the candidate's address as a vcard
 
-Integrate with dods ( http://www.dodonline.co.uk/engine.asp?lev1=6&lev2=401&menu=401&biog=y&group=6&id=25618 ) ?????
-
-stats page
