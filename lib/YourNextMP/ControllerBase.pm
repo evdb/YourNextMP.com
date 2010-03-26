@@ -51,7 +51,7 @@ sub search : PathPart('search') Chained('result_base') Args(0) {
     }
 
     # If there is only one result then redirect to it (if web page)
-    if ( $results->count == 1 && $c->output_is('html') ) {
+    if ( $results && $results->count == 1 && $c->output_is('html') ) {
         $c->res->redirect( $c->uri_for( $results->first->code ) );
         $c->detach;
     }
