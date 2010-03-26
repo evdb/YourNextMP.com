@@ -106,21 +106,31 @@ sub view : PathPart('') Chained('result_find') Args(0) {
 sub add_link : PathPart('add_link') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->require_user("You must be logged in to add or edit links");
+    $c->require_user("Please log in to add links");
 
     # create a form and stick it on the stash
-    my $form = YourNextMP::Form::LinkAdd->new( );
-    $c->stash->{form} = $form;
+    my $form = YourNextMP::Form::LinkAdd->new();
+    $c->stash->{form}     = $form;
+    $c->stash->{template} = 'generic/add_link.html';
+
+    # check the form
     return unless $form->process( params => $c->req->params );
 
     # have a url from form - find or create the link
-    
+    my $link =
+      $c->db('Link')->find_or_create( { url => $form->field('url')->value } );
+
     # make sure that the link is attached to our result
-    
+    my $result = $c->stash->{result};
+    $link->find_or_create_related(
+        link_relations => {
+            foreign_id    => $result->id,
+            foreign_table => $result->table
+        }
+    );
+
     # redirect to the link edit page
-
-
-
+    $c->res->redirect( $c->uri_for( $link->path, 'edit' ) );
 }
 
 1;

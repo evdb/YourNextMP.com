@@ -3,6 +3,7 @@ package YourNextMP::Form::Field::WebAddress;
 use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Field::Text';
 
+use URI;
 use Regexp::Common qw /URI/;
 use LWP::UserAgent;
 
@@ -21,6 +22,17 @@ apply(
             },
             message =>
               "This is not a valid url - expecting 'http://example.com/'",
+        },
+        {
+            transform => sub {
+                my $url = shift;
+                my $uri = URI->new($url);
+
+                # Ensure that there is a trailing slash on the host.
+                $uri->path('/') if !$uri->path;
+
+                return $uri->as_string;
+            },
         },
         {
             check => sub {

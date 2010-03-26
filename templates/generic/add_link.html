@@ -1,0 +1,15 @@
+[% query = '"' _ result.name _ '"' | uri;
+
+    WRAPPER
+        'chrome/edit-frame.html',
+        debug        => 0,
+        title        => 'Add link',
+        instructions => "Please find a link to add for ${result.name}",
+        iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
+        return_url => {
+            url => c.uri_for( result.path ),
+            text => "Return to ${result.name} overview",
+        }
+%]
+    [% form.render %]    
+[% END %]

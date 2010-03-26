@@ -135,6 +135,15 @@ __PACKAGE__->has_many(
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-23 12:11:55
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3XjbCGAM+ddPpTR207EcRw
 
+sub new {
+    my $class = shift;
+    my $args  = shift;
+
+    $args->{link_type} ||= 'info';
+
+    return $class->next::method( $args, @_ );
+}
+
 =head2 edits
 
 Type: has_many
