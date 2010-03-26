@@ -70,6 +70,7 @@ iframe {
 
 #main_content {
     width: 80%;
+    float: left;
 }
 
 #main_content div {
