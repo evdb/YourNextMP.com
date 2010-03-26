@@ -37,9 +37,6 @@ has_field 'published' => (
 has_field 'summary' => (
     label    => 'Summary text',
     type     => 'TextArea',
-    required => 1,
-    required_message =>
-      'Please enter some text to summarise the contents of the page',
 );
 
 has_field submit => ( type => 'Submit' );
