@@ -1,11 +1,5 @@
 [ NOW ]
 
-add urls to ynmp to the CSV files
-
-
-
-get cron jobs running
-
 Slurp in hustings.com links: http://www.hustings.com/candidates/feed.rss
 
 add place of birth
