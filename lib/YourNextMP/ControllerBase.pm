@@ -4,6 +4,8 @@ use strict;
 use warnings;
 use parent 'Catalyst::Controller';
 
+use YourNextMP::Form::LinkAdd;
+
 sub result_find : PathPart('') Chained('result_base') CaptureArgs(1) {
     my ( $self, $c, $value ) = @_;
     $c->can_do_output('json');
@@ -101,30 +103,24 @@ sub view : PathPart('') Chained('result_find') Args(0) {
 
 }
 
-# sub edit : PathPart('edit') Chained('result_find') Args(0) {
-#     my ( $self, $c ) = @_;
-#
-#     $c->require_user("You must be logged in to add or edit XXXX");
-#
-#     # create a form and stick it on the stash
-#     my $form = YourNextMP::Form::result->new( result => $c->stash->{result} );
-#     $c->stash->{form} = $form;
-#
-#     return unless $form->process( params => $c->req->params );
-#
-#     $c->res->redirect( $c->uri_for( '', $c->stash->{result}->code ) );
-#
-# }
+sub add_link : PathPart('add_link') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
 
-=head1 AUTHOR
+    $c->require_user("You must be logged in to add or edit links");
 
-Edmund von der Burg
+    # create a form and stick it on the stash
+    my $form = YourNextMP::Form::LinkAdd->new( );
+    $c->stash->{form} = $form;
+    return unless $form->process( params => $c->req->params );
 
-=head1 LICENSE
+    # have a url from form - find or create the link
+    
+    # make sure that the link is attached to our result
+    
+    # redirect to the link edit page
 
-This library is free software. You can redistribute it and/or modify
-it under the same terms as Perl itself.
 
-=cut
+
+}
 
 1;

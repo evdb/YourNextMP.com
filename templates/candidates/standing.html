@@ -7,8 +7,9 @@
 
     <h2>Contact details</h2>
 
-    [% PROCESS 'stubs/item_details.html', 
-        details => [
+    [% 
+    
+        contact_details = [
             {
                 src     => '/static/icons/email.png',
                 alt     => 'email',
@@ -19,12 +20,20 @@
                 src     => '/static/icons/telephone.png',
                 alt     => 'telephone',
                 content => candidate.phone,
-            },
-            {
-                src     => '/static/icons/printer.png',
-                alt     => 'fax',
-                content => candidate.fax,
-            },
+            }
+        ];
+
+        IF candidate.fax;
+            contact_details.push(
+                {
+                    src     => '/static/icons/printer.png',
+                    alt     => 'fax',
+                    content => candidate.fax,
+                }
+            );
+        END;
+        
+        contact_details.push(
             {
                 src     => '/static/icons/house.png',
                 alt     => 'address',
@@ -45,8 +54,10 @@
                       content => 'photo',                    
                     },
                 ],
-            },
-        ];
+            }
+        );
+       
+        PROCESS 'stubs/item_details.html', details => contact_details;
     %]
     <br />
 

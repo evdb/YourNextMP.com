@@ -17,6 +17,8 @@ Allow 'dd month yyyy' dates to make copy and paste from wikipedia easier
 
 stats page
 
+Don't break multiline entries in edit mode
+
 Add smarts to upgrade script to apply new SQL change files to production db
 
 make homepage search search everything
