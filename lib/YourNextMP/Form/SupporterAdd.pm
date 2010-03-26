@@ -7,8 +7,6 @@ use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
 with 'YourNextMP::Form::Render::Table';
 
-use Regexp::Common qw /URI/;
-
 has_field 'name' => (
     type             => 'Text',
     label            => "Organization Name",
@@ -16,30 +14,14 @@ has_field 'name' => (
     required_message => 'Please enter a name',
 );
 
-my $add_http_if_needed_transform = {
-    transform => sub {
-        my $url = shift;
-        return $url =~ m{^http://} ? $url : "http://$url";
-    },
-};
-my $url_check = {
-    check => sub {
-        my $url = shift;
-        return $url =~ m{^$RE{URI}{HTTP}$};
-    },
-    message => "This is not a valid url - expecting 'http://example.com/'",
-};
-
 has_field 'website' => (
-    type  => 'Text',
+    type  => '+YourNextMP::Form::Field::WebAddress',
     label => "Website URL",
-    apply => [ $add_http_if_needed_transform, $url_check ],
 );
 
 has_field 'logo_url' => (
-    type  => 'Text',
+    type  => '+YourNextMP::Form::Field::WebAddress',
     label => "Logo URL",
-    apply => [ $add_http_if_needed_transform, $url_check ],
 );
 
 has_field 'summary' => (
