@@ -1,12 +1,12 @@
 [ NOW ]
 
-Slurp in hustings.com links: http://www.hustings.com/candidates/feed.rss
-
 Press release
 
 add place of birth
 
 -----
+
+admin page with duplicate candidates
 
 record source (generic edit comment)
 
