@@ -51,7 +51,7 @@
             {
                 src     => '/static/icons/user_gray.png',
                 alt     => 'candidate',
-                href    => c.uri_for( '/candidates', item.code ),
+                href    => c.uri_for( item.path ),
                 content => item.name,
             }
         );
@@ -62,7 +62,7 @@
         {
             src     => '/static/icons/rosette-grey.png',
             alt     => 'party',
-            href    => c.uri_for( '/party', item.code ),
+            href    => c.uri_for( item.path ),
             content => item.name,
         }
     );
@@ -73,7 +73,7 @@
         {
             src     => '/static/icons/group.png',
             alt     => 'constituency',
-            href    => c.uri_for( '/seats', item.code ),
+            href    => c.uri_for( item.path ),
             content => item.name,
         }
     );
