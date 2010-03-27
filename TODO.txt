@@ -2,11 +2,13 @@
 
 Slurp in hustings.com links: http://www.hustings.com/candidates/feed.rss
 
+Press release
+
 add place of birth
 
-record source (generic edit comment)
+-----
 
-Allow users to add links.
+record source (generic edit comment)
 
 archive links
     http://www.httrack.com/html/fcguide.html

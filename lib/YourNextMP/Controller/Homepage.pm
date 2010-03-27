@@ -52,31 +52,10 @@ sub index : Path Args(0) {
 
     $c->stash->{top_parties} = $c->smart_cache(
         {
-            key     => 'home_page_top_parties',
+            key     => 'parties_with_candidates',
             expires => 600,
             code    => sub {
-                my $rs = $c->db('Party')->search(
-                    { 'candidates.status' => ['standing'], },    #
-                    {
-                        join   => 'candidates',
-                        select => [
-                            'me.code',                           #
-                            'me.name',                           #
-                            { count => 'candidates.id' }
-                        ],
-                        as       => [qw( code name candidate_count )],
-                        group_by => [ 'me.code', 'me.name' ],
-
-                        order_by => 'count desc, me.code',
-                        rows     => 15,
-                    }
-                );
-
-                return [
-                    map {
-                        { $_->get_columns }
-                      } $rs->all
-                ];
+                $c->db('Party')->parties_with_candidates_as_arrayref;
             },
         }
     );

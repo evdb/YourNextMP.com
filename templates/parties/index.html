@@ -7,4 +7,20 @@
     view_all_text => 'View all parties',
 %]
 
+[% WRAPPER 'stubs/search_results.html',
+    title => "Parties with candidates:"
+%]
+
+    [% FOREACH party = parties %]
+        [% PROCESS 'stubs/search_result.html',
+            name     => party.name,
+            image_id => party.image_id,
+            href     => c.uri_for( party.code ),
+            extra    => party.candidate_count _ " candidates",
+        %]        
+    [% END %]
+
+[% END %]
+
+
 [% INCLUDE 'chrome/footer.html' %]

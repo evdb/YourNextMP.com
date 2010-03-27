@@ -47,4 +47,31 @@ sub name_to_code {
     return $code;
 }
 
+sub parties_with_candidates_as_arrayref {
+    my $self = shift;
+
+    my $rs = $self->search(
+        { 'candidates.status' => ['standing'], },    #
+        {
+            join   => 'candidates',
+            select => [
+                'me.code',                           #
+                'me.name',                           #
+                'me.image_id',
+                { count => 'candidates.id' }
+            ],
+            as       => [qw( code name image_id candidate_count )],
+            group_by => [ 'me.code', 'me.name', 'me.image_id' ],
+
+            order_by => 'count desc, me.code',
+        }
+    );
+
+    return [
+        map {
+            { $_->get_columns }
+          } $rs->all
+    ];
+}
+
 1;

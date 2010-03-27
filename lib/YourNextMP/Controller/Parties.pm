@@ -12,6 +12,20 @@ sub source_name {
     return 'Party';
 }
 
+sub index : PathPart('') Chained('result_base') Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->stash->{results} = $c->smart_cache(
+        {
+            key     => 'parties_with_candidates',
+            expires => 600,
+            code    => sub {
+                $c->db('Party')->parties_with_candidates_as_arrayref;
+            },
+        }
+    );
+}
+
 sub view : PathPart('') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 

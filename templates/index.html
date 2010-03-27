@@ -38,19 +38,24 @@
             <th><img class="icon" src="/static/icons/group.png" alt="#" title="number of candidates"></td>
         </tr>
 
+    [% number_to_show = 15 %]
     [% FOREACH party = top_parties %]        
 
         <tr class="[% loop.count % 2 ? 'odd' : 'even' %]">
+        [% IF loop.index > number_to_show %]
+            <td colspan=2 style="text-align: right">
+                ...and <a href="/parties">[% top_parties.size - number_to_show %] other smaller parties</a>
+            </td>
+        [% ELSE %]
             <td><a href="[% c.uri_for('/parties', party.code) %]">[% party.name %]</a></td>
             <td>[% party.candidate_count %]</td>
+        [% END %]
         </tr>
+
+        [% LAST IF loop.index > number_to_show %]
+
     [% END %]
 
-        <tr class="[% top_parties.size+1 % 2 ? 'odd' : 'even' %]">
-            <td colspan=2 style="text-align: right">
-                ...and <a href="/parties/all/1">[% counts.parties - top_parties.size %] other smaller parties</a>
-            </td>
-        </tr>
     </table> 
 
 </div>
