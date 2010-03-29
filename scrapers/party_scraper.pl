@@ -10,6 +10,9 @@ use Web::Scraper;
 use URI;
 use Encode;
 use YourNextMP;
+use IO::Interactive qw(interactive);
+
+sub burp ( @ ) { printf {interactive} @_; }
 
 my $commision_site = 'http://registers.electoralcommission.org.uk';
 my $base_search_page =
@@ -46,7 +49,7 @@ sub scrape_parties {
     $mech->submit_form( form_id => 'frmSearch' );
     my $results_html = decode( 'latin1', $mech->content );
 
-    # die print $results_html;
+    # die burp $results_html;
 
     # Extract the names and url of all the parties
     my $results = scraper {
@@ -64,7 +67,7 @@ sub scrape_parties {
     # Extract the emblems and add them to the mix
     foreach my $party ( @{ $results->{parties} } ) {
 
-        print "Looking at $party->{name}\n";
+        burp "Looking at $party->{name}\n";
 
         # create the code for this party
         $party->{name} = $parties_rs->clean_name( $party->{name} );
@@ -75,7 +78,11 @@ sub scrape_parties {
         my ($id) = $commision_url =~ m{frmPartyID=(\d+)};
         $party->{electoral_commision_id} = $id;
 
-        # if ( !$parties_rs->find( { code => $party->{code} } ) ) {
+        # must have this id
+        if ( !$id ) {
+            warn "Missing electoral_commision_id for $commision_url\n";
+            next;
+        }
 
         # scrape the emblem off the electoral commission site
         my $emblem_page_url =
@@ -86,17 +93,22 @@ sub scrape_parties {
 
         # Fetch the emblem if it exists
         if ($emblem_url) {
-            print "\tFetching emblem for $party->{name}\n";
+            burp "\tFetching emblem for $party->{name}\n";
             my $image =
               $images_rs->find_or_create( { source_url => $emblem_url } );
             $party->{image_id} = $image->id;
         }
 
-        # }
-
-        my $p = $parties_rs->update_or_create(    #
+        my $p = $parties_rs->find_or_create(    #
             $party,
+            { key => 'parties_electoral_commision_id_key' }
         );
+
+        # check that the party name has not changed - if it has complain
+        if ( $p->name ne $party->{name} ) {
+            warn sprintf "Party name changed: %s -> %s\n", $p->name,
+              $party->{name};
+        }
 
         my $link_title = 'Electoral Commission Entry';
         $link_title .= ' (Northern Ireland)' if !$frmGB;
