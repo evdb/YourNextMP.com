@@ -2,6 +2,10 @@
 
 add place of birth
 
+party scraper leads to duplicates - use different uk and ni ids in record
+
+mail all @parliament.uk addresses to get non-parliament addresses.
+
 -----
 
 admin page with duplicate candidates

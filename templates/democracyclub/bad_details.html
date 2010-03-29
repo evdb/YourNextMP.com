@@ -108,7 +108,7 @@
                 <ul id="leaderboard">
                     <li><strong>Leaderboard</strong></li>
                     [% FOREACH l IN leader_board %]
-                        <li>[% l.name | html %]</li>
+                        <li>[% l.name | html %] ([% l.points %])</li>
                         [% LAST IF loop.count > 4 %]
                     [% END %]
                 </ul>
