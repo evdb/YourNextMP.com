@@ -1,10 +1,12 @@
 [ NOW ]
 
-Press release
+welcome screen for DC game
 
 add place of birth
 
 -----
+
+record source
 
 admin page with duplicate candidates
 

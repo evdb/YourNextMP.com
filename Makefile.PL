@@ -101,6 +101,7 @@ requires 'Web::Scraper';
 requires 'WebService::TWFY::API';
 requires 'WWW::Mechanize';
 requires 'XML::LibXML';
+requires 'XML::Simple';
 
 catalyst;
 
