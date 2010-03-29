@@ -499,18 +499,18 @@ details table to match.
 
 =cut
 
-# FIXME - only do standing candidates
-
 sub update_bad_details {
     my $self             = shift;
-    my @details_to_check = qw(email phone fax address);
+    my @details_to_check = qw(email phone address);
 
     foreach my $detail (@details_to_check) {
         my $check_method = "_find_detail_issue_for_$detail";
 
-        my $issue = !$self->$detail    # check if it is there
-          ? 'missing'                  # if not then 'missing'
-          : $self->$check_method;      # otherwise do deeper check
+        # find out what the issue is
+        my $issue =    #
+            !$self->is_standing ? ''
+          : !$self->$detail     ? 'missing'
+          :                       $self->$check_method;
 
         if ($issue) {
             $self->update_or_create_related(
@@ -631,6 +631,11 @@ sub age {
     }
 
     return "$age years old (born $dob)";
+}
+
+sub is_standing {
+    my $self = shift;
+    return $self->status eq 'standing';
 }
 
 1;

@@ -1,9 +1,5 @@
 [ NOW ]
 
-welcome screen for DC game
-
-only standing ppcs for bad details and ignore the fax number
-
 add place of birth
 
 -----
