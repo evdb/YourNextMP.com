@@ -36,6 +36,32 @@
         <title>Correct bad candidate details</title>
     </head>
     <body>
+        <div id="explanation" [% 'style="display: none"' UNLESS show_explanation %]>
+            <div>
+                <img src="/static/bad_details_example.png" width="457" height="345" style="float: right"> 
+
+                <h1>Hello!</h1>
+
+                <p>This is a game where you score points by helping us find
+                the contact details for random candidates in our database.
+                Eventually we hope to be able to contact all of them.</p>
+
+                <p>At the top is a form where you can start entering as many
+                details as you like. You get points for each detail you
+                find. You can skip to another candidate any time you
+                like.</p>
+
+                <p>For current MPs you may find their Parliamentary contact
+                details (eg 'bob@parliament.uk' or '020 7219 ****' ). We can't
+                use these as once the election is called they will stop working
+                (<a
+                href="http://blog.yournextmp.com/2010/03/and-then-phones-go-dead-and-emails.html">more
+                details</a>). You'll get an error message if you try to add
+                these.</p>
+
+                <button onclick="$('#explanation').fadeOut();" type="button">Play the game!</button>
+            </div>
+        </div>
         <div id="header">
             <div id="instructions_wrapper">
                 <div id="instructions">
@@ -95,25 +121,6 @@
 
 
         <div style="clear:both;height:100%;">
-            <div id="explanation" [% 'style="display: none"' UNLESS show_explanation %]>
-                <div>
-                    <h1>Welcome!</h1>
-
-                    <p>This is a game where you score points by helping us find
-                    the contact details for random candidates in our database.
-                    Eventually we hope to be able to contact all of them.</p>
-
-                    <p>Above is a form where you can start entering as many
-                    details as you like. You get points for each detail you
-                    find. You can skip to another candidate any time you
-                    like.</p>
-
-                    <p>Under this notice is a Google search that might help you
-                    in your search.</p>
-
-                    <button onclick="$('#explanation').fadeOut();" type="button">Return to game!</button>
-                </div>
-            </div>
  
             <iframe id="search-iframe" src="[% google( q => query_base ) %]" frameborder="0"></iframe>
         </div>

@@ -34,7 +34,7 @@ p {
 #header {
     padding:0.5em;
     background:repeat-x #def0ff bottom left;
-    border-bottom:2px solid #b6deff;
+    border-bottom:5px solid #b6deff;
 }
 
 #instructions_wrapper {
@@ -164,13 +164,13 @@ ul#leaderboard li {
     width: 100%;
     height:100%;
     font-size: 120%;
-    background:rgba(0,0,0,0.3);
+    background:rgba(0,0,0,0.6);
 }
 
 #explanation div {
-    width: 60%;
+    width: 80%;
 	background-color:#FFF;
-	border: 5px solid rgba(0,0,0,0.5);
+	border: 5px solid rgba(0,0,0,0.3);
     margin: 3em auto 0 auto;
     padding: 2em;
     -moz-border-radius:1em;
