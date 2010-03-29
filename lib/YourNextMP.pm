@@ -102,12 +102,9 @@ sub output_is {
     my $c       = shift;
     my $desired = shift;
 
-    # 'html' always allowed
-    return 1 if $desired eq 'html';
-
     # get the output that they want and the allowed outputs
     my $requested = $c->req->param('output') || 'html';
-    my @allowed = ( @{ $c->stash->{available_output_formats} || [] } );
+    my @allowed = ( @{ $c->stash->{available_output_formats} || [] }, 'html' );
 
     # check that they asked for it and it is allowed
     return    #
@@ -488,7 +485,7 @@ Send the email.
 =cut
 
 sub send_email {
-    my $c = shift;
+    my $c    = shift;
     my $args = shift;
 
     my $email = Email::Simple->create(
