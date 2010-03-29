@@ -217,7 +217,7 @@ sub require_dc_user {
 
     # no user - explain the problem
     $c->res->redirect( $c->uri_for('/auth/need_dc_user') );
-
+    $c->detach();
 }
 
 =head2 user_is_admin
