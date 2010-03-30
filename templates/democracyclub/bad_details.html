@@ -21,9 +21,9 @@
     
     bad_detail_values = c.config.democracy_club.bad_detail_values;    
 
-    total_points = c.session.dc_points.total_points || 0;
-    leader_board = c.session.dc_points.leader_board || [];
-
+    total_points     = c.session.dc_points.total_points     || 0;
+    leader_board     = c.session.dc_points.leader_board     || [];
+    contextual_board = c.session.dc_points.contextual_board || [];
 %]
  <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
     <head>
@@ -109,11 +109,18 @@
                 <a href="http://bit.ly/winaduckhouse" target="_blank"><img style="float: right;" alt="duckhouse" src="/static/duck-house.jpg" border="0"></a>
                 <ul id="leaderboard">
                     <li><strong>Leaderboard</strong></li>
-                    [% FOREACH l IN leader_board %]
-                        <li>[% l.name | html %] ([% l.points %])</li>
+                    [% FOREACH l IN contextual_board %]
+                    <li>
+                        [% l.position %]:
+                        [% IF l.dc_user_id == c.user.dc_id %]
+                            <b>YOU!</b>
+                        [% ELSE %]
+                            [% l.name | html %]
+                        [% END %]
+                        ([% l.points %])</li>
                         [% LAST IF loop.count > 3 %]
                     [% END %]
-                    <li><a href="http://www.democracyclub.org.uk/ynmp/table/">more...</a></li>                    
+                    <li><a href="http://www.democracyclub.org.uk/ynmp/table/">full list...</a></li>                    
                 </ul>
             </div>
             <div class="clear"></div>
