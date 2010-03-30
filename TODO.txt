@@ -1,10 +1,18 @@
 [ NOW ]
 
+Contextual score board for the DC game
+
+link to TSC from all seats
+
 add place of birth
 
 party scraper leads to duplicates - use different uk and ni ids in record
 
+proper contact details on site
+
 mail all @parliament.uk addresses to get non-parliament addresses.
+
+contact guardian about them using our data
 
 -----
 

@@ -168,6 +168,9 @@ sub bad_detail_succesfully_updated : Private {
         my $total_score = 0;
         $total_score += $scores->{$_} for @values_added;
 
+        # Also put in bounty for this bad detail
+        $total_score += $bad_detail->act_count - 1;
+
         my $summary = sprintf "%s for %s (%s)", join( ', ', @values_added ),
           $bad_detail->candidate->name, $bad_detail->candidate->party->name;
 

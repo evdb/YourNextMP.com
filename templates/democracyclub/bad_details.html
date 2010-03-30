@@ -38,9 +38,12 @@
     <body>
         <div id="explanation" [% 'style="display: none"' UNLESS show_explanation %]>
             <div>
+
+                <button style="float: left" onclick="$('#explanation').fadeOut();" type="button">Play the game!</button>
+
                 <img src="/static/bad_details_example.png" width="457" height="345" style="float: right"> 
 
-                <h1>Hello!</h1>
+                <br clear="left"><br>
 
                 <p>This is a game where you score points by helping us find
                 the contact details for random candidates in our database.
@@ -59,7 +62,6 @@
                 details</a>). You'll get an error message if you try to add
                 these.</p>
 
-                <button onclick="$('#explanation').fadeOut();" type="button">Play the game!</button>
             </div>
         </div>
         <div id="header">
@@ -69,7 +71,7 @@
                     <strong>[% candidate.name | html %]</strong><br>
                     <small>[% candidate.party.name | html %]</small><br>
                     <small>([% candidate.seat_names | html %])</small><br>
-                    for [% bad_detail_values.${bad_detail.detail} %] points.
+                    for [% bad_detail_values.${bad_detail.detail} + bad_detail.act_count - 1 %] points.
                 </div>
                 <div>
                     <a href="#" onclick="$('#explanation').fadeIn();true;">Help!</a>
@@ -104,13 +106,14 @@
             <div id="dc_scoreboard_wrapper">
                 <a href="http://www.democracyclub.org.uk/" target="_blank" class="linkback">back to Democracy Club</a>                
                 <h3>You now have <strong>[% total_points %]</strong> points!</h3>
-                <a href="http://www.democracyclub.org.uk/duckhouse/" target="_blank"><img style="float: right;" alt="duckhouse" src="/static/duck-house.jpg" border="0"></a>
+                <a href="http://bit.ly/winaduckhouse" target="_blank"><img style="float: right;" alt="duckhouse" src="/static/duck-house.jpg" border="0"></a>
                 <ul id="leaderboard">
                     <li><strong>Leaderboard</strong></li>
                     [% FOREACH l IN leader_board %]
                         <li>[% l.name | html %] ([% l.points %])</li>
-                        [% LAST IF loop.count > 4 %]
+                        [% LAST IF loop.count > 3 %]
                     [% END %]
+                    <li><a href="http://www.democracyclub.org.uk/ynmp/table/">more...</a></li>                    
                 </ul>
             </div>
             <div class="clear"></div>
