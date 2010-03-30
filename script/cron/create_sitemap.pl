@@ -37,7 +37,7 @@ foreach my $rs_name (qw(Candidate Seat Party)) {
 }
 
 # create a temporary file and write to that
-my $tmp_file = File::Temp->new( UNLINK => 0, SUFFIX => '.gz' );
+my $tmp_file = File::Temp->new( UNLINK => 0, SUFFIX => '.xml' );
 
 print {interactive} "Writing file to $tmp_file\n";
 $map->write("$tmp_file");
@@ -48,8 +48,8 @@ $tmp_file->close;
 print {interactive} "Uploading file to S3\n";
 my $bucket = YourNextMP->s3_bucket;
 my $object = $bucket->object(
-    key          => 'sitemap.xml.gz',
-    content_type => 'application/gzip',
+    key          => 'sitemap.xml',
+    content_type => 'application/xml',
     acl_short    => 'public-read',
 );
 
