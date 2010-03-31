@@ -21,9 +21,11 @@ sub generate_main_json {
     my %fetch_spec = (
         Candidate => {
             fields => [
-                'id',      'code',    'status',  'party_id',
-                'created', 'updated', 'name',    'email',
-                'phone',   'fax',     'address', 'image_id',
+                'id',        'code',    'status',  'party_id',
+                'created',   'updated', 'name',    'email',
+                'phone',     'fax',     'address', 'image_id',
+                'dob',       'gender',  'school',  'university',
+                'positions', 'status',  'birthplace',
             ],
             where => {},
         },
@@ -89,19 +91,20 @@ sub generate_csv_files {
 
     while ( my $row = $candidates_rs->next ) {
         my %data = (
-            'ID'            => $row->id,
-            'Name'          => $row->name,
-            'Email'         => $row->email,
-            'Phone'         => $row->phone,
-            'Address'       => $row->address,
-            'Party Name'    => $row->party->name,
-            'Seat Name(s)'  => join( ', ', $row->seat_names ),
-            'Date of Birth' => $row->dob,
-            'Age'           => $row->age,
-            'School'        => $row->school,
-            'University'    => $row->university,
-            'Gender'        => $row->gender,
-            'URL'           => "http://www.yournextmp.com" . $row->path,
+            'ID'             => $row->id,
+            'Name'           => $row->name,
+            'Email'          => $row->email,
+            'Phone'          => $row->phone,
+            'Address'        => $row->address,
+            'Party Name'     => $row->party->name,
+            'Seat Name(s)'   => join( ', ', $row->seat_names ),
+            'Date of Birth'  => $row->dob,
+            'Place of Birth' => $row->birthplace,
+            'Age'            => $row->age,
+            'School'         => $row->school,
+            'University'     => $row->university,
+            'Gender'         => $row->gender,
+            'URL'            => "http://www.yournextmp.com" . $row->path,
         );
 
         # tidy ups
@@ -120,8 +123,10 @@ sub generate_csv_files {
         'ID',      'Name',       'Email', 'Phone',
         'Address', 'Party Name', 'Seat Name(s)',
     );
-    my @personal_fields =
-      ( 'Date of Birth', 'Age', 'School', 'University', 'Gender', );
+    my @personal_fields = (
+        'Date of Birth', 'Place of Birth', 'Age', 'School',
+        'University',    'Gender',
+    );
 
     my @simple_fields = ( @contact_fields, 'URL' );
     my @complete_fields = ( @contact_fields, @personal_fields, 'URL' );

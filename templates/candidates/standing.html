@@ -72,6 +72,16 @@
             },
         ];
         
+        IF candidate.birthplace;
+            schooling_and_work_details.push(
+                {
+                    src     => '/static/icons/world.png',
+                    alt     => 'birthplace',
+                    content => candidate.birthplace,
+                },
+            );
+        END;
+        
         FOREACH position IN candidate.positions.split('\n+');
             schooling_and_work_details.push(
                 {

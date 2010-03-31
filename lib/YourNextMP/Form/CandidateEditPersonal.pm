@@ -22,6 +22,11 @@ has_field 'dob' => (
     label => 'Date or year of birth',
 );
 
+has_field 'birthplace' => (
+    type  => 'Text',
+    label => 'Place of birth',
+);
+
 has_field 'school' => (
     type  => 'Text',
     label => 'School',
