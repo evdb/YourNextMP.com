@@ -31,6 +31,10 @@ tr.error {
 	font-size:90%;
 }
 
+.hint {
+    color: #444;
+}
+
 table.form input[type=text],
 table.form input[type=file],
 table.form input[type=password],

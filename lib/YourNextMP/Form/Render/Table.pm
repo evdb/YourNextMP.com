@@ -73,10 +73,14 @@ sub render_field_struct {
         $output .= "\n    </td>\n";
     }
 
-    my @errors = $field->all_errors;
     $output .= "    <td class='error_column'>\n";
+
+    $output .= sprintf '      <span class="hint">%s</span><br />', $field->hint
+      if $field->can('hint') && $field->hint;
+
     $output .= qq{      <span class="error_message">$_</span><br />\n}
-      for @errors;
+      for $field->all_errors;
+
     $output .= "    </td>\n";
 
     $output .= "  </tr>\n";

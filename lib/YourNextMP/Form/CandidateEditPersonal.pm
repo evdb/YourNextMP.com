@@ -7,6 +7,12 @@ use HTML::FormHandler::Moose;
 extends 'HTML::FormHandler::Model::DBIC';
 with 'YourNextMP::Form::Render::Table';
 
+use HTML::FormHandler::Field;
+
+has '+field_traits' => (    #
+    default => sub { ['YourNextMP::Form::TraitFor::Hint']; },
+);
+
 has_field 'gender' => (
     type    => 'Select',
     label   => 'Gender',
@@ -20,6 +26,7 @@ has_field 'gender' => (
 has_field 'dob' => (
     type  => '+YourNextMP::Form::Field::YearOrDOB',
     label => 'Date or year of birth',
+    hint  => 'dd/mm/yyyy or yyyy',
 );
 
 has_field 'birthplace' => (
@@ -35,6 +42,7 @@ has_field 'school' => (
 has_field 'university' => (
     type  => 'Text',
     label => 'University',
+    hint  => "Uni A; Uni B",
 );
 
 has_field 'positions' => (
@@ -49,6 +57,7 @@ has_field 'positions' => (
               }
         }
     ],
+    hint => 'one per line: "Acme Inc, Director, 1997 to 2004"',
 );
 
 has_field 'submit' => ( type => 'Submit' );
