@@ -55,7 +55,13 @@ __PACKAGE__->table("parties");
   is_nullable: 0
   size: 80
 
-=head2 electoral_commision_id
+=head2 gb_id
+
+  data_type: integer
+  default_value: undef
+  is_nullable: 1
+
+=head2 ni_id
 
   data_type: integer
   default_value: undef
@@ -104,7 +110,9 @@ __PACKAGE__->add_columns(
         is_nullable   => 0,
         size          => 80,
     },
-    "electoral_commision_id",
+    "gb_id",
+    { data_type => "integer", default_value => undef, is_nullable => 1 },
+    "ni_id",
     { data_type => "integer", default_value => undef, is_nullable => 1 },
     "image_id",
     {
@@ -115,12 +123,10 @@ __PACKAGE__->add_columns(
     },
 );
 __PACKAGE__->set_primary_key("id");
-__PACKAGE__->add_unique_constraint( "parties_name_key", ["name"] );
-__PACKAGE__->add_unique_constraint(
-    "parties_electoral_commision_id_key",
-    ["electoral_commision_id"],
-);
-__PACKAGE__->add_unique_constraint( "parties_code_key", ["code"] );
+__PACKAGE__->add_unique_constraint( "parties_name_key",  ["name"] );
+__PACKAGE__->add_unique_constraint( "parties_gb_id_key", ["gb_id"] );
+__PACKAGE__->add_unique_constraint( "parties_ni_id_key", ["ni_id"] );
+__PACKAGE__->add_unique_constraint( "parties_code_key",  ["code"] );
 
 =head1 RELATIONS
 
@@ -154,7 +160,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 19:36:14
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:podizve5l1oIv9c4XYctbA
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:H2spCSmLb8ycQTH3Sfg5kA
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 

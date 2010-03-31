@@ -35,11 +35,14 @@ $parties_rs->find_or_create(
     }
 );
 
-scrape_parties(1);
+my %seen_party_codes = ();
 scrape_parties(0);
+scrape_parties(1);
+find_redundant_parties();
 
 sub scrape_parties {
-    my $frmGB = shift() ? 1 : 0;
+    my $frmGB  = shift() ? 1       : 0;
+    my $id_key = $frmGB  ? 'gb_id' : 'ni_id';
 
     my $search_page = "$base_search_page?frmGB=$frmGB";
 
@@ -76,7 +79,7 @@ sub scrape_parties {
         # extract the electoral_commision_id
         my $commision_url = delete $party->{commision_url};
         my ($id) = $commision_url =~ m{frmPartyID=(\d+)};
-        $party->{electoral_commision_id} = $id;
+        $party->{$id_key} = $id;
 
         # must have this id
         if ( !$id ) {
@@ -99,10 +102,18 @@ sub scrape_parties {
             $party->{image_id} = $image->id;
         }
 
-        my $p = $parties_rs->find_or_create(    #
-            $party,
-            { key => 'parties_electoral_commision_id_key' }
-        );
+        # First find the party by id, then code, then create
+        my $p =
+             $parties_rs->find( { $id_key => $id } )
+          || $parties_rs->find( { code    => $party->{code} } )
+          || $parties_rs->create($party);
+
+        $seen_party_codes{ $p->code }++;
+
+        # If we are in NI check that we have the id in the right place
+        if ( !$frmGB && $p->gb_id && $p->gb_id == $id ) {
+            $p->update( { gb_id => undef, ni_id => $id } );
+        }
 
         # check that the party name has not changed - if it has complain
         if ( $p->name ne $party->{name} ) {
@@ -132,3 +143,19 @@ sub scrape_parties {
 
 }
 
+sub find_redundant_parties {
+
+    my $search = $parties_rs->search;
+
+    while ( my $p = $search->next ) {
+        next
+          if $seen_party_codes{ $p->code }
+              || $p->code eq 'independent'
+              || $p->code eq 'speaker_seeking_reelection';
+
+        warn sprintf "Redundant party: %s - %s (%u)\n",
+          $p->code, $p->name, $p->id;
+
+    }
+
+}
