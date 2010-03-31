@@ -110,6 +110,9 @@ sub scrape_parties {
 
         $seen_party_codes{ $p->code }++;
 
+        # check that the id is stored if we found it by code
+        $p->update( { $id_key => $id } ) if !$p->$id_key;
+
         # If we are in NI check that we have the id in the right place
         if ( !$frmGB && $p->gb_id && $p->gb_id == $id ) {
             $p->update( { gb_id => undef, ni_id => $id } );
