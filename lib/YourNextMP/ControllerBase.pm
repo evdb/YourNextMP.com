@@ -136,6 +136,8 @@ sub add_link : PathPart('add_link') Chained('result_find') Args(0) {
 sub history : PathPart('history') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
+    $c->require_user("Please log in to see the history");
+
     $c->stash->{template} = 'generic/history.html';
     $c->stash->{results} = $c->stash->{result}->edits;
     

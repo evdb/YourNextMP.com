@@ -269,6 +269,33 @@ __PACKAGE__->has_many(
     { cascade_delete      => 0 },
 );
 
+=head2 edits_made
+
+Returns edits of appropriate tables made by this user.
+
+=cut
+
+__PACKAGE__->has_many(
+    "_edits_by_this_user",
+    "YourNextMP::Schema::YourNextMPDB::Result::Edit",
+    { "foreign.user_id" => "self.id" },
+);
+
+sub edits_made {
+    my $self = shift;
+    return $self->_edits_by_this_user(
+        {    #
+            source_table => [
+                'candidacies', 'candidates',
+                'images',      'link_relations',
+                'links',       'parties',
+                'seats',
+            ],
+        },
+        { order_by => 'created', }
+    );
+}
+
 sub reset_random_token {
     my $self   = shift;
     my $string = $self->_create_random_token(20);

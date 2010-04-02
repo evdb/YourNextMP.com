@@ -93,6 +93,15 @@ sub grant_copyright : Local {
 
 }
 
+sub edits : PathPart('edits') Chained('user_retrieve') Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->require_user("Please log in to see edits by this user");
+
+    my $user = $c->stash->{user};
+    $c->stash->{results} = $user->edits_made;
+}
+
 =head1 AUTHOR
 
 Edmund von der Burg

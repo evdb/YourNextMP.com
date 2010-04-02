@@ -54,5 +54,17 @@
         );
     END;
 
+    IF c.user;
+        candidate_top_details.push(
+            {
+                class   => 'discreet',
+                src     => '/static/icons/time.png',
+                alt     => 'history',
+                href    => c.uri_for( result.path, 'history' ),
+                content => 'view change history',
+            }
+        );
+    END;
+
     PROCESS 'stubs/item_details.html',details => candidate_top_details;
 %]<br>

@@ -174,7 +174,7 @@ use Time::HiRes qw(time);
 __PACKAGE__->inflate_column(
     'data',
     {
-        inflate => sub { JSON->new->utf8->decode( $_[0] ) },
+        inflate => sub { JSON->new->decode( $_[0] ) },
         deflate => sub {
             my $data = $_[0];
             $_ .= '' for grep { ref $_ } values %$data;

@@ -3,7 +3,11 @@
 <h1>[% user.screen_name | html %]</h1>
 
 [% IF c.user.id == user.id %]
-    <a href="[% c.uri_for( user.id, 'edit' ) %]">edit</a>
+    <p><a href="[% c.uri_for( user.id, 'edit' ) %]">edit</a></p>
+[% END %]
+
+[% IF c.user %]
+    <p><a href="[% c.uri_for( user.id, 'edits' ) %]">Edits made by this user</a></p>
 [% END %]
 
 [% INCLUDE 'chrome/footer.html' %]

@@ -1,0 +1,34 @@
+[% INCLUDE 'chrome/header.html', title => 'Edits made by' _ user.screenname %]
+
+<style type="text/css" media="screen">
+    table.edits {
+        
+    }
+    
+    .key {
+        width: 20%;
+    }
+    
+    .before {
+        color: red;
+    }
+    
+    .after {
+        color: green;
+    }
+    
+    .after_row {
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+
+[% WHILE  (h = results.next) %]
+
+    [% deltas = h.deltas %]
+    [% NEXT UNLESS deltas.size %]
+
+    [% INCLUDE 'generic/edit_block.html' edit => h %]
+
+[% END %]
+
+[% INCLUDE 'chrome/footer.html' %]
