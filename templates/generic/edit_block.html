@@ -1,0 +1,37 @@
+<div>
+    <h3>
+        [% edit.edit_type | ucfirst %]
+        of
+        [% edit.source_table %]:[% edit.source_id %]
+        by
+        <a href="[% c.uri_for( edit.user.path ) %]">[% edit.user.screen_name %]</a>
+        <br>
+        ([% edit.created.strftime('%d/%m/%Y %H:%M:%S') %])
+    </h3>
+
+    [% FOREACH d IN deltas %]
+
+        [% IF loop.first %]
+            <table class='edits'>                
+        [% END %]
+    
+        <tr>
+            <td rowspan="2" class="key">
+                [% d.field | html %]
+            </td>
+            <td class="before">
+                [% d.before || '~' | html_break %]
+            <td>
+        </tr>
+        <tr class="after_row">
+            <td class="after">
+                [% d.after || '~' | html_break %]
+            <td>
+        </tr>
+        
+        [% IF loop.last %]
+            </table>
+        [% END %]
+    [% END %]
+
+</div>

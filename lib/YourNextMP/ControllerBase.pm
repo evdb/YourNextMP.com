@@ -133,4 +133,13 @@ sub add_link : PathPart('add_link') Chained('result_find') Args(0) {
     $c->res->redirect( $c->uri_for( $link->path, 'edit' ) );
 }
 
+sub history : PathPart('history') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->stash->{template} = 'generic/history.html';
+    $c->stash->{results} = $c->stash->{result}->edits;
+    
+
+}
+
 1;

@@ -8,6 +8,8 @@ contact guardian about them using our data
 
 link to TSC from all seats
 
+photo moderation
+
 -----
 
 admin page with duplicate candidates

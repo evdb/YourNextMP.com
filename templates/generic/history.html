@@ -1,0 +1,37 @@
+[% INCLUDE 'chrome/header.html', title => 'History for ' _ result.name %]
+[% USE Dumper %]
+
+<style type="text/css" media="screen">
+    table.edits {
+        
+    }
+    
+    .key {
+        width: 20%;
+    }
+    
+    .before {
+        color: red;
+    }
+    
+    .after {
+        color: green;
+    }
+    
+    .after_row {
+        border-bottom: 1px solid #ccc;
+    }
+</style>
+
+<h1>Edits of '[% result.name | html %]':</h1>
+
+[% WHILE  (h = results.next) %]
+
+    [% deltas = h.deltas %]
+    [% NEXT UNLESS deltas.size %]
+
+    [% INCLUDE 'generic/edit_block.html' edit => h %]
+
+[% END %]
+
+[% INCLUDE 'chrome/footer.html' %]

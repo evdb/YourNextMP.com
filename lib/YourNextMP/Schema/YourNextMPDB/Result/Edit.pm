@@ -194,4 +194,48 @@ sub insert {
     return $result;
 }
 
+sub previous_edit {
+    my $self = shift;
+    my $rs   = $self->result_source->resultset;
+    return $rs->search(
+        {
+            source_table => $self->source_table,
+            source_id    => $self->source_id,
+            created      => { '<' => $self->created }
+        },
+        { order_by => 'created desc' }
+    )->first;
+}
+
+use List::MoreUtils 'uniq';
+
+sub deltas {
+    my $self          = shift;
+    my $previous_edit = $self->previous_edit;
+
+    my $after_data  = $self->data;
+    my $before_data = $previous_edit ? $previous_edit->data : {};
+    my @keys        = uniq sort ( keys %$before_data, keys %$after_data );
+
+    my @deltas = ();
+
+    # FIXME - replace with public fields
+    my %skip_fields = map { $_ => 1 } qw( created updated can_scrape );
+
+    foreach my $key (@keys) {
+        next if $skip_fields{$key};
+        my $before = $before_data->{$key} || '';
+        my $after  = $after_data->{$key}  || '';
+        next if $before eq $after;
+
+        push @deltas,
+          {
+            field  => $key,
+            before => $before,
+            after  => $after,
+          };
+    }
+
+    return \@deltas;
+}
 1;
