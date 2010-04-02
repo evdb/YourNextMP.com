@@ -87,26 +87,31 @@ sub scrape_parties {
             next;
         }
 
-        # scrape the emblem off the electoral commission site
-        my $emblem_page_url =
-          $search_page . "&frmPartyID=$id" . "&frmType=emblemdetail";
-        my $emblem_url =
-          ( $emblem_scraper->scrape( URI->new($emblem_page_url) )->{url} || '' )
-          . '';
-
-        # Fetch the emblem if it exists
-        if ($emblem_url) {
-            burp "\tFetching emblem for $party->{name}\n";
-            my $image =
-              $images_rs->find_or_create( { source_url => $emblem_url } );
-            $party->{image_id} = $image->id;
-        }
-
         # First find the party by id, then code, then create
         my $p =
              $parties_rs->find( { $id_key => $id } )
           || $parties_rs->find( { code    => $party->{code} } )
           || $parties_rs->create($party);
+
+        # If party missing emblem
+        if ( !$p->image ) {
+
+            # scrape the emblem off the electoral commission site
+            my $emblem_page_url =
+              $search_page . "&frmPartyID=$id" . "&frmType=emblemdetail";
+            my $emblem_url =
+              ( $emblem_scraper->scrape( URI->new($emblem_page_url) )->{url}
+                  || '' )
+              . '';
+
+            # Fetch the emblem if it exists
+            if ($emblem_url) {
+                burp "\tFetching emblem for $party->{name}\n";
+                my $image =
+                  $images_rs->find_or_create( { source_url => $emblem_url } );
+                $p->update( { image_id => $image->id } );
+            }
+        }
 
         $seen_party_codes{ $p->code }++;
 
