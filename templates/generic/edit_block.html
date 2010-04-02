@@ -2,7 +2,7 @@
     <h3>
         [% edit.edit_type | ucfirst %]
         of
-        [% edit.source_table %]:[% edit.source_id %]
+        <a href="/[% edit.source_table %]/by_id/[% edit.source_id %]">[% edit.source_table %]:[% edit.source_id %]</a>
         by
         <a href="[% c.uri_for( edit.user.path ) %]">[% edit.user.screen_name %]</a>
         <br>

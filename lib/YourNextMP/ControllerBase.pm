@@ -33,6 +33,14 @@ sub index : PathPart('') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 }
 
+sub by_id : PathPart('by_id') Chained('result_base') Args(1) {
+    my ( $self, $c, $id ) = @_;
+    my $rs = $c->db( $self->source_name );
+    my $result = $rs->find( { id => $id } )
+      || $c->detach('/page_not_found');
+    $c->res->redirect( $c->uri_for( $result->path ) );
+}
+
 sub search : PathPart('search') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 
@@ -139,8 +147,7 @@ sub history : PathPart('history') Chained('result_find') Args(0) {
     $c->require_user("Please log in to see the history");
 
     $c->stash->{template} = 'generic/history.html';
-    $c->stash->{results} = $c->stash->{result}->edits;
-    
+    $c->stash->{results}  = $c->stash->{result}->edits;
 
 }
 
