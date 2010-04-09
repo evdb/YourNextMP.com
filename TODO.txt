@@ -1,5 +1,7 @@
 [ NOW ]
 
+viral stuff - facebook and twitter
+
 proper contact details on site
 
 mail all @parliament.uk addresses to get non-parliament addresses.
@@ -9,6 +11,10 @@ contact guardian about them using our data
 link to TSC from all seats
 
 photo moderation
+
+choose image for party (admin only)
+
+datadump of links and images
 
 -----
 

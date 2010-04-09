@@ -4,7 +4,10 @@ use parent 'Catalyst::Controller';
 use strict;
 use warnings;
 
-sub thanks : Path('') {
+sub thanks : Local {
+}
+
+sub boundary_changes : Local {
 }
 
 1;

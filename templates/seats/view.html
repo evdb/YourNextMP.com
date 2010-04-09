@@ -1,7 +1,14 @@
 [% seat = result %]
 [% INCLUDE 'chrome/header.html', title => seat.name %]
 
+
     <h1>[% seat.name %]</h1>
+    [% IF c.flash.searched_by_postcode %]
+        <p>
+            <img class="icon" src="/static/icons/exclamation.png">
+            Expecting a different constituency - <a href="/info/boundary_changes">the boundaries may have changed</a>.
+        </p>
+    [% END %]
 
     [% count = candidates.count %]
     [% IF count %]

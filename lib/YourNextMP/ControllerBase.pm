@@ -54,7 +54,7 @@ sub search : PathPart('search') Chained('result_base') Args(0) {
     $c->stash->{query} = $query;
 
     if ($query) {
-        $results = $self->search_for_results( $results, $query );
+        $results = $self->search_for_results( $results, $query, $c );
         $c->stash->{results} = $results;
     }
 
@@ -102,7 +102,7 @@ sub all : PathPart('all') Chained('result_base') Args(1) {
 }
 
 sub search_for_results {
-    my ( $self, $results, $query ) = @_;
+    my ( $self, $results, $query, $c ) = @_;
     $results->fuzzy_search( { name => $query } );
 }
 

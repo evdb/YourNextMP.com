@@ -13,10 +13,14 @@ sub source_name {
 }
 
 sub search_for_results {
-    my ( $self, $seats, $query ) = @_;
-    return $query =~ m{\d}
-      ? $seats->search_postcode($query)
-      : $seats->fuzzy_search( { name => $query } );
+    my ( $self, $seats, $query, $c ) = @_;
+    if ( $query =~ m{\d} ) {
+        $c->flash->{searched_by_postcode} = 1;
+        return $seats->search_postcode($query);
+    }
+    else {
+        return $seats->fuzzy_search( { name => $query } );
+    }
 }
 
 sub view : PathPart('') Chained('result_find') Args(0) {
