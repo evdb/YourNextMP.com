@@ -29,8 +29,8 @@ sub search_postcode {
     my $rs             = shift;
     my $dirty_postcode = shift;
 
-    my $postcode = Geo::Postcode->valid($dirty_postcode);
-    return unless $postcode;
+    my $postcode = $dirty_postcode;
+    $postcode =~ s{[^a-z0-9 ]}{}ig;
 
     my $twfy = YourNextMP->model('TheyWorkForYou');
     my $results =
