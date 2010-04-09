@@ -29,7 +29,8 @@ foreach my $item (@$items) {
 
     # sanity check the constituency
     my ($seat_name) = $item->{description} =~ m{ : \s+ (.*) \z }xms;
-    my $seat = $seats_rs->fuzzy_search( { name => $seat_name } )->first;
+    my $seat = $seats_rs->search( { name => $seat_name } )->first
+      || $seats_rs->fuzzy_search( { name => $seat_name } )->first;
     if ( !$seat ) {
         warn "Can't find seat '$seat_name' for link $item->{link}\n";
         next;
@@ -37,7 +38,8 @@ foreach my $item (@$items) {
 
     # Find the candidate.
     my $candidate =
-      $seat->candidates->fuzzy_search( { name => $item->{title} } )->first;
+         $seat->candidates->search( { name => $item->{title} } )->first
+      || $seat->candidates->fuzzy_search( { name => $item->{title} } )->first;
     if ( !$candidate ) {
         warn
 "Can't find candidate '$item->{title}' in '$seat_name' for link $item->{link}\n";
