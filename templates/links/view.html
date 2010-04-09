@@ -1,7 +1,7 @@
 [% link = result %]
 [% INCLUDE 'chrome/header.html', title => 'Link' %]
 
-<img style="float: right" class="pageglimpse-medium" src="http://images.pageglimpse.com/v1/thumbnails?url=[% link.url | url %]&amp;size=medium&amp;root=no&amp;devkey=26ad767be62243346e33d6115c32f6be" alt="screenshot">
+<img style="float: right" class="pageglimpse-medium" src="http://images.pageglimpse.com/v1/thumbnails?url=[% link.url | uri %]&amp;size=medium&amp;root=no&amp;devkey=26ad767be62243346e33d6115c32f6be" alt="screenshot">
 
 <h1>[% link.title %]</h1>
 
