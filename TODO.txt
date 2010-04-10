@@ -2,6 +2,8 @@
 
 import candidate details from party provided spreadsheets
 
+document the json endpoints
+
 mail all @parliament.uk addresses to get non-parliament addresses.
 
 link to TSC from all seats

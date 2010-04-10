@@ -22,6 +22,16 @@ sub search_for_results {
     $results->standing->fuzzy_search( { name => $query } );
 }
 
+sub index : PathPart('') Chained('result_base') Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->stash->{results}    #
+      = $c                  #
+      ->db('Candidate')     #
+      ->standing            #
+      ->search( undef, { order_by => 'updated desc', rows => 30 } );
+}
+
 sub add : PathPart('add') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 

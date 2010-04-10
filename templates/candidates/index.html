@@ -6,4 +6,29 @@
         view_all_text => 'View all candidates',
     %]
 
+    [% WRAPPER 'stubs/search_results.html',
+        title => "Recently edited candidates:"
+    %]
+
+    [% WHILE (candidate = results.next ) %]
+
+        [% extra = BLOCK %]
+            [% candidate.party.name %]
+            [%  FOREACH seat = candidate.seats %]
+                [% ' - ' IF loop.first %]
+                [% seat.name %]
+                [% ',' UNLESS loop.last %]
+            [% END %]
+        [% END %]
+
+        [% PROCESS 'stubs/search_result.html',
+            name  => candidate.name,
+            show_missing_person_image => 1,                    
+            image_id => candidate.image_id,
+            href  => c.uri_for( candidate.code ),
+            extra => extra,
+        %]        
+    [% END %]
+    [% END %]
+
 [% INCLUDE 'chrome/footer.html' %]
