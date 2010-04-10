@@ -11,44 +11,138 @@ use DateTime;
 use IO::Compress::Gzip qw(gzip $GzipError);
 use Text::CSV::Slurp;
 use Encode;
+use IO::Interactive qw(interactive);
+
+sub burp ( @ ) { printf {interactive} @_; }
 
 generate_main_json();
+generate_links_json();
 generate_csv_files();
+
+# generate_images_json();
 
 sub generate_main_json {
 
+    burp "Generating main json\n";
+
     # Fetch all candidates, parties, constituencies and candidacies
-    my %fetch_spec = (
-        Candidate => {
-            fields => [
-                'id',        'code',    'status',  'party_id',
-                'created',   'updated', 'name',    'email',
-                'phone',     'fax',     'address', 'image_id',
-                'dob',       'gender',  'school',  'university',
-                'positions', 'status',  'birthplace',
-            ],
-            where => {},
-        },
-        Party => {
-            fields =>
-              [ 'id', 'code', 'created', 'updated', 'name', 'image_id', ],
-            where => {},
-        },
-        Seat => {
-            fields => [ 'id', 'code', 'created', 'updated', 'name', ],
-            where  => {},
-        },
-        Candidacy => {
-            fields =>
-              [ 'candidate_id', 'seat_id', 'created', 'updated', 'id', ],
-            where => {},
-        },
+    _generate_json(
+        {
+            fetch_spec => {
+                Candidate => {
+                    fields => [
+                        'id',        'code',
+                        'status',    'party_id',
+                        'created',   'updated',
+                        'name',      'email',
+                        'phone',     'fax',
+                        'address',   'image_id',
+                        'dob',       'gender',
+                        'school',    'university',
+                        'positions', 'status',
+                        'birthplace',
+                    ],
+                    where => {},
+                },
+                Party => {
+                    fields => [
+                        'id',   'code', 'created', 'updated',
+                        'name', 'image_id',
+                    ],
+                    where => {},
+                },
+                Seat => {
+                    fields => [ 'id', 'code', 'created', 'updated', 'name', ],
+                    where  => {},
+                },
+                Candidacy => {
+                    fields => [
+                        'candidate_id', 'seat_id', 'created', 'updated', 'id',
+                    ],
+                    where => {},
+                },
+            },
+            s3_details => {
+                type   => 'json_main',
+                suffix => 'json',
+                name   => 'JSON of candidates, candidacies, parties and seats',
+            },
+        }
     );
+}
+
+sub generate_links_json {
+
+    burp "Generating links json\n";
+
+    # Fetch all candidates, parties, constituencies and candidacies
+    _generate_json(
+        {
+            fetch_spec => {
+                Link => {
+                    fields => [
+                        'id',      'url',                                  #
+                        'title',   'summary', 'published', 'link_type',    #
+                        'created', 'updated',
+                    ],
+                    where => {},
+                },
+                LinkRelation => {
+                    fields => [
+                        'id',                                              #
+                        'link_id', 'foreign_id', 'foreign_table',          #
+                        'created', 'updated',
+                    ],
+                    where => {},
+                },
+            },
+            s3_details => {
+                type   => 'json_links',
+                suffix => 'json',
+                name =>
+'JSON of links and relations to candidates, parties and seats',
+            },
+        }
+    );
+}
+
+# sub generate_images_json {
+#
+#     burp "Generating images json\n";
+#
+# FIXME - need to select only candidate images and inflate the rows to s3 urls
+#
+#     # Fetch all candidates, parties, constituencies and candidacies
+#     _generate_json(
+#         {
+#             fetch_spec => {
+#                 Image => {
+#                     fields => [
+#                         'id',    'source_url', 'small',   'medium',
+#                         'large', 'created', 'updated',
+#                     ],
+#                     where => {},
+#                 },
+#             },
+#             s3_details => {
+#                 type   => 'json_images',
+#                 suffix => 'json',
+#                 name   => 'JSON of candidate images',
+#             },
+#         }
+#     );
+# }
+
+sub _generate_json {
+    my $args       = shift;
+    my $fetch_spec = $args->{fetch_spec};
+    my $s3_details = $args->{s3_details};
 
     # Extract the data from the database
     my %data = ();
-    foreach my $source ( sort keys %fetch_spec ) {
-        my $spec = $fetch_spec{$source};
+    foreach my $source ( sort keys %$fetch_spec ) {
+        burp "\tfetching data from %s\n", $source;
+        my $spec = $fetch_spec->{$source};
         my $rs   = YourNextMP->db($source);
 
         my $results = $rs->search(    #
@@ -57,7 +151,6 @@ sub generate_main_json {
         );
 
         while ( my $row = $results->next ) {
-
             my $id = $row->id;
             my %add_to_data = map { $_ => $row->$_ } @{ $spec->{fields} };
             $_ .= '' for grep { defined } values %add_to_data;
@@ -69,17 +162,12 @@ sub generate_main_json {
     my $json = JSON->new->pretty->utf8->encode( \%data );
 
     # upload it to the server
-    upload_to_s3_and_save_to_db(
-        {
-            type    => 'json_main',
-            suffix  => 'json',
-            content => $json,
-            name    => 'JSON of candidates, candidacies, parties and seats',
-        }
-    );
+    upload_to_s3_and_save_to_db( { %$s3_details, content => $json, } );
 }
 
 sub generate_csv_files {
+
+    burp "Generating csv files\n";
 
     # create an array of hashes for all the candidates
     my $candidates_rs      #
@@ -189,10 +277,20 @@ sub upload_to_s3_and_save_to_db {
     );
 
     # get the content and compress it
-    my $uncomressed = $args->{content};
-    my $compressed  = '';
-    gzip \$uncomressed => \$compressed
+    my $uncompressed = $args->{content};
+    my $compressed   = '';
+    gzip \$uncompressed => \$compressed
       or die "gzip failed: $GzipError\n";
+
+    {
+        use bytes;
+        my $u_length = length($uncompressed);
+        my $c_length = length($compressed);
+
+        burp "\tcompressed content: %u -> %u (%.2f%%)\n",    #
+          $u_length, $c_length,                              #
+          $c_length / $u_length * 100;
+    }
 
     # upload to s3
     my $bucket = YourNextMP->s3_bucket;
@@ -201,9 +299,11 @@ sub upload_to_s3_and_save_to_db {
         content_type => 'application/gzip',
         acl_short    => 'private',
     );
+    burp "\tuploading to S3 '%s'\n", $s3_key;
     $object->put($compressed);
 
     # create an entry in the database
+    burp "\tsaving to db '%s'\n", $s3_key;
     YourNextMP->db('DataFile')->create(
         {
             name    => $args->{name},
