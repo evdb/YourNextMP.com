@@ -1,4 +1,4 @@
-package YourNextMP::Form::CandidateEditPhoto;
+package YourNextMP::Form::EditPhoto;
 
 use strict;
 use warnings;
@@ -62,9 +62,9 @@ sub validate {
 }
 
 around 'update_model' => sub {
-    my $orig      = shift;
-    my $form      = shift;
-    my $candidate = $form->item;
+    my $orig = shift;
+    my $form = shift;
+    my $item = $form->item;
 
     my $photo_url    = $form->field('photo_url')->value;
     my $photo_upload = $form->field('photo_upload')->value;
@@ -88,10 +88,10 @@ around 'update_model' => sub {
             # No image we can't go on
             return unless $image;
 
-            # Add image to candidate if required
-            $candidate->update( { image_id => $image->id } )
-              unless $candidate->image_id    #
-                  && $candidate->image_id == $image->id
+            # Add image to item if required
+            $item->update( { image_id => $image->id } )
+              unless $item->image_id    #
+                  && $item->image_id == $image->id
 
         }
     );

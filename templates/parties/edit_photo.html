@@ -1,0 +1,23 @@
+[% instructions = BLOCK %]
+
+Please find a photo for <strong>[% result.name | html %]</strong> that is free to use.
+
+[% END %][%
+
+    query = '"' _ result.name _ '"' | uri;
+
+    WRAPPER
+        'chrome/edit-frame.html',
+        debug        => 0,
+        title        => 'Edit party photo',
+        instructions => instructions,
+        iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
+        return_url => {
+            url => c.uri_for( result.path ),
+            text => "Return to ${result.name} overview",
+        }
+%]
+
+    [% form.render %]    
+
+[% END %]

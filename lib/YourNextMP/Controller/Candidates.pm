@@ -6,7 +6,7 @@ use parent 'YourNextMP::ControllerBase';
 
 use YourNextMP::Form::CandidateAdd;
 use YourNextMP::Form::CandidateEditDetails;
-use YourNextMP::Form::CandidateEditPhoto;
+use YourNextMP::Form::EditPhoto;
 use YourNextMP::Form::CandidateEditPersonal;
 
 sub result_base : PathPart('candidates') Chained('/') CaptureArgs(0) {
@@ -89,7 +89,7 @@ sub edit_photo : PathPart('edit_photo') Chained('result_find') Args(0) {
 
     # create the form and place it on the stash
     my $candidate = $c->stash->{result};
-    my $form = YourNextMP::Form::CandidateEditPhoto->new( item => $candidate );
+    my $form = YourNextMP::Form::EditPhoto->new( item => $candidate );
     $c->stash( form => $form );
 
     # If it is not a post then return

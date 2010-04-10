@@ -7,8 +7,8 @@
 
 <h1>[% party.name %]</h1>
 
-[% PROCESS 'stubs/item_details.html', 
-    details => [
+[%
+    party_details = [
         {
             src     => '/static/icons/group.png',
             alt     => 'candidates',
@@ -16,7 +16,27 @@
             content => "View ${candidates.count} candidates",
         },
     ];
+    
+    IF c.user_is_admin;
+        party_details.push(
+            {
+                class    => 'discreet',
+                src      => '/static/icons/cog.png',
+                alt      => 'admin',
+                contents => [
+                    {
+                        href => c.uri_for( result.path, 'edit_photo' ),
+                        content => 'edit photo',
+                    },
+                ]
+            }
+        );
+    END;
+
+    PROCESS 'stubs/item_details.html', details => party_details;
 %]
+
+
 <br />
 
 

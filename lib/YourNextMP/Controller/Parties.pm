@@ -1,8 +1,10 @@
 package YourNextMP::Controller::Parties;
+use parent 'YourNextMP::ControllerBase';
 
 use strict;
 use warnings;
-use parent 'YourNextMP::ControllerBase';
+
+use YourNextMP::Form::EditPhoto;
 
 sub result_base : PathPart('parties') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -65,6 +67,34 @@ sub candidates : PathPart('candidates') Chained('result_find') Args(1) {
 
     $c->stash->{pager}   = $results->pager;
     $c->stash->{results} = $results;
+}
+
+sub edit_photo : PathPart('edit_photo') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
+
+    # We need logged in users to create candidates
+    $c->require_admin_user("Please log in as admin to edit party photo");
+
+    # create the form and place it on the stash
+    my $party = $c->stash->{result};
+    my $form = YourNextMP::Form::EditPhoto->new( item => $party );
+    $c->stash( form => $form );
+
+    # If it is not a post then return
+    return unless $c->req->method eq 'POST';
+
+    # gather all the parameters - including the uploaded file if posted
+    my $params = $c->req->params;
+    my $upload = $c->req->upload('photo_upload');
+    $params->{photo_upload} = $upload if $upload;
+
+    # process the form and return if there were errors
+    return if !$form->process( params => $params );
+
+    # We have a new photo
+    $c->res->redirect( $c->uri_for( $party->path ) );
+    $c->detach;
+
 }
 
 1;

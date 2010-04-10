@@ -1,20 +1,18 @@
 [ NOW ]
 
-viral stuff - facebook and twitter
-
-proper contact details on site
+import candidate details from party provided spreadsheets
 
 mail all @parliament.uk addresses to get non-parliament addresses.
-
-contact guardian about them using our data
 
 link to TSC from all seats
 
 photo moderation
 
-choose image for party (admin only)
+viral stuff - facebook and twitter
 
-datadump of links and images
+proper contact details on site
+
+show api keys on users page
 
 -----
 
