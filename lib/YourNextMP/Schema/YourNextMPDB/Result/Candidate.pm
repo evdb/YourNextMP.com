@@ -358,6 +358,16 @@ sub public_fields {
     };
 }
 
+sub new {
+    my $class = shift;
+    my $args  = shift;
+
+    $args->{status} ||= 'standing';
+
+    return $class->next::method( $args, @_ );
+}
+
+
 __PACKAGE__->has_many(
     "link_relations",
     "YourNextMP::Schema::YourNextMPDB::Result::LinkRelation",
