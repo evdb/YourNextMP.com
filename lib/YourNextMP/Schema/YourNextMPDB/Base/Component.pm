@@ -35,10 +35,10 @@ sub insert {
 
 sub update {
     my $self = shift;
-    my $args = shift;
+    my $args = shift || {};
 
-    my %dirty           = $self->get_dirty_columns();
-    my $row_has_changed = scalar keys %dirty;
+    my %dirty = $self->get_dirty_columns();
+    my $row_has_changed = scalar( keys %dirty ) || scalar(%$args);
 
     $self->updated( DateTime->now )
       if $row_has_changed    #
