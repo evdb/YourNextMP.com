@@ -69,6 +69,7 @@ requires 'HTTP::Date';
 requires 'Image::Imlib2';
 requires 'IO::Compress::Gzip';
 requires 'IO::Interactive';
+requires 'IO::Prompt';
 requires 'IO::Socket::SSL';
 requires 'IPC::System::Simple';
 requires 'JSON';
