@@ -39,6 +39,7 @@ foreach my $row (@$data) {
     delete $row->{address} if $row->{address} =~ m{SW1A}i;
     delete $row->{email}   if $row->{email}   =~ m{\@parliament\.uk}i;
     for (qw(phone fax)) {
+        next unless $row->{$_};
         delete $row->{$_} if $row->{$_} =~ m{020\s*7\s*219};
     }
 
@@ -51,8 +52,9 @@ foreach my $row (@$data) {
       || warn("Can't find seat '$row->{seat}'\n") && next;
 
     # Find the candidate
-    my $candidates = $seat->candidates->search( { name => $row->{name} } )
-      || $seat->candidates->search( { party_id => $party->id } );
+    my $candidates = $seat->candidates->search( { name => $row->{name} } );
+    $candidates = $seat->candidates->search( { party_id => $party->id } )
+      if !$candidates->count;
 
     if ( $candidates->count > 1 ) {
         printf "Found several candidates in %s: %s\n", $seat->name,
