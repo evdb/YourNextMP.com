@@ -1,0 +1,11 @@
+[% INCLUDE 'chrome/header.html', title => 'Admin' %]
+
+<h1>Duplicate candidates</h1>
+
+[% FOREACH seat = seats_with_duplicates %]
+
+<p><a href="[% seat.path %]">[% seat.name | html %]</a></p>
+
+[% END %]
+
+[% INCLUDE 'chrome/footer.html' %]

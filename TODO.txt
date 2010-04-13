@@ -16,8 +16,6 @@ show api keys on users page
 
 -----
 
-admin page with duplicate candidates
-
 record source (generic edit comment)
 
 archive links
