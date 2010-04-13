@@ -90,6 +90,12 @@ foreach my $row (@$data) {
         }
     }
 
+    # don't try to update a candidate that has been updated on the site.
+    unless ( $candidate->can_scrape ) {
+        print "skipping - can't scrape\n";
+        next;
+    }
+
     # find differences for existing candidate
     my %changed_fields    #
       = map { $_ => { old => ( $candidate->$_ || '' ), new => $row->{$_} } }   #
@@ -103,7 +109,11 @@ foreach my $row (@$data) {
 
         if ( grep { $changed_fields{$_}{old} } keys %changed_fields ) {
             print "Apply changes? [Yn]: ";
-            next if ( getc || 'y' ) eq 'n';
+            my $char = '';
+            while ( $char = getc ) {
+                last if $char eq 'y' || $char eq 'n';
+            }
+            next if $char eq 'n';
         }
 
         print "Applying changes\n";
