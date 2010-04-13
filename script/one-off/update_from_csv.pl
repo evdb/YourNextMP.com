@@ -13,12 +13,15 @@ local $Data::Dumper::Sortkeys = 1;
 my $csv_file = $ARGV[0] || die "Usage: $0 filename.csv\n";
 my $data = Text::CSV::Slurp->load( file => $csv_file );
 
-my %valid_fields = map { $_ => 1 } qw(party seat name address phone email);
+my %valid_fields = map { $_ => 1 } qw(party seat name address phone email fax);
 
 my $parties_rs = YourNextMP->db('Party');
 my $seats_rs   = YourNextMP->db('Seat');
 
 foreach my $row (@$data) {
+
+    print '-' x 80;
+    print "\n";
 
     # ditch fields that are not needed
     delete $row->{$_} for grep { !$valid_fields{$_} } keys %$row;
@@ -28,10 +31,16 @@ foreach my $row (@$data) {
         s{^\s+}{};
         s{\s+$}{};
         s{\s+}{ }g;
+        $_ ||= '';
     }
 
     $row->{address} =~ s{(?:,\s+)+}{, }xmsg;    # strip out extra commas
     $row->{email} = lc $row->{email};
+    delete $row->{address} if $row->{address} =~ m{SW1A}i;
+    delete $row->{email}   if $row->{email}   =~ m{\@parliament\.uk}i;
+    for (qw(phone fax)) {
+        delete $row->{$_} if $row->{$_} =~ m{020\s*7\s*219};
+    }
 
     # Find the party
     my $party = $parties_rs->find( { name => $row->{party} } )
@@ -70,6 +79,7 @@ foreach my $row (@$data) {
                     name     => $row->{name},
                     email    => $row->{email},
                     phone    => $row->{phone},
+                    fax      => $row->{fax},
                     address  => $row->{address},
                 }
             );
@@ -85,14 +95,16 @@ foreach my $row (@$data) {
       = map { $_ => { old => ( $candidate->$_ || '' ), new => $row->{$_} } }   #
       grep { ( $candidate->$_ || '' ) ne $row->{$_} }
       grep { $row->{$_} }                                                      #
-      qw(address phone email);
+      qw(address phone email fax);
 
     if ( scalar keys %changed_fields ) {
         printf "Found changes for %s in %s\n", $row->{name}, $row->{seat};
         print Dumper( \%changed_fields );
 
-        print "Apply changes? [Yn]: ";
-        next if ( getc || 'y' ) eq 'n';
+        if ( grep { $changed_fields{$_}{old} } keys %changed_fields ) {
+            print "Apply changes? [Yn]: ";
+            next if ( getc || 'y' ) eq 'n';
+        }
 
         print "Applying changes\n";
         my %updates =
