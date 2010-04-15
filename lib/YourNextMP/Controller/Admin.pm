@@ -30,7 +30,8 @@ sub duplicate_candidates : Local {
 
         # count the occurences of the parties
         my %party_counts = ();
-        $party_counts{$_}++ for map { $_->party_id } $seat->candidates;
+        $party_counts{$_}++
+          for map { $_->party_id } $seat->candidates->standing;
 
         # delete the independents etc.
         delete $party_counts{$_} for @party_ids_to_ignore;
@@ -41,7 +42,7 @@ sub duplicate_candidates : Local {
         push @seats_with_duplicates, $seat;
     }
 
-    $c->stash->{seats_with_duplicates} = \@seats_with_duplicates; 
+    $c->stash->{seats_with_duplicates} = \@seats_with_duplicates;
 
 }
 

@@ -20,11 +20,13 @@ my $seats_rs   = YourNextMP->db('Seat');
 
 foreach my $row (@$data) {
 
-    print '-' x 80;
-    print "\n";
+    # print '-' x 80;
+    # print "\n";
 
     # ditch fields that are not needed
     delete $row->{$_} for grep { !$valid_fields{$_} } keys %$row;
+
+    $row->{$_} ||= '' for qw(address phone email fax);
 
     # clean up whitespace
     for ( values %$row ) {
