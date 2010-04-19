@@ -1,5 +1,7 @@
 [ NOW ]
 
+Add smarts so that changed codes get redirected.
+
 Tom's suggestions about validly nominated candidates
 
 get the words 'general election' into home page title. Also meta and desc.
