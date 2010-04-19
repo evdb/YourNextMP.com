@@ -2,7 +2,7 @@
 
 Tom's suggestions about validly nominated candidates
 
-get the words 'general election' into home page title. Also meta and desc.
+get the words 'general election' into home page meta and desc.
 
 document the json endpoints
 
