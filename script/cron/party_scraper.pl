@@ -94,7 +94,7 @@ sub scrape_parties {
           || $parties_rs->create($party);
 
         # If party missing emblem
-        if ( !$p->image ) {
+        if ( !$p->image_id ) {
 
             # scrape the emblem off the electoral commission site
             my $emblem_page_url =

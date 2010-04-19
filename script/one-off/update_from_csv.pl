@@ -55,7 +55,7 @@ foreach my $row (@$data) {
 
     # Find the candidate
     my $candidates = $seat->candidates->search( { name => $row->{name} } );
-    $candidates = $seat->candidates->search( { party_id => $party->id } )
+    $candidates = $seat->candidates->standing->search( { party_id => $party->id } )
       if !$candidates->count;
 
     if ( $candidates->count > 1 ) {
