@@ -333,6 +333,8 @@ __PACKAGE__->belongs_to(
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-20 16:46:38
 # DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/7ZN/seNI/99hDHJd8j1rg
 
+use List::MoreUtils qw(uniq);
+
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
 sub public_fields {
@@ -366,7 +368,6 @@ sub new {
 
     return $class->next::method( $args, @_ );
 }
-
 
 __PACKAGE__->has_many(
     "link_relations",
@@ -655,6 +656,33 @@ sub age {
 sub is_standing {
     my $self = shift;
     return $self->status eq 'standing';
+}
+
+=head2 rivals
+
+    @rival_candidates = $candidate->rivals;
+
+Returns an array of all the rival candidates
+
+=cut
+
+sub rivals {
+    my $self = shift;
+
+    my %all_rivals =
+      map { $_->code => $_ }    # code to object
+      map { $_->candidates->standing->all }    # candidates from seats
+      $self->seats;                            # all seats
+
+    my @codes =                                #
+      uniq                                     # once per rival
+      sort                                     # alphabetical sort by code
+      grep { $_ ne $self->code }               # Filter out ourselves
+      keys %all_rivals;
+
+    my @rivals = map { $all_rivals{$_} } @codes;
+
+    return @rivals;
 }
 
 1;

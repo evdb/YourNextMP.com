@@ -38,6 +38,8 @@ p {
 
     -moz-border-radius-bottomleft : 10px;
     -moz-border-radius-bottomright: 10px;
+    -webkit-border-bottom-left-radius: 10px;
+    -webkit-border-bottom-right-radius: 10px;
 }
 
 #toptext {
@@ -64,6 +66,8 @@ p {
     border-bottom: none;
     -moz-border-radius-topleft : 10px;
     -moz-border-radius-topright: 10px;
+    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-right-radius: 10px;
 }
 
 #header h1 {
@@ -98,6 +102,8 @@ p {
 
     -moz-border-radius-topleft : 6px;
     -moz-border-radius-topright: 6px;
+    -webkit-border-top-left-radius:  6px;
+    -webkit-border-top-right-radius: 6px;
 
 }
 
@@ -127,6 +133,28 @@ p {
     width: 800px;
     padding: 1em;
 }
+
+#sidebar {
+    float: right;
+    width: 140px;
+
+    margin: 0 0 1em 1em;
+    color: #222;
+
+    text-align: center;        
+}
+
+.sidebar_item {
+    border: 1px solid #888;
+    background-color: #ddd;
+
+    font-size: 90%;
+    margin-bottom: 1em;
+
+    -moz-border-radius:    5px;
+    -webkit-border-radius: 5px;
+}
+
 
 #footer {
     clear: both;
