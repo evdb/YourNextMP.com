@@ -21,9 +21,26 @@ sub result_find : PathPart('') Chained('result_base') CaptureArgs(1) {
       if $key ne 'id'
           && !$rs->result_source->has_column($key);
 
-    my $result =    #
-      $rs->find( { $key => $value } )
-      || $c->detach('/page_not_found');
+    # try to find the result
+    my $result = $rs->find( { $key => $value } );
+
+    # if none found check that the code has not changed
+    if ( !$result && $key eq 'code' ) {
+
+        my $rename_rs = $c->db('CodeRename');
+
+        if ( my $rename = $rename_rs->find( { old_code => $value } ) ) {
+            $result = $rs->find( { code => $rename->new_code } );
+        }
+
+        if ($result) {
+            $c->res->redirect( $c->uri_for( $result->path ) );
+            $c->detach;
+        }
+    }
+
+    # no result found - 404
+    $c->detach('/page_not_found') unless $result;
 
     $c->stash->{result} = $result;
 

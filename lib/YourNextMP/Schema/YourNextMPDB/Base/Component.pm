@@ -60,6 +60,21 @@ sub update {
     return $result;
 }
 
+sub store_column {
+    my ( $self, $name, $value ) = @_;
+
+    if ( $name eq 'code' && $value && $self->code && $value ne $self->code ) {
+        $self->result_source->schema->resultset('CodeRename')->update_or_create(
+            {
+                old_code => $self->code,
+                new_code => $value,
+            }
+        );
+    }
+
+    $self->next::method( $name, $value );
+}
+
 sub delete {
     my $self = shift;
     my $args = shift;
