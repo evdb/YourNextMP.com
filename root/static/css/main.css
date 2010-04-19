@@ -124,7 +124,7 @@ p {
 
 #content {
     margin: 0 auto;
-    width: 720px;
+    width: 800px;
     padding: 1em;
 }
 
@@ -198,16 +198,17 @@ ul.search_results .extra {
     font-size: inherit;
 }
 
-.left_column {
-    width: 349px;
+.half_column_wrapper {
+    width: 50%;
     float: left;
+}
+
+.left_column {
     padding-right: 10px;
     border-right: 1px dotted #bbb;
 }
 
 .right_column {
-    width: 350px;
-    float: right;
     padding-left: 10px;
 }
 
