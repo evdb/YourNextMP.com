@@ -13,6 +13,7 @@
 
     # if there is a Google analytics key here then the analytics gets loaded
     google_analytics_code => '',
+    show_google_ads => 1,
 
     javascript_source => 'local',
 

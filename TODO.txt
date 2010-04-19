@@ -2,8 +2,6 @@
 
 Tom's suggestions about validly nominated candidates
 
-add rival candidates and ads to side bar
-
 get the words 'general election' into home page title. Also meta and desc.
 
 document the json endpoints
