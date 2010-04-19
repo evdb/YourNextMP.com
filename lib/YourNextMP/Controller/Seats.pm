@@ -12,7 +12,7 @@ sub source_name {
     return 'Seat';
 }
 
-sub search_for_results {
+sub search_for_results : Private {
     my ( $self, $seats, $query, $c ) = @_;
     if ( $query =~ m{\d} ) {
         $c->flash->{searched_by_postcode} = 1;

@@ -1,7 +1,7 @@
 <div class='callout'>
     <h2>[% title %]</h2>
 
-    <form method="GET" action="[% c.uri_for('search') %]">
+    <form method="GET" action="[% form_action || c.uri_for('search') %]">
         <input class="autowipe" name="query" id="query" type="text" value="[% query | html %]" alt="[% default_value | html %]"/>
         <input type="submit" value="Search" />
     </form>

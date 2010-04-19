@@ -31,12 +31,21 @@
         [% ELSE %]
             <li><a href="/auth/login">Sign In</a></li>
         [% END %]
+
+        <li>
+            <form id="search_everything_form" method="get" action="/search">
+                <input class="autowipe" type="text" name="query" alt="search...">
+            </form>
+        </li>
+
         </ul>
     [% END %]
 </div>
 
 <div id="header">
+
     <h1><a href="/">YourNext<strong>MP</strong></a></h1>
+    
     [% INCLUDE 'chrome/tabs.html', no_links => no_links %]
 </div>
 

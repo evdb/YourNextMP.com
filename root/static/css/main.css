@@ -56,9 +56,8 @@ p {
 
 #toptext li {
     display: inline;
-    padding: 0 0.4em;
+    padding: 0 0 0 0.8em;
 }
-
 
 #header {
     margin-top: 20px;
@@ -66,7 +65,7 @@ p {
     border-bottom: none;
     -moz-border-radius-topleft : 10px;
     -moz-border-radius-topright: 10px;
-    -webkit-border-top-left-radius: 10px;
+    -webkit-border-top-left-radius:  10px;
     -webkit-border-top-right-radius: 10px;
 }
 
@@ -80,6 +79,16 @@ p {
 #header h1 a {
     color: inherit;
     text-decoration: none;
+}
+
+#search_everything_form {
+    display: inline;
+}
+
+#search_everything_form input {
+    background: url('/static/icons/magnifier.png') center left no-repeat #fff;
+    padding: 2px 2px 2px 16px;
+    border: 1px solid #888;
 }
 
 #tabs {
