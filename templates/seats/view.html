@@ -37,6 +37,13 @@
 
 <p>Are we missing a candidate? Please <a href="[% c.uri_for('/','candidates','add', { seats => seat.id }) %]">add them</a>.</p>
 
+
+<h2>Leaflets:</h2>
+
+<p>View political leaflets <a href="http://www.thestraightchoice.org/leaflets.php?n=[% result.code %]">delivered in [% result.name | html %]</a> on TheStraightChoice.org.</p>
+
+
+
 [% PROCESS 'links/main_listing.html' %]
 
 [% INCLUDE 'chrome/footer.html' %]

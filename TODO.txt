@@ -8,8 +8,6 @@ get the words 'general election' into home page title. Also meta and desc.
 
 document the json endpoints
 
-link to TSC from all seats
-
 viral stuff - facebook and twitter
 
 proper contact details on site
@@ -17,6 +15,8 @@ proper contact details on site
 make homepage search search everything
 
 show api keys on users page
+
+show thumbnails of leaflets on constituency pages
 
 -----
 
