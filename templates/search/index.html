@@ -13,7 +13,7 @@
 
 [% PROCESS compact_results,
     results => candidates,
-    more_url => c.uri_for('/seats/search', { query => query }),
+    more_url => c.uri_for('/candidates/search', { query => query }),
     show_missing_person_image => 1,
 %]
 
@@ -29,7 +29,7 @@
 
 [% PROCESS compact_results,
     results => parties,
-    more_url => c.uri_for('/seats/search', { query => query }),
+    more_url => c.uri_for('/parties/search', { query => query }),
     show_missing_person_image => 0,
 %]
 
