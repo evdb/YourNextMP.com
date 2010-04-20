@@ -1,4 +1,22 @@
-[% query = '"' _ result.name _ '" nominated candidates' | uri;
+[%
+
+    query = '"' _ result.name _ '"' | uri;
+
+    google_url
+        = 'http://www.google.co.uk/search'
+        _ '?q='
+            _ query
+            _ '%20validly%20nominated%20candidates%20general%20election%202010'
+        _ '&hl=en'
+        _ '&cr=countryUK|countryGB'
+        _ '&hs=NpM'
+        _ '&tbo=1'
+        _ '&output=search'
+        _ '&tbs=rltm:1'
+        _ '&sa=X'
+        _ '&oi=tool'
+        _ '&resnum=1'
+        _ '&ct=tlink';
 
     WRAPPER
         'chrome/edit-frame.html',
@@ -6,7 +24,7 @@
         title        => 'Find candidate nominations',
         instructions =>
             "Please find a page with the confirmation of nominations for ${result.name}",
-        iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
+        iframe_src   => google_url,
         return_url => {
             url => c.uri_for( result.path ),
             text => "Return to ${result.name} overview",
