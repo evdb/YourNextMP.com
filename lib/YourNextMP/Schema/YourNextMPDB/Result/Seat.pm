@@ -55,6 +55,18 @@ __PACKAGE__->table("seats");
   is_nullable: 0
   size: 80
 
+=head2 nomination_url
+
+  data_type: text
+  default_value: undef
+  is_nullable: 1
+
+=head2 nominated_count
+
+  data_type: integer
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -91,7 +103,12 @@ __PACKAGE__->add_columns(
         is_nullable   => 0,
         size          => 80,
     },
+    "nomination_url",
+    { data_type => "text", default_value => undef, is_nullable => 1 },
+    "nominated_count",
+    { data_type => "integer", default_value => undef, is_nullable => 1 },
 );
+
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "seats_code_key", ["code"] );
 __PACKAGE__->add_unique_constraint( "seats_name_key", ["name"] );
@@ -127,7 +144,7 @@ __PACKAGE__->has_many(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:hnM0LtAthSg/p/GA/Ir6vQ
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OMdNpA8zGJMeEeEnOFAb1w
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
