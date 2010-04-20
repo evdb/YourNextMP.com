@@ -1,0 +1,16 @@
+[% query = '"' _ result.name _ '" nominated candidates' | uri;
+
+    WRAPPER
+        'chrome/edit-frame.html',
+        debug        => 0,
+        title        => 'Find candidate nominations',
+        instructions =>
+            "Please find a page with the confirmation of nominations for ${result.name}",
+        iframe_src   => 'http://www.google.co.uk/search?q=' _ query,
+        return_url => {
+            url => c.uri_for( result.path ),
+            text => "Return to ${result.name} overview",
+        }
+%]
+    [% form.render %]    
+[% END %]

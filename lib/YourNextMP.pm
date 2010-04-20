@@ -103,7 +103,7 @@ sub output_is {
     my $desired = shift;
 
     # get the output that they want and the allowed outputs
-    my $requested = $c->req->param('output') || 'html';
+    my $requested = $c->req->param('output') || $c->stash->{output} || 'html';
     my @allowed = ( @{ $c->stash->{available_output_formats} || [] }, 'html' );
 
     # check that they asked for it and it is allowed

@@ -92,7 +92,7 @@ sub end : Private {
             request => {
                 uri    => $uri->as_string,
                 path   => $uri->path,
-                params => { $uri->query_form },
+                params => $c->req->params,
             },
             license => 'http://creativecommons.org/licenses/by-sa/2.0/uk/',
         };

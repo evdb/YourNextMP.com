@@ -67,6 +67,12 @@ __PACKAGE__->table("seats");
   default_value: undef
   is_nullable: 1
 
+=head2 nominations_entered
+
+  data_type: boolean
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -107,6 +113,8 @@ __PACKAGE__->add_columns(
     { data_type => "text", default_value => undef, is_nullable => 1 },
     "nominated_count",
     { data_type => "integer", default_value => undef, is_nullable => 1 },
+    "nominations_entered",
+    { data_type => "boolean", default_value => undef, is_nullable => 1 },
 );
 
 __PACKAGE__->set_primary_key("id");

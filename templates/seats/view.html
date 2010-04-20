@@ -10,6 +10,22 @@
         </p>
     [% END %]
 
+<p>
+    [% IF seat.nomination_url %]
+        View the <a href="[% seat.nomination_url | html %]">official list of validated candidates</a>.
+
+        [% IF seat.nominations_entered %]
+            You can also <a href="[% c.uri_for( seat.path, 'nominate_candidates' ) %]">check that the correct nominations have been made</a>.
+        [% ELSE %]
+            Help us <a href="[% c.uri_for( seat.path, 'nominate_candidates' ) %]">enter the validly nominated candidates</a>.
+        [% END %]
+
+    [% ELSE %]
+        Help us <a href="[% c.uri_for( seat.path, 'add_nomination_url' ) %]">find the validly nominated candidates</a>.
+    [% END %]
+
+</p>
+
     [% count = candidates.count %]
     [% IF count %]
 

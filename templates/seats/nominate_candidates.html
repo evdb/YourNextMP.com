@@ -1,0 +1,141 @@
+[% seat = result %]
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" lang="en">
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        [% PROCESS 'stubs/javascript.html',
+            javascript_libraries => [ 'jquery', 'main.js', 'nominate_candidates.js' ]
+         %]
+         <link rel="stylesheet" href="/static/css/nominate_candidates.css" type="text/css" media="screen" title="no title" charset="utf-8">
+    
+        <title>Find nominated candidates</title>
+    </head>
+    <body>
+
+        <div id="left_bar_wrapper">
+            <div id="left_bar">
+
+                <h1>Nominated candidates in [% seat.name | html %]</h1>
+                
+                <p>Please check the box by the nominated candidates. You should also
+                add any that are missing.</p>
+                
+                
+                <form name='nominate' method="post" action="[% c.req.uri.as_string %]">
+                    <ul id="candidates">
+                        [% FOREACH cand IN seat.candidates %]
+                        <li [% 'class="not_standing"' IF ! cand.is_standing %]>
+                            <input
+                                type="checkbox"
+                                name="nominated"
+                                value="[% cand.id %]"
+                                [% 'checked="checked"' IF cand.is_standing %]
+                            >
+                            <img src="[% c.uri_for_image( cand.image_id, 'small' ) %]">
+                            <strong class="name">[% cand.name | html %]</strong><br>
+                            <span class="party">[% cand.party.name | html %]</span>
+                        </li>
+                        [% END %]
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <input type="submit" value="Save nominated candidates">
+                        </li>
+                    </ul>
+                </form>
+                        
+                <br>
+                        
+                <ul>
+                    <li>
+                        <strong>Add a missing candidate</strong><br>
+                    
+                        <form id="add_candidate_form">
+                            <input name="seats" type="hidden" value="[% seat.id %]" />
+                            <input class="autowipe" name="name" alt="candidate name" type="text" /><br>
+                            <select name="party">
+                                <option value="">--- choose a party ---</option>
+                                [% FOREACH party IN parties.all %]
+                                <option value="[% party.id %]">[% party.name | html %]</option>
+                                [% END %]
+                            </select><br>
+                            <input type="submit" value="Add candidate"/>
+                        </form>
+                        
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+
+        <div id="right_bar_wrapper"> 
+            <iframe id="search-iframe" src="[% seat.nomination_url| html %]" frameborder="0"></iframe>
+        </div>
+        
+        <script type="text/javascript" charset="utf-8">
+            $( function() {
+                $('#add_candidate_form').submit(function() {
+
+                    var form = this;
+
+                    if ( ! form.party.value ) {
+                        alert("please select a party");
+                        return false;
+                    }
+
+                    // change submit button to inform user
+                    $( 'input[type=submit]', form )
+                        .attr("disabled","disabled")
+                        .val('saving candidate...');
+                        
+                    // submit form using ajax
+                    $.post(
+                        "/candidates/add_json",
+                        $(this).serialize(),
+                        function(data) {
+                            
+                            var result = data.result;
+                            
+                            // restore the button
+                            $( 'input[type=submit]', form )
+                                .attr("disabled", null)
+                                .val('Save');
+
+                            // check for errors
+                            if ( result.error ) {
+                                if ( result.error == 'duplicate' ) {
+                                    alert('A candidate with that name already exists');
+                                } else {
+                                    alert('Something went wrong');                            
+                                }
+                                return false;
+                            }
+                            
+                            var li = $('#candidates li').first().clone();
+                            li.removeClass('not_standing');
+                            li.find('.name').text( result.name );
+                            li.find('.party').text( result.party );
+                            li.find('img').attr( 'src', '/static/no-photo-small.png' );
+
+                            li.find('input')
+                                .attr( 'value', result.id )
+                                .attr( 'checked', 'checked' );
+
+                            // add the candidate to the list
+                            $('#candidates').append(li);
+                            
+                            // restore the candidate name box
+                            $(form).find('input[type=text]').val('').focusout();
+                        }
+                    );
+
+                  return false;
+                });
+            });
+        </script>
+        
+        [% PROCESS 'stubs/google_analytics.html' %]
+
+    </body>
+</html>

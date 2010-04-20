@@ -1,8 +1,10 @@
 package YourNextMP::Controller::Seats;
+use parent 'YourNextMP::ControllerBase';
 
 use strict;
 use warnings;
-use parent 'YourNextMP::ControllerBase';
+
+use YourNextMP::Form::AddNominationURL;
 
 sub result_base : PathPart('seats') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -28,6 +30,66 @@ sub view : PathPart('') Chained('result_find') Args(0) {
 
     $c->stash->{candidates} = $c->stash->{result}->candidates->standing;
 
+}
+
+sub add_nomination_url : PathPart('add_nomination_url') Chained('result_find')
+  Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->require_user("Please log in to add nomination details");
+
+    my $seat = $c->stash->{result};
+    my $form = YourNextMP::Form::AddNominationURL->new( item => $seat );
+    $c->stash( form => $form );
+
+    # process the form and return if there were errors
+    return if !$form->process( params => $c->req->params );
+
+    # we have the url - now send the user to the page to check the candidates
+    $c->res->redirect( $c->uri_for( $seat->path, 'nominate_candidates' ) );
+    $c->detach;
+}
+
+sub nominate_candidates : PathPart('nominate_candidates') Chained('result_find')
+  Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->require_user("Please log in to flag nominated candidates");
+
+    $c->stash->{parties} =
+      $c->db('Party')->search( undef, { columns => [ 'id', 'name' ] } );
+
+    # If it is not a post then return
+    return unless $c->req->method eq 'POST';
+
+    my $seat = $c->stash->{result};
+
+    # get all the candidates into a hash id => object
+    my %candidates = map { $_->id => $_ } $seat->candidates;
+
+    # go through all the candidates nominated and set them to be standing
+    my @nominated_ids = $c->req->param('nominated');
+    foreach my $nominated_id (@nominated_ids) {
+        my $candidate = delete $candidates{$nominated_id};
+
+        next if !$candidate    #
+              || $candidate->is_standing;
+
+        $candidate->update( { status => 'standing' } );
+    }
+
+    # go through remaining candidates and mark as 'not-nominated' if needed
+    foreach my $not_nominated_candidate ( values %candidates ) {
+        next unless $not_nominated_candidate->is_standing;
+        $not_nominated_candidate->update( { status => 'not-standing' } );
+    }
+
+    # flag this seat as being processed
+    $seat->update( { nominations_entered => 1 } );
+
+    # all done - return to the seat
+    $c->res->redirect( $c->uri_for( $seat->path ) );
+    $c->detach;
 }
 
 =head1 AUTHOR

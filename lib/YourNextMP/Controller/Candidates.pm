@@ -63,9 +63,62 @@ sub add : PathPart('add') Chained('result_base') Args(0) {
     return if !$form->process( params => $params );
 
     # We have a new candidate - send user to edit page to add more details
-    $c->res->redirect(
-        $c->uri_for( '/candidates', $item->code, 'edit_details' ) );
+
+    # check that we should not send back json
+    if ( ( $c->req->param('output') || '' ) eq 'json' ) {
+        $c->can_do_output('json');
+        $c->stash->{json_result} = {
+            id    => $item->id,
+            name  => $item->name,
+            party => $item->party->name,
+        };
+    }
+    else {
+        $c->res->redirect(
+            $c->uri_for( '/candidates', $item->code, 'edit_details' ) );
+    }
+
     $c->detach;
+
+}
+
+sub add_json : PathPart('add_json') Chained('result_base') Args(0) {
+    my ( $self, $c ) = @_;
+
+    # We need logged in users to create candidates
+    $c->require_user("Please log in to create a new candidate");
+    $c->can_do_output('json');
+    $c->stash->{output} = 'json';
+
+    # create the form and place it on the stash
+    my $item = $c->db('Candidate')->new_result( {} );
+    my $form = YourNextMP::Form::CandidateAdd->new( item => $item );
+
+    # Check that the code created will not clash with an existing candidate
+    if ( my $name = $c->req->param('name') ) {
+        my $code = $c->db('Candidate')->name_to_code($name);
+
+        if ( $c->db('Candidate')->find( { code => $code } ) ) {
+            $c->stash->{json_result} = {    #
+                error => 'duplicate'
+            };
+            return;
+        }
+    }
+
+    # process the form and return if there were errors
+    if ( $form->process( params => $c->req->params ) ) {
+        $c->stash->{json_result} = {
+            id    => $item->id,
+            name  => $item->name,
+            party => $item->party->name,
+        };
+    }
+    else {
+        $c->stash->{json_result} = {    #
+            error => 'other'
+        };
+    }
 
 }
 
