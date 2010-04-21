@@ -52,8 +52,11 @@ sub generate_main_json {
                     where => {},
                 },
                 Seat => {
-                    fields => [ 'id', 'code', 'created', 'updated', 'name', ],
-                    where  => {},
+                    fields => [
+                        'id', 'code', 'created', 'updated', 'name',
+                        'nomination_url', 'nominations_entered',
+                    ],
+                    where => {},
                 },
                 Candidacy => {
                     fields => [
