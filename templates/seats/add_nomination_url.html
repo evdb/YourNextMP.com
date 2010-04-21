@@ -23,7 +23,8 @@
         debug        => 0,
         title        => 'Find candidate nominations',
         instructions =>
-            "Please find a page with the confirmation of nominations for ${result.name}",
+            "Please find the council web page containing the official
+            list of candidates for ${result.name}",
         iframe_src   => google_url,
         return_url => {
             url => c.uri_for( result.path ),
@@ -31,4 +32,10 @@
         }
 %]
     [% form.render %]    
+
+<p>You may want to search for your constituency on these lists:
+    
+    <a href="http://spreadsheets.google.com/ccc?key=0Ak8T3jePZsWLdEtnLVNVR0FIWlhiMjRCak5BMEpYU3c&hl=en_GB">DemocracyClub list</a> or this <a href="http://scraperwiki.com/scrapers/show/election-returning-officers/data/">ScraperWiki list</a>.
+    </p>
+
 [% END %]
