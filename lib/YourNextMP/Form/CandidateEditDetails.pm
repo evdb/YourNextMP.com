@@ -33,12 +33,6 @@ has_field 'email' => (
             return $email;
         },
     },
-    apply => [
-        {
-            check => sub { !$candidate_rs->is_parliamentary_email( $_[0] ) },
-            message => $parliament_error_message,
-        }
-    ],
 );
 
 has_field 'phone' => (
