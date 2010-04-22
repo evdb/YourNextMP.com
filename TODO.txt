@@ -2,8 +2,6 @@
 
 stats pages
 
-allow @parliament.uk addresses
-
 boy girl game
 
 Tom's suggestions about validly nominated candidates

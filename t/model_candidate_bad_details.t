@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 15;
+use Test::More tests => 12;
 
 use YourNextMP;
 
@@ -18,7 +18,7 @@ my $candidate = YourNextMP->db('Candidate')->find_or_create(
 ok $candidate, "Got a candidate";
 
 # check that the correct entries are in the bad_details table
-is $candidate->bad_details->count, 4, "got all bad details";
+is $candidate->bad_details->count, 3, "got all bad details";
 is $_->issue, 'missing', "issue is 'missing' for " . $_->detail
   for $candidate->bad_details->all;
 
@@ -48,7 +48,7 @@ ok $candidate->update(
   "updated candidate with good details";
 
 # check that the issue is now 'parliament' for the details
-is $candidate->bad_details->count, 4, "got all bad details";
+is $candidate->bad_details->count, 2, "got all bad details";
 is $_->issue, 'parliament', "issue is 'parliament' for " . $_->detail
   for $candidate->bad_details->all;
 

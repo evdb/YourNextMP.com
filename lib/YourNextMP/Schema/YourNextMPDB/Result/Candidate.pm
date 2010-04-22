@@ -551,7 +551,6 @@ sub update_bad_details {
 sub _find_detail_issue_for_email {
     my $self = shift;
     my $val  = $self->email;
-    return 'parliament' if $self->is_parliamentary_email($val);
     return '';
 }
 
