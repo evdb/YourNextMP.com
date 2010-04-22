@@ -65,6 +65,25 @@
 <div class="half_column_wrapper">
 <div class="right_column">
 
+    <h2>Nominated candidates</h2>
+
+    <p>Nominations have closed and we are updating our candidate lists to include only the validly nominated candidates.</p>
+
+    [%  USE chart_url = url(
+            'http://chart.apis.google.com/chart',
+            cht  => 'p3',
+            chs  => '370x150',
+            chd  => "t:${nominations.done},${nominations.pending}",
+            chl  => "confirmed (${nominations.done})|pending (${nominations.pending})",
+            chtt => 'Constituency Confirmation Progress',
+            chco => '00ff00|ff8888',
+        )
+    %]
+
+    <img src="[% chart_url %]" height="150" width="370">
+
+    <br>
+
     <h2>About us</h2>
 
     <p>
