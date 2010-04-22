@@ -15,8 +15,8 @@ use IO::Interactive qw(interactive);
 
 sub burp ( @ ) { printf {interactive} @_; }
 
-generate_main_json();
-generate_links_json();
+# generate_main_json();
+# generate_links_json();
 generate_csv_files();
 
 # generate_images_json();
@@ -181,6 +181,10 @@ sub generate_csv_files {
     my @candidates = ();
 
     while ( my $row = $candidates_rs->next ) {
+
+        my $first_seat = $row->seats->first;
+        next unless $first_seat;
+
         my %data = (
             'ID'             => $row->id,
             'Name'           => $row->name,
@@ -195,7 +199,9 @@ sub generate_csv_files {
             'School'         => $row->school,
             'University'     => $row->university,
             'Gender'         => $row->gender,
-            'URL'            => "http://www.yournextmp.com" . $row->path,
+            'Nomination Confirmed' =>
+              ( $first_seat->nominations_entered ? 'yes' : 'no' ),
+            'URL' => "http://www.yournextmp.com" . $row->path,
         );
 
         # tidy ups
@@ -215,8 +221,10 @@ sub generate_csv_files {
         'Address', 'Party Name', 'Seat Name(s)',
     );
     my @personal_fields = (
-        'Date of Birth', 'Place of Birth', 'Age', 'School',
+        'Date of Birth', 'Place of Birth',
+        'Age',           'School',
         'University',    'Gender',
+        'Nomination Confirmed',
     );
 
     my @simple_fields = ( @contact_fields, 'URL' );
