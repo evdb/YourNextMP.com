@@ -24,7 +24,9 @@ foreach my $item (@$items) {
 
     # create the link and skip on if it already is attached to a candidate
     my $link = $links_rs->find_or_create(
-        { url => $item->{link}, title => 'Hustings.com Profile' } );
+        { url => $item->{link}, title => 'Hustings.com Profile' },
+        { key => 'links_url_key' } #
+    );
     next if $link->candidates->count;
 
     # sanity check the constituency
