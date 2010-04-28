@@ -1,0 +1,6 @@
+for candidates that cannot be contacted allow users to spool emails to them that
+we display publicly until we can send them to the candidates. A 'ask publicly'
+feature would be nice too.
+
+fake entries to capture emails sent to candidates.
+
