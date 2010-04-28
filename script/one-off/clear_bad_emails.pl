@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 my @emails = qw(
-  charles@charleswalker.org
   a.vanterheyden@pirateparty.co.uk
   aidan.burley@chaseconservatives.com
   alan.lawther@allianceparty.org
@@ -20,6 +19,7 @@ my @emails = qw(
   brian.binley@brianbinley.com
   brooksnewmark@braintreeconservatives.co.uk
   charles.graham@greenparty.org.uk
+  charles@charleswalker.org
   chesterfield@cix.co.uk
   chris4cambs@me.com
   clare@clareadamson.org
@@ -29,6 +29,7 @@ my @emails = qw(
   contact@richardottoway.com
   contact@tonylloydmp.co.uk
   dave@dunelmain.co.uk
+  davealexander@gohip.com
   daveatgosportforlife@ntlworld.com
   debbie.lemay@talktalk.ne
   drdjpf@hotmail.co.uk
@@ -39,17 +40,21 @@ my @emails = qw(
   emilybenn@ewaslabour.org.uk
   emma4wolverhampton@hotmail.com
   engelin@perliament.uk
+  enquiries@hywelwilliams.org
   enquiries@robmarris.org.uk
+  gordon.archer@carbonaccountable.com
   graeme@dudleyconservatives.com
   harshadbhai.patel@brent.gov.uk
   hc4mp@green010.org.uk
   hendrick@prestonlabour.fsnet.co.uk
   ian.parker-joseph@lpuk.org
+  ianjerram@engdem.org
   info@alancampbellmp.co.uk
   info@annesnelgrove.co.uk
   info@austinmitchell.org
   info@chrisbryant.co.uk
   info@davidkidney.com
+  info@derektwigg.org.uk
   info@dorries.org.uk
   info@douglascarswell.com
   info@edwarddavey.co.uk
@@ -61,6 +66,7 @@ my @emails = qw(
   info@johspellar.labour.co.uk
   info@jonathanedwards.co.uk
   info@juliehepburnsnp.com
+  info@keithvazmp.com
   info@kevanjonesmp.org.uk
   info@lindagilroy.org.uk
   info@lindariordanmp.co.uk
@@ -85,11 +91,13 @@ my @emails = qw(
   john@johnrandallmp.com
   johnbaker@engdem.org
   julie@leicester-libdems.org.uk
+  karelia@karelia.org
   keatsgreen@hotmail.com
   kendall@tiscali.co.uk
   liam@northdown.org
   luciana.berger@nus.org.uk
   mail@oxfordshireconservatives.com
+  mari@marirees.org.uk
   mark@markwilliams.org.uk
   markadshead@yournextmp.com
   markchivertoniow@hotmail.com
@@ -103,14 +111,18 @@ my @emails = qw(
   oakensend@from-tc.gov.uk
   office@billericayconservatives.com
   office@ilfordleytoncons.tory.org
+  office@rutmel.org.uk
   office@ukipwales.org
+  olidebotton@gmail.co.uk
   orgsec@stonecons.freeserve.co.uk
   paul-greenwood@dsl.pipex.com
+  paulclarkmp@gillinghamandrainham.com
   paulwhitelegg@engdem.org
   peterbarber@stockportgreenparty.org.uk
   peterbone@tory.org
   peterbraney@ukip.org.uk
   ph@soton.ac.uk
+  phil4northwiltshire@googlemail.co.uk
   phil@ncst.org.uk
   quinns@drumroad.wanadoo.co.uk
   rene@swanseaconservatives.com
@@ -119,6 +131,7 @@ my @emails = qw(
   sam.moss@greenparty.org.uk
   sandersa@cix.co.uk
   siobhainmcdonagh@hotmail.com
+  southwest@communist-party.org.uk
   stephen.hammond@wimbledonconservatives.org.uk
   stephenwright@engdem.org
   steve@stevebicklabour.org.uk
