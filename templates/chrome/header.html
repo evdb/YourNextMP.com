@@ -49,10 +49,24 @@
     [% INCLUDE 'chrome/tabs.html', no_links => no_links %]
 </div>
 
+
 <div id="content_wrapper">
 <div id="content">
     
 [% IF c.flash.message %]
     <div class="callout">[% c.flash.message | html %]</div>
 [% END %]
+
+<div id="suggestion_box">
+    <div>
+    <form action="/suggestions/add" method="post">
+        <input type="hidden" name="referer" value="[% c.req.uri | html %]" />
+        <input type="hidden" name="type" value="suggestion" />
+        <textarea name="suggestion"></textarea><br>
+        <input type="submit" value="Make Suggestion" />
+        <a href="#" onclick="$('#suggestion_box').fadeOut(); return false;">cancel</a>
+    </form>
+    </div>
+</div>
+
     

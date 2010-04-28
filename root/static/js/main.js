@@ -1,3 +1,5 @@
+var GB_ANIMATION = true;
+
 $( function () {
 
     // Find inputs that should be cleared on entry
@@ -27,4 +29,21 @@ $( function () {
         }
     );
 
+
+    // change all the 'add_suggestion' links so that they show the suggestion form
+    // instead of clicking through.
+    $('.add_suggestion').click(
+        function() {
+            
+            $('#suggestion_box')
+                .detach()
+                .insertAfter( $(this) )
+                .fadeIn();
+
+            $('#suggestion_box textarea').focus();
+
+            return false;
+        }
+    );
+    
 });

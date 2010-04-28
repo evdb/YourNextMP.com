@@ -19,7 +19,7 @@ sub edit : PathPart('edit') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
     # We need logged in users to create candidates
-    $c->require_user("Please log in to edit links");
+    $c->require_admin_user("Please log in to edit links");
 
     # Get the link we are looking at
     my $link = $c->stash->{result};

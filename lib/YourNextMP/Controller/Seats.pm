@@ -36,7 +36,7 @@ sub add_nomination_url : PathPart('add_nomination_url') Chained('result_find')
   Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->require_user("Please log in to add nomination details");
+    $c->require_admin_user("Please log in to add nomination details");
 
     my $seat = $c->stash->{result};
     my $form = YourNextMP::Form::AddNominationURL->new( item => $seat );
@@ -54,7 +54,7 @@ sub nominate_candidates : PathPart('nominate_candidates') Chained('result_find')
   Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->require_user("Please log in to flag nominated candidates");
+    $c->require_admin_user("Please log in to flag nominated candidates");
 
     $c->stash->{parties} =
       $c->db('Party')->search( undef, { columns => [ 'id', 'name' ] } );

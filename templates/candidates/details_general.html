@@ -21,15 +21,15 @@
 
     candidate_top_details.push(
         {
-            class   => 'discreet',
+            class   => 'discreet add_suggestion',
             src     => '/static/icons/comment.png',
             alt     => 'suggest change',
             href    => 
                 c.uri_for(
                     '/suggestions/add',
-                    { type => 'correction', referer => c.req.uri }
+                    { type => 'suggestion', referer => c.req.uri }
                 ),
-            content => 'suggest change to name, party or seats',
+            content => 'suggest a correction to this candidate',
         }
     );
     
@@ -50,7 +50,36 @@
                         content => 'delete',
                     }
                 ]
+            },
+            {
+                class   => 'discreet',
+                src     => '/static/icons/pencil.png',
+                alt     => 'edit candidate details',
+                contents   => [
+                    { content => 'edit ' },
+                    { content => 'contact details',
+                      href    => c.uri_for(candidate.code, 'edit_details'),
+                    },
+                    { content => ' or ' },
+                    {
+                      href    => c.uri_for(candidate.code, 'edit_photo'),
+                      content => 'photo',                    
+                    },
+                ],
+            },
+            {
+                class   => 'discreet',
+                src     => '/static/icons/pencil.png',
+                alt     => 'edit candidate details',
+                contents   => [
+                    { content => 'edit ' },
+                    {
+                      href    => c.uri_for(candidate.code, 'edit_personal'),
+                      content => 'schooling and work details',                    
+                    },
+                ],
             }
+            
         );
     END;
 

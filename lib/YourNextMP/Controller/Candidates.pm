@@ -36,7 +36,7 @@ sub add : PathPart('add') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 
     # We need logged in users to create candidates
-    $c->require_user("Please log in to create a new candidate");
+    $c->require_admin_user("Please log in to create a new candidate");
 
     # create the form and place it on the stash
     my $item = $c->db('Candidate')->new_result( {} );
@@ -86,7 +86,7 @@ sub add_json : PathPart('add_json') Chained('result_base') Args(0) {
     my ( $self, $c ) = @_;
 
     # We need logged in users to create candidates
-    $c->require_user("Please log in to create a new candidate");
+    $c->require_admin_user("Please log in to create a new candidate");
     $c->can_do_output('json');
     $c->stash->{output} = 'json';
 
@@ -126,7 +126,7 @@ sub edit_details : PathPart('edit_details') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
     # We need logged in users to create candidates
-    $c->require_user("Please log in to edit candidate details");
+    $c->require_admin_user("Please log in to edit candidate details");
 
     # create the form and place it on the stash
     my $candidate = $c->stash->{result};
@@ -148,7 +148,7 @@ sub edit_photo : PathPart('edit_photo') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
     # We need logged in users to create candidates
-    $c->require_user("Please log in to edit candidate photo");
+    $c->require_admin_user("Please log in to edit candidate photo");
 
     # create the form and place it on the stash
     my $candidate = $c->stash->{result};
@@ -177,7 +177,7 @@ sub edit_personal : PathPart('edit_personal') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
     # We need logged in users to create candidates
-    $c->require_user("Please log in to edit candidate's personal details");
+    $c->require_admin_user("Please log in to edit candidate's personal details");
 
     # create the form and place it on the stash
     my $candidate = $c->stash->{result};

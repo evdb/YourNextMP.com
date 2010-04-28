@@ -131,7 +131,7 @@ sub view : PathPart('') Chained('result_find') Args(0) {
 sub add_link : PathPart('add_link') Chained('result_find') Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->require_user("Please log in to add links");
+    $c->require_admin_user("Please log in to add links");
 
     # create a form and stick it on the stash
     my $form = YourNextMP::Form::LinkAdd->new();

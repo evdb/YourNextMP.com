@@ -382,3 +382,23 @@ li.link h3 {
     text-align: center;
     margin-bottom: 1em;
 }
+
+#suggestion_box {
+    display: none;
+    position: absolute;
+    width: 400px;
+    margin: 0 auto 1em auto;
+    padding: 0.5em;
+    background: repeat-x #def0ff bottom left;
+    border: 5px solid #b6deff;
+    text-align: center;
+}
+
+#suggestion_box textarea {
+    width: 100%;
+    border: 1px solid black;
+}
+
+#suggestion_box a {
+    float: right;
+}

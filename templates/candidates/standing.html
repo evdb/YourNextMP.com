@@ -93,22 +93,7 @@
                 alt     => 'address',
                 content => candidate.address,
             },
-            {
-                class   => 'discreet',
-                src     => '/static/icons/pencil.png',
-                alt     => 'edit candidate details',
-                contents   => [
-                    { content => 'edit ' },
-                    { content => 'contact details',
-                      href    => c.uri_for(candidate.code, 'edit_details'),
-                    },
-                    { content => ' or ' },
-                    {
-                      href    => c.uri_for(candidate.code, 'edit_photo'),
-                      content => 'photo',                    
-                    },
-                ],
-            }
+            
         );
        
         PROCESS 'stubs/item_details.html', details => contact_details;
@@ -157,18 +142,6 @@
                 alt     => 'school',
                 content => candidate.school,
             },
-            {
-                class   => 'discreet',
-                src     => '/static/icons/pencil.png',
-                alt     => 'edit candidate details',
-                contents   => [
-                    { content => 'edit ' },
-                    {
-                      href    => c.uri_for(candidate.code, 'edit_personal'),
-                      content => 'schooling and work details',                    
-                    },
-                ],
-            }
         );
                 
         PROCESS 'stubs/item_details.html', details => schooling_and_work_details;

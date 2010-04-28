@@ -18,8 +18,13 @@
             <br clear="both" />
         </li>
     [% END %]
+
     <li>
         Missing a link?
-        Please <a href="[% c.uri_for( result.path, 'add_link' ) %]">add a link</a>.
+        [% IF c.user_is_admin %]
+        <a href="[% c.uri_for( result.path, 'add_link' ) %]">Add a link</a>
+        [% ELSE %]
+        <a class="add_suggestion" href="[% c.uri_for('/suggestions/add',{ referer => c.req.uri, type => 'suggestion'}) %]">Suggest a link to add.</a>
+        [% END %]
     </li>
 </ul>
