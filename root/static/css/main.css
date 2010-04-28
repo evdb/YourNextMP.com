@@ -153,12 +153,14 @@ p {
     text-align: center;        
 }
 
+#sidebar div {
+    font-size: 90%;
+    margin-bottom: 1em;
+}
+
 .sidebar_item {
     border: 1px solid #888;
     background-color: #ddd;
-
-    font-size: 90%;
-    margin-bottom: 1em;
 
     -moz-border-radius:    5px;
     -webkit-border-radius: 5px;
