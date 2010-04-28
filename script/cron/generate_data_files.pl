@@ -15,8 +15,8 @@ use IO::Interactive qw(interactive);
 
 sub burp ( @ ) { printf {interactive} @_; }
 
-# generate_main_json();
-# generate_links_json();
+generate_main_json();
+generate_links_json();
 generate_csv_files();
 
 # generate_images_json();
