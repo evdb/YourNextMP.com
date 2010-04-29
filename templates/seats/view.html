@@ -39,9 +39,11 @@
         <p>There are no candidates yet</p>
     
     [% END %]
+    <br>
 
-<p>Are we missing a candidate? Please <a href="[% c.uri_for('/','candidates','add', { seats => seat.id }) %]">add them</a>.</p>
-
+    [% IF c.user_is_admin %]
+        <p>Are we missing a candidate? Please <a href="[% c.uri_for('/','candidates','add', { seats => seat.id }) %]">add them</a>.</p>
+    [% END %]
 
 <h2>Leaflets:</h2>
 
