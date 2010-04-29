@@ -59,12 +59,16 @@
 
 <div id="suggestion_box">
     <div>
+
+    <p>Please use the box below to add details or suggest changes. We check them all now to prevent vandalism.<br>
+    <a href="mailto:hello@yournextmp.com">Send photos to hello@yournextmp.com</a>.</p>
+
     <form action="/suggestions/add" method="post">
         <input type="hidden" name="referer" value="[% c.req.uri | html %]" />
         <input type="hidden" name="type" value="suggestion" />
         <textarea name="suggestion"></textarea><br>
         <input type="submit" value="Make Suggestion" />
-        <a href="#" onclick="$('#suggestion_box').fadeOut(); return false;">cancel</a>
+        <a class="cancel" href="#" onclick="$('#suggestion_box').fadeOut(); return false;">cancel</a>
     </form>
     </div>
 </div>

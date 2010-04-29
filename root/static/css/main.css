@@ -394,11 +394,15 @@ li.link h3 {
     text-align: center;
 }
 
+#suggestion_box p {
+    font-size: 80%;
+}
+
 #suggestion_box textarea {
     width: 100%;
     border: 1px solid black;
 }
 
-#suggestion_box a {
+#suggestion_box a.cancel {
     float: right;
 }
