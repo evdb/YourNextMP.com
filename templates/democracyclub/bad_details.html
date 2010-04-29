@@ -105,9 +105,9 @@
                [% IF candidate.seat.nomination_url %]
                <p>
                    Hint: try looking at the
-                   <a href="#" onclick="open_in_iframe('[% candidate.seat.nomination_url | html %]')">nomination papers</a>
+                   <a href="[% candidate.seat.nomination_url | html %]" target="search-iframe">nomination papers</a>
                    [% USE gview_url = url('http://docs.google.com/gview', url => candidate.seat.nomination_url ) %]
-                   (<a href="#" onclick="open_in_iframe('[% gview_url | html %]')">use Google view for PDFs</a>)
+                   (<a href="[% gview_url | html %]"  target="search-iframe">use Google view for PDFs</a>)
                </p>
                [% END %]
 
@@ -142,7 +142,7 @@
 
         <div style="clear:both;height:100%;">
  
-            <iframe id="search-iframe" src="[% google( q => query_base ) %]" frameborder="0"></iframe>
+            <iframe id="search-iframe" name="search-iframe" src="[% google( q => query_base ) %]" frameborder="0"></iframe>
         </div>
 
         [% PROCESS 'stubs/google_analytics.html' %]
