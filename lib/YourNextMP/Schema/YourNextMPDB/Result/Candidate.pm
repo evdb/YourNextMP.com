@@ -611,6 +611,11 @@ sub seat_names {
 
 }
 
+sub seat {
+    my $self = shift;
+    return $self->seats->first;
+}
+
 =head2 age
 
     $age_string = $candidate->age( $reference_dt );

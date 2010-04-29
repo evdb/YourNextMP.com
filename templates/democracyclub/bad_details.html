@@ -101,6 +101,16 @@
                     </div>
 
                [% form.render_end %]
+               
+               [% IF candidate.seat.nomination_url %]
+               <p>
+                   Hint: try looking at the
+                   <a href="[% candidate.seat.nomination_url | html %]">nomination papers</a>
+                   [% USE gview_url = url('http://docs.google.com/gview', url => candidate.seat.nomination_url ) %]
+                   (<a href="[% gview_url | html %]">use Google view for PDFs</a>)
+               </p>
+               [% END %]
+
             </div>
             
             <div id="dc_scoreboard_wrapper">

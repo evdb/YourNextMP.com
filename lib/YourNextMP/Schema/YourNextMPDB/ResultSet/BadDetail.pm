@@ -33,10 +33,13 @@ sub grab {
 
             # search for a matching detail
             $detail = $rs->search(    #
-                { act_after => { '<=' => $now } },    #
+                {
+                    detail    => 'address',
+                    act_after => { '<=' => $now }
+                },                    #
                 {
                     order_by => [
-                        'priority + act_count', # most doable first
+                        'priority + act_count',    # most doable first
                     ],
                     rows => 1,
                 }

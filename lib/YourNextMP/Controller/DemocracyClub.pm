@@ -124,7 +124,10 @@ sub prepare_bad_detail_form : Private {
           ->search( { detail => $detail } )        #
           ->first;
 
-        if ( $detail eq $bad_detail->detail ) {
+        if ( $detail ne 'address' ) {
+            $field->inactive(1);
+        }
+        elsif ( $detail eq $bad_detail->detail ) {
             $field->value('');
         }
         elsif ($existing_value_is_bad) {
