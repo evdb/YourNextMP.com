@@ -3,6 +3,8 @@
 use strict;
 use warnings;
 
+use lib 'lib';
+
 my @emails = qw(
   johnbaker@engdem.org
   dave@dunelmain.co.uk
@@ -134,7 +136,9 @@ my @emails = qw(
 use YourNextMP;
 
 foreach my $email (@emails) {
-    my $c = YourNextMP->db('Candidate')->search( { email => $email } )->first;
+    my $c =
+      YourNextMP->db('Candidate')->search( { email => { ilike => $email } } )
+      ->first;
 
     if ($c) {
         warn "Clearing $email for candidate\n";
