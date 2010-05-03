@@ -152,4 +152,5 @@
 
 <br>
 
-[% PROCESS 'links/main_listing.html' %]
+[% INCLUDE 'links/main_listing.html', links_title => 'Candidate specific links' %]
+[% INCLUDE 'links/main_listing.html', links_title => 'Constituency links', result => result.seat %]

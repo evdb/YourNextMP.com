@@ -346,14 +346,16 @@ ul.lined li {
     padding: 2px 0;
 }
 
-li.link img.pageglimpse-small {
+li.link {
     float: left;
-    margin-right: 4px;
-}    
-
-li.link h3 {
-    display: inline;
-}    
+    margin: 2px;
+    padding: 4px;
+    width: 156px;
+    overflow: hidden;
+    text-align: center;
+    border: 1px solid #ddd;
+    background-color: #eee;
+}
 
 .pageglimpse-small {
     height: 108px;

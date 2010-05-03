@@ -1,30 +1,25 @@
-<h2>Links:</h2>
+<h2>[% links_title || 'Links' %]:</h2>
 
-<ul class="lined">
+<ul>
     [% FOREACH link IN result.links %]
         <li class="link">
-            <a href="[% link.url %]" title="[% link.url %]"><img class="pageglimpse-small" src="http://images.pageglimpse.com/v1/thumbnails?url=[% link.url | uri %]&amp;size=small&amp;root=no&amp;devkey=26ad767be62243346e33d6115c32f6be" alt="screenshot"></a>
-            <h3>
-                <a href="[% link.url %]" title="[% link.url %]">[% link.title %]</a>
-            </h3>
-            [% "(${link.published.dmy('/')})" IF link.published %]
-            <a href="[% c.uri_for( '/links', link.id, 'edit' ) %]" title="Edit this link"><img class="icon discreet" src="/static/icons/pencil.png" alt="edit"></img></a>
-            <br />
-            [% summary = link.summary || ''; %]
-            [% summary.length <= 280
-                ? summary
-                : summary.substr(0, 280).replace('\s+\S+$', '') _ ' ...' 
-                %]
-            <br clear="both" />
+            <a href="[% link.url %]" title="[% link.url %]"><img class="pageglimpse-small" src="http://images.pageglimpse.com/v1/thumbnails?url=[% link.url | uri %]&amp;size=small&amp;root=no&amp;devkey=26ad767be62243346e33d6115c32f6be" alt="screenshot"></a><br>
+            <nobr>
+                [% IF c.user_is_admin %]
+                <a href="[% c.uri_for( '/links', link.id, 'edit' ) %]" title="Edit this link"><img class="icon discreet" src="/static/icons/pencil.png" alt="edit"></img></a>
+                [% END %]
+            <a href="[% link.url %]" title="[% link.url %]">[% link.title %]</a>
+            </nobr>
         </li>
     [% END %]
 
-    <li>
-        Missing a link?
-        [% IF c.user_is_admin %]
-        <a href="[% c.uri_for( result.path, 'add_link' ) %]">Add a link</a>
-        [% ELSE %]
-        <a class="add_suggestion" href="[% c.uri_for('/suggestions/add',{ referer => c.req.uri, type => 'suggestion'}) %]">Suggest a link to add.</a>
-        [% END %]
-    </li>
 </ul>
+
+<p style="clear: left">
+    Missing a link?
+    [% IF c.user_is_admin %]
+    <a href="[% c.uri_for( result.path, 'add_link' ) %]">Add a link</a>
+    [% ELSE %]
+    <a class="add_suggestion" href="[% c.uri_for('/suggestions/add',{ referer => c.req.uri, type => 'suggestion'}) %]">Suggest a link to add.</a>
+    [% END %]
+</p>
