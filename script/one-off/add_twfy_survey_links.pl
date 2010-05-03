@@ -9,7 +9,7 @@ my @seats = YourNextMP->db('Seat')->all;
 
 foreach my $seat (@seats) {
 
-    my $url = 'http://election.theyworkforyou.com/survey/seats/' . $seat->code;
+    my $url = 'http://election.theyworkforyou.com/quiz/seats/' . $seat->code;
 
     # have a url from form - find or create the link
     my $link =
