@@ -108,7 +108,7 @@ sub record_votes : PathPart('record_votes') Chained('result_find') Args(0) {
         $_->code => {
             type  => 'PosInteger',
             label => sprintf( '%s (%s)', $_->name, $_->party->name ),
-            default => ( $_->votes || 0 ),
+            default => ( $_->votes || '' ),
             required => 1,
             required_message =>
               'Please enter number of votes (can be "0" if no votes cast)',
