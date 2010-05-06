@@ -41,15 +41,23 @@ sub generate_recent_seats : Private {
                 my @recent_seats = ();
 
                 while ( my $seat = $seats_rs->next ) {
-                    my $winner = $seat->winner;
+
+                    my $winner_data = undef;
+                    if ( my $winner = $seat->winner ) {
+                        $winner_data = {
+                            image_id => $winner->image_id,
+                            name     => $winner->name,
+                            party    => $winner->party->name,
+                            votes    => $winner->votes,
+                        };
+                    }
+
                     push @recent_seats,
                       {
-                        name            => $seat->name,
-                        total_votes     => $seat->total_votes,
-                        winner_image_id => $winner->image_id,
-                        winner_name     => $winner->name,
-                        winner_party    => $winner->party->name,
-                        winner_votes    => $winner->votes,
+                        name        => $seat->name,
+                        path        => $seat->path,
+                        total_votes => $seat->total_votes,
+                        winner      => $winner_data,
                       };
                 }
 

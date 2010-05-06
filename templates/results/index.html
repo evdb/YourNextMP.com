@@ -12,11 +12,19 @@ links there.</p>
     
     [% FOREACH seat = recent_seats %]
         <li>
-            <img style="float: right" src="[% c.uri_for_image( seat.winner_image_id, 'small' ) %]" />
-            <b>[% seat.name %]</b> was won by <b>[% seat.winner_name | html %]</b>
-            ([% seat.winner_party | html %])
-            <br>
-            with [% seat.winner_votes %] votes of [% seat.total_votes %] cast.
+            <img style="float: right" src="[% c.uri_for_image( seat.winner.image_id, 'small' ) %]" />
+
+            <b><a href="[% seat.path %]">[% seat.name %]</a></b> 
+            
+            [% IF seat.winner %]
+                was won by <b>[% seat.winner.name | html %]</b>
+                ([% seat.winner.party | html %])
+                <br>
+                with [% seat.winner.votes %] votes of [% seat.total_votes %] cast.
+            [% ELSE %]
+                - no clear winner - it appears to be a draw.
+            [% END %]
+
         </li>
     
     [% END %]
