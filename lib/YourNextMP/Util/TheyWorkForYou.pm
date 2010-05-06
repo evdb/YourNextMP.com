@@ -26,7 +26,6 @@ sub query {
     $args->{output} = 'js';
 
     my $sig = Object::Signature::signature($args);
-    warn $sig;
     
     my $results = YourNextMP::Util::Cache->cache->get_code(
         "twfy_api:$sig",
