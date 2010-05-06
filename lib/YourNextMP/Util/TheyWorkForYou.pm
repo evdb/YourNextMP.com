@@ -8,6 +8,9 @@ use Carp;
 use JSON;
 use Encode;
 
+use Object::Signature;
+use YourNextMP::Util::Cache;
+
 my $KEY = 'AKsVdyDP9HcQCp6jCuE3tL66';
 my $twfy = WebService::TWFY::API->new( { key => $KEY } );
 
@@ -22,16 +25,26 @@ sub query {
 
     $args->{output} = 'js';
 
-    my $result = $twfy->query( $method, $args );
+    my $sig = Object::Signature::signature($args);
+    warn $sig;
+    
+    my $results = YourNextMP::Util::Cache->cache->get_code(
+        "twfy_api:$sig",
+        sub {
+            my $result = $twfy->query( $method, $args );
 
-    croak "TWFY error: $result->{error_message} calling '$method'"
-      unless $result && $result->{is_success};
+            croak "TWFY error: $result->{error_message} calling '$method'"
+              unless $result && $result->{is_success};
 
-    my $json_string = $result->{results};
+            my $json_string = $result->{results};
 
-    # $json_string = encode_utf8( decode( 'latin1', $json_string ) );
+            # $json_string = encode_utf8( decode( 'latin1', $json_string ) );
 
-    my $results = JSON->new->latin1->decode($json_string);
+            my $results = JSON->new->latin1->decode($json_string);
+            return $results;
+        }
+    );
+
     return $results;
 }
 

@@ -85,6 +85,7 @@ requires 'Net::OpenID::Consumer';
 requires 'Net::SMTP::SSL';
 requires 'Net::SSL';
 requires 'Net::SSLeay';
+requires 'Object::Signature';
 requires 'parent';
 requires 'Path::Class';
 requires 'Pod::Usage';
