@@ -1,8 +1,8 @@
 [% seat = result %]
 [% INCLUDE 'chrome/header.html', title => seat.name %]
 
-
     <h1>[% seat.name %]</h1>
+
     [% IF c.flash.searched_by_postcode %]
         <p>
             <img class="icon" src="/static/icons/exclamation.png">
@@ -19,23 +19,47 @@
             .
         </p>
     [% END %]
+    
+    [% IF !seat.votes_recorded %]
+    <p>
+        <a href='[% c.uri_for( seat.path, "record_votes" )%]'>Enter the votes for this constituency</a>.
+    </p>
+    [% ELSE %]
+    
+        [% IF (winner = seat.winner) %]
+
+            <div class="boxed">
+                <h2>Constituency won by [% winner.name %] ([% winner.party.name %])</h2>
+
+                <p>[% winner.name %] got [% winner.votes %] votes from a total of [% seat.total_votes %] cast ([% (winner.votes / seat.total_votes * 100) | format('%0.2f%%') %]).</p>
+        
+            </div>    
+        [% END %]
+    [% END %]
 
 
     [% count = candidates.count %]
     [% IF count %]
+
 
         [% WRAPPER 'stubs/search_results.html',
             title => "Candidates:"
         %]
     
         [% WHILE (candidate = candidates.next ) %]
+        
+            [% extra = BLOCK %]
+                [% IF seat.votes_recorded %]
+                    Votes: [% candidate.votes %] - 
+                [% END %]
+                [% candidate.party.name %]
+            [% END %]
 
             [% PROCESS 'stubs/search_result.html',
                 name  => candidate.name,
                 show_missing_person_image => 1,
                 image_id => candidate.image_id,
                 href  => c.uri_for( '/candidates', candidate.code ),
-                extra => candidate.party.name,
             %]        
         [% END %]
         [% END %]
@@ -50,6 +74,13 @@
     [% IF c.user_is_admin %]
         <p>Are we missing a candidate? Please <a href="[% c.uri_for('/','candidates','add', { seats => seat.id }) %]">add them</a>.</p>
     [% END %]
+
+    [% IF seat.votes_recorded %]
+    <p>
+        Are the votes wrong? <a href='[% c.uri_for( seat.path, "record_votes" )%]'>Correct them</a>.
+    </p>
+    [% END %]
+    
 
 <h2>Leaflets:</h2>
 

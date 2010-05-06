@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use YourNextMP::Form::AddNominationURL;
+use YourNextMP::Form;
 
 sub result_base : PathPart('seats') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -86,6 +87,52 @@ sub nominate_candidates : PathPart('nominate_candidates') Chained('result_find')
 
     # flag this seat as being processed
     $seat->update( { nominations_entered => 1 } );
+
+    # all done - return to the seat
+    $c->res->redirect( $c->uri_for( $seat->path ) );
+    $c->detach;
+}
+
+sub record_votes : PathPart('record_votes') Chained('result_find') Args(0) {
+    my ( $self, $c ) = @_;
+
+    $c->require_user('Please log in to record votes');
+
+    my $seat       = $c->stash->{result};
+    my @candidates = $seat->candidates->standing->all;
+
+    # create all the fields for the standing candidates.
+    my @field_list =
+      map {
+        $_->code => {
+            type  => 'PosInteger',
+            label => sprintf( '%s (%s)', $_->name, $_->party->name ),
+            default => ( $_->votes || 0 ),
+            required => 1,
+            required_message =>
+              'Please enter number of votes (can be "0" if no votes cast)',
+          }
+      } @candidates;
+
+    # create a form
+    my $form = YourNextMP::Form->new(
+        name       => 'record_vates',
+        field_list => \@field_list,
+    );
+
+    $c->stash->{form} = $form;
+
+    # process the form and return if there were errors
+    return if !$form->process( params => $c->req->params );
+
+    # Form is good - let's update the candidates
+    foreach my $can (@candidates) {
+        my $votes = $form->field( $can->code )->value;
+        $can->update( { votes => $votes } );
+    }
+
+    # now set the votes_recorded flag on the seat
+    $seat->update( { votes_recorded => 1 } );
 
     # all done - return to the seat
     $c->res->redirect( $c->uri_for( $seat->path ) );

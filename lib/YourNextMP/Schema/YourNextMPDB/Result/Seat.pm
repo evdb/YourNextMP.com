@@ -73,6 +73,12 @@ __PACKAGE__->table("seats");
   default_value: undef
   is_nullable: 1
 
+=head2 votes_recorded
+
+  data_type: boolean
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -115,6 +121,8 @@ __PACKAGE__->add_columns(
     { data_type => "integer", default_value => undef, is_nullable => 1 },
     "nominations_entered",
     { data_type => "boolean", default_value => undef, is_nullable => 1 },
+    "votes_recorded",
+    { data_type => "boolean", default_value => undef, is_nullable => 1 },
 );
 
 __PACKAGE__->set_primary_key("id");
@@ -152,7 +160,7 @@ __PACKAGE__->has_many(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-09 23:00:33
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:OMdNpA8zGJMeEeEnOFAb1w
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ATxwwR4ay5dZAk7GuL+8tw
 
 __PACKAGE__->resultset_attributes( { order_by => ['code'] } );
 
@@ -196,5 +204,55 @@ __PACKAGE__->has_many(
 
 sub standing_candidates    { return $_[0]->candidates->standing; }
 sub standing_candidates_rs { return scalar $_[0]->candidates->standing; }
+
+=head2 winner
+
+    $winner = $seat->winner(  );
+
+Returns the candidate that won the seat, or undef if there is no winner (no
+votes or draw).
+
+=cut
+
+sub winner {
+    my $self = shift;
+
+    return unless $self->votes_recorded;
+
+    my @candidates = $self->candidates->standing->search(
+        undef,
+        {
+            order_by => 'votes desc',
+            rows     => 2
+        },
+    );
+    my $winner = $candidates[0];
+    return unless $winner;
+
+    # check that there was not a draw.
+    return
+      if $candidates[1]
+          && $candidates[1]->votes == $winner->votes;
+
+    return $winner;
+}
+
+=head2 total_votes
+
+    $total_votes = $seat->total_votes(  );
+
+Returns the number of votes cast - or zero if none cast.
+
+=cut
+
+sub total_votes {
+    my $self = shift;
+    return 0 unless $self->votes_recorded;
+
+    my $votes = 0;
+    $votes += $_ for map { $_->votes } $self->candidates->standing->all;
+
+    return $votes;
+}
 
 1;

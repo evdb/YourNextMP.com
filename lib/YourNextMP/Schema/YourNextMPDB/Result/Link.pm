@@ -134,7 +134,7 @@ __PACKAGE__->has_many(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05000 @ 2010-02-23 12:11:55
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3XjbCGAM+ddPpTR207EcRw
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:J33LzbSN0kmYyO5YOI7CWQ
 
 sub new {
     my $class = shift;

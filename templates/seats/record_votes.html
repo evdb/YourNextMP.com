@@ -1,0 +1,12 @@
+[% seat = result %]
+[% INCLUDE 'chrome/header.html', title => "Record votes for ${seat.name}" %]
+
+    <h1>Record votes for [% seat.name | html %]</h1>
+
+    <p>Please enter the votes for [% seat.name | html %] below.</p>
+
+    [% form.render %]
+
+
+
+[% INCLUDE 'chrome/footer.html' %]

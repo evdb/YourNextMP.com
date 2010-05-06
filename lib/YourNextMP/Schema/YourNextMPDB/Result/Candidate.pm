@@ -158,6 +158,12 @@ __PACKAGE__->table("candidates");
   default_value: undef
   is_nullable: 1
 
+=head2 votes
+
+  data_type: int
+  default_value: undef
+  is_nullable: 0
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -265,6 +271,12 @@ __PACKAGE__->add_columns(
     { data_type => "text", default_value => 'standing', is_nullable => 0 },
     "birthplace",
     { data_type => "text", default_value => undef, is_nullable => 1 },
+    "votes",
+    {
+        data_type     => "integer",
+        default_value => undef,
+        is_nullable   => 1,
+    },
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "candidates_code_key", ["code"] );
@@ -331,7 +343,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-20 16:46:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:/7ZN/seNI/99hDHJd8j1rg
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gqjMbEUglwG1u1OhST3y4g
 
 use List::MoreUtils qw(uniq);
 
