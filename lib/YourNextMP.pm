@@ -373,6 +373,8 @@ sub finalize {
                 return { this => 'is cached' };
             },
             expires => 3600,    # how long to cache in seconds
+            
+            ignore_user => 1, # defaults to 0
         }
     );
 
@@ -392,7 +394,10 @@ sub smart_cache {
     my $key     = $args->{key}     || croak "Need a key to cache on";
     my $code    = $args->{code}    || croak "Need code in case of cache miss";
     my $expires = $args->{expires} || 3600;
+    my $ignore_user = $args->{ignore_user} || 0;
+
     my $have_user = $c->user_exists;
+    $have_user = 0 if $ignore_user;
 
     # get value from cache
     my $val = $have_user         # if user is logged in...

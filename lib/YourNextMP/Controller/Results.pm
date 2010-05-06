@@ -14,14 +14,21 @@ sub index : Path Args(0) {
     $c->forward('generate_recent_seats');
 }
 
+sub clear_cache : Private {
+    my ( $self, $c ) = @_;
+    $c->cache->remove($_)
+      for qw(recent_seats declared_constituencies election_results);
+}
+
 sub generate_recent_seats : Private {
     my ( $self, $c ) = @_;
 
     $c->stash->{recent_seats} = $c->smart_cache(
         {
-            key     => 'recent_seats',
-            expires => 600,
-            code    => sub {
+            key         => 'recent_seats',
+            expires     => 600,
+            ignore_user => 1,
+            code        => sub {
                 my $seats_rs = $c->db('Seat')    #
                   ->search(                      #
                     { votes_recorded => 1 },
@@ -58,9 +65,10 @@ sub generate_declared_constituencies : Private {
 
     $c->stash->{declared_constituencies} = $c->smart_cache(
         {
-            key     => 'declared_constituencies',
-            expires => 600,
-            code    => sub {
+            key         => 'declared_constituencies',
+            expires     => 600,
+            ignore_user => 1,
+            code        => sub {
                 my $seats_rs = $c->db('Seat');
                 my $declared =
                   $seats_rs->search( { votes_recorded => 1 } )->count;
@@ -80,9 +88,10 @@ sub generate_election_results : Private {
 
     $c->stash->{election_results} = $c->smart_cache(
         {
-            key     => 'results_parties_seats',
-            expires => 600,
-            code    => sub {
+            key         => 'election_results',
+            expires     => 600,
+            ignore_user => 1,
+            code        => sub {
                 my $seats_rs = $c->db('Seat');
 
                 # go through all the seats and count the number for each party

@@ -149,6 +149,9 @@ sub record_votes : PathPart('record_votes') Chained('result_find') Args(0) {
         }
     );
 
+    # clear the election results
+    $c->forward('/results/clear_cache');
+
     # all done - return to the seat
     $c->res->redirect( $c->uri_for( $seat->path ) );
     $c->detach;

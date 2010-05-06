@@ -12,7 +12,7 @@ links there.</p>
     
     [% FOREACH seat = recent_seats %]
         <li>
-            <img style="float: right" src="[% c.uri_for_image( image_id, 'small' ) %]" />
+            <img style="float: right" src="[% c.uri_for_image( seat.winner_image_id, 'small' ) %]" />
             <b>[% seat.name %]</b> was won by <b>[% seat.winner_name | html %]</b>
             ([% seat.winner_party | html %])
             <br>
