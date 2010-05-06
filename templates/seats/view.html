@@ -1,6 +1,16 @@
 [% seat = result %]
 [% INCLUDE 'chrome/header.html', title => seat.name %]
 
+    [% IF (winner = seat.winner) %]
+    
+        <div class="boxed">
+            <h2>[% seat.name | html %] was won by [% winner.name | html %] ([% winner.party.name | html %])</h2>
+    
+            <p>[% winner.name %] got [% winner.votes %] votes from a total of [% seat.total_votes %] cast ([% (winner.votes / seat.total_votes * 100) | format('%0.2f%%') %]).</p>
+    
+        </div>    
+    [% END %]
+
     <h1>[% seat.name %]</h1>
 
     [% IF c.flash.searched_by_postcode %]
@@ -24,17 +34,6 @@
     <p>
         <a href='[% c.uri_for( seat.path, "record_votes" )%]'>Enter the votes for this constituency</a>.
     </p>
-    [% ELSE %]
-    
-        [% IF (winner = seat.winner) %]
-
-            <div class="boxed">
-                <h2>Constituency won by [% winner.name %] ([% winner.party.name %])</h2>
-
-                <p>[% winner.name %] got [% winner.votes %] votes from a total of [% seat.total_votes %] cast ([% (winner.votes / seat.total_votes * 100) | format('%0.2f%%') %]).</p>
-        
-            </div>    
-        [% END %]
     [% END %]
 
 
