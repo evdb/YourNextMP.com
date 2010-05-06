@@ -32,7 +32,7 @@ sub index : Path Args(0) {
 
     # check to see if there is only one result
     my $total_count = sum map { $_->count } @rs;
-    warn $total_count;
+
     if ( $total_count == 1 ) {
         my $result = first { $_ } map { $_->first } @rs;
         $c->res->redirect( $c->uri_for( $result->path ) );
