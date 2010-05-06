@@ -6,7 +6,7 @@
         <div class="boxed">
             <h2>[% seat.name | html %] was won by [% winner.name | html %] ([% winner.party.name | html %])</h2>
     
-            <p>[% winner.name %] got [% winner.votes %] votes from a total of [% seat.total_votes %] cast ([% (winner.votes / seat.total_votes * 100) | format('%0.2f%%') %]).</p>
+            <p>[% winner.name %] got <b>[% winner.votes %]</b> votes from a total of [% seat.total_votes %] cast ([% (winner.votes / seat.total_votes * 100) | format('%0.2f%%') %]).</p>
     
         </div>    
     [% END %]

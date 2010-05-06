@@ -126,9 +126,18 @@ sub record_votes : PathPart('record_votes') Chained('result_find') Args(0) {
     return if !$form->process( params => $c->req->params );
 
     # Form is good - let's update the candidates
+    my $highest_vote = 0;
     foreach my $can (@candidates) {
         my $votes = $form->field( $can->code )->value;
-        $can->update( { votes => $votes } );
+        $can->update( { votes => $votes, is_winner => 0 } );
+        $highest_vote = $votes if $highest_vote < $votes;
+    }
+
+    # FIXME - should be done in model
+    # flag the winner (if there is only one and all votes were not zero)
+    my @winners = grep { $_->votes == $highest_vote } @candidates;
+    if ( $highest_vote > 0 && scalar(@winners) == 1 ) {
+        $winners[0]->update( { is_winner => 1 } );
     }
 
     # now set the votes_recorded flag on the seat

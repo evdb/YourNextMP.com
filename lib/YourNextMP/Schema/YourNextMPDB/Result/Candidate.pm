@@ -164,6 +164,12 @@ __PACKAGE__->table("candidates");
   default_value: undef
   is_nullable: 0
 
+=head2 is_winner
+
+  data_type: boolean
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -277,6 +283,9 @@ __PACKAGE__->add_columns(
         default_value => undef,
         is_nullable   => 1,
     },
+    "is_winner",
+    { data_type => "boolean", default_value => undef, is_nullable => 1 },
+
 );
 __PACKAGE__->set_primary_key("id");
 __PACKAGE__->add_unique_constraint( "candidates_code_key", ["code"] );
@@ -343,7 +352,7 @@ __PACKAGE__->belongs_to(
 );
 
 # Created by DBIx::Class::Schema::Loader v0.05002 @ 2010-03-20 16:46:38
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:gqjMbEUglwG1u1OhST3y4g
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:YqYIXmtTduyrwjEkAEIjAQ
 
 use List::MoreUtils qw(uniq);
 

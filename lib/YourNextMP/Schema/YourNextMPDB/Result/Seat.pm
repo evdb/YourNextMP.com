@@ -219,22 +219,7 @@ sub winner {
 
     return unless $self->votes_recorded;
 
-    my @candidates = $self->candidates->standing->search(
-        undef,
-        {
-            order_by => 'votes desc',
-            rows     => 2
-        },
-    );
-    my $winner = $candidates[0];
-    return unless $winner;
-
-    # check that there was not a draw.
-    return
-      if $candidates[1]
-          && $candidates[1]->votes == $winner->votes;
-
-    return $winner;
+    return $self->candidates->standing->search( is_winner => 1 )->first;
 }
 
 =head2 total_votes
