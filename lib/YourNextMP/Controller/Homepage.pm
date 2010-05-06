@@ -60,18 +60,18 @@ sub index : Path Args(0) {
         }
     );
 
-    $c->stash->{nominations} = $c->smart_cache(
+    $c->stash->{election_results} = $c->smart_cache(
         {
             key     => 'nominated_constituencies',
             expires => 600,
             code    => sub {
                 my $seats_rs = $c->db('Seat');
-                my $done =
-                  $seats_rs->search( { nominations_entered => 1 } )->count;
-                my $pending = $seats_rs->count - $done;
+                my $declared =
+                  $seats_rs->search( { votes_recorded => 1 } )->count;
+                my $pending = $seats_rs->count - $declared;
                 return {
-                    done    => $done,
-                    pending => $pending
+                    declared => $declared,
+                    pending  => $pending
                 };
             },
         }

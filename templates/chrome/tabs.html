@@ -1,10 +1,10 @@
 [%
   menu_items = [
     { url => '/',               name => 'Home' },
+    { url => '/results',        name => 'Results' },
     { url => '/candidates',     name => 'Candidates' },
-    { url => '/seats', name => 'Seats' },
+    { url => '/seats',          name => 'Seats' },
     { url => '/parties',        name => 'Parties' },
-    { url => '/helpus',         name => 'Help Us' },
   ];
 
   path_root = c.req.uri.path.match('/[^/]*', 1).0;

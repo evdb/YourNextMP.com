@@ -2,7 +2,7 @@
 
 <div class="callout">
 
-    <h1>Who wants your vote?</h1>
+    <h1>Who got your vote?</h1>
     <br>
 
     <form action="/seats/search" method="get">
@@ -20,11 +20,6 @@
     <strong>[% counts.seats %]</strong> seats.
 
     <br>
-
-    <small>
-        (But we know about [% counts.all_parties %] parties
-        and [% counts.all_seats %] constituencies)
-    </small>
 
 </div>
 
@@ -65,18 +60,18 @@
 <div class="half_column_wrapper">
 <div class="right_column">
 
-    <h2>Nominated candidates</h2>
+    <h2>Election Results</h2>
 
-    <p>Nominations have closed and we are updating our candidate lists to include only the validly nominated candidates.</p>
+    <p>The polls have now closed and results are coming in. View <a href="/results">live election results</a> as they happen!</p>
 
     [%  USE chart_url = url(
             'http://chart.apis.google.com/chart',
             cht  => 'p3',
             chs  => '370x150',
-            chd  => "t:${nominations.done},${nominations.pending}",
-            chl  => "confirmed (${nominations.done})|pending (${nominations.pending})",
+            chd  => "t:${election_results.declared},${election_results.pending}",
+            chl  => "declared (${election_results.declared})|pending (${election_results.pending})",
             chds => '0,1000',
-            chtt => 'Constituency Confirmation Progress',
+            chtt => 'Results declared',
             chco => '00ff00|ff8888',
         )
     %]
