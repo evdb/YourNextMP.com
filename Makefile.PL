@@ -91,6 +91,7 @@ requires 'Path::Class';
 requires 'Pod::Usage';
 requires 'Regexp::Common';
 requires 'Search::Sitemap';
+requires 'Sort::Key';
 requires 'SQL::Abstract' => '1.60';
 requires 'Term::ProgressBar::Simple';
 requires 'Test::More';

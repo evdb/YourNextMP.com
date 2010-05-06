@@ -1,0 +1,58 @@
+[% INCLUDE 'chrome/header.html', title => '2010 General Election Results' %]
+
+<h1>2010 General Election Results</h1>
+
+<p>As the results come in this page will be updated - please refresh to see the
+latest results. To add results please go to the <a href="/seats">constituency page</a> and follow the
+links there.</p>
+
+<h2>Recently Declared Constituencies</h2><br>
+
+<ul class="lined">
+    
+    [% FOREACH seat = recent_seats %]
+        <li>
+            <img style="float: right" src="[% c.uri_for_image( image_id, 'small' ) %]" />
+            <b>[% seat.name %]</b> was won by <b>[% seat.winner_name | html %]</b>
+            ([% seat.winner_party | html %])
+            <br>
+            with [% seat.winner_votes %] votes of [% seat.total_votes %] cast.
+        </li>
+    
+    [% END %]
+    
+</ul>
+<br>
+
+[%
+    USE pie = URL(
+        'http://chart.apis.google.com/chart',
+        cht  => 'p',
+        chs  => '800x250',
+    );
+
+    seat_pie_chart = pie(
+        chd  => 't:' _ election_results.seat_data.join(','),
+        chl  =>        election_results.seat_labels.join('|'),
+        chds => '0,650',
+        chco => 'FF9900',
+    );
+    
+    vote_pie_chart = pie(
+        chd  => 't:' _ election_results.vote_data.join(','),
+        chl  =>        election_results.vote_labels.join('|'),
+        chds => '0,' _ election_results.total_votes,
+        chco => '5F8FC8',
+    );
+%]
+
+
+<h2>Breakdown by seats won</h2>
+
+<img src="[% seat_pie_chart %]" width="800" height="250" >
+
+<h2>Breakdown by votes cast</h2>
+
+<img src="[% vote_pie_chart %]" width="800" height="250" >
+
+[% INCLUDE 'chrome/footer.html' %]

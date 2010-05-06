@@ -79,6 +79,12 @@ __PACKAGE__->table("seats");
   default_value: undef
   is_nullable: 1
 
+=head2 votes_recorded_when
+
+  data_type: timestamp without time zone
+  default_value: undef
+  is_nullable: 1
+
 =cut
 
 __PACKAGE__->add_columns(
@@ -123,6 +129,12 @@ __PACKAGE__->add_columns(
     { data_type => "boolean", default_value => undef, is_nullable => 1 },
     "votes_recorded",
     { data_type => "boolean", default_value => undef, is_nullable => 1 },
+    "votes_recorded_when",
+    {
+        data_type     => "timestamp without time zone",
+        default_value => undef,
+        is_nullable   => 1,
+    },
 );
 
 __PACKAGE__->set_primary_key("id");

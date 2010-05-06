@@ -6,6 +6,7 @@ use warnings;
 
 use YourNextMP::Form::AddNominationURL;
 use YourNextMP::Form;
+use DateTime;
 
 sub result_base : PathPart('seats') Chained('/') CaptureArgs(0) {
     my ( $self, $c ) = @_;
@@ -141,7 +142,12 @@ sub record_votes : PathPart('record_votes') Chained('result_find') Args(0) {
     }
 
     # now set the votes_recorded flag on the seat
-    $seat->update( { votes_recorded => 1 } );
+    $seat->update(
+        {
+            votes_recorded      => 1,              #
+            votes_recorded_when => DateTime->now
+        }
+    );
 
     # all done - return to the seat
     $c->res->redirect( $c->uri_for( $seat->path ) );
