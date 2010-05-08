@@ -180,4 +180,35 @@ sub generate_election_results : Private {
 
 }
 
+sub add_missing : Local {
+    my ( $self, $c ) = @_;
+
+    # Find how many constituencies which there are no votes for yet
+    my $not_entered_rs =
+      $c->db('Seat')->search( { votes_recorded_when => undef }, );
+
+    my $count = $not_entered_rs->count;
+
+    # are we all done - send to results page with a message
+    if ( $count <= 1 ) { # FIXME - hack for delayed seat
+        $c->flash->{message} =
+          "Results have been entered for all constituencies.";
+        $c->res->redirect( $c->uri_for('/results') );
+        return;
+    }
+
+    # pick a random seat
+    my $seat = $not_entered_rs->search(
+        undef,
+        {
+            rows   => 1,
+            offset => int( rand $count ),
+        }
+    )->first;
+
+    # redirect to it
+    $c->res->redirect( $c->uri_for( $seat->path, 'record_votes' ) );
+    return;
+}
+
 1;

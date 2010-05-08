@@ -1,39 +1,5 @@
 [% INCLUDE 'chrome/header.html', title => '2010 General Election Results' %]
 
-<h1>2010 General Election Results</h1>
-
-<p>As the results come in this page will be updated - please refresh to see the
-latest results. To add results please go to the <a href="/seats">constituency page</a> and follow the
-links there.</p>
-
-<h2>Recently Declared Constituencies</h2><br>
-
-<ul class="lined">
-    
-    [% FOREACH seat = recent_seats %]
-        <li>
-            <img style="float: right" src="[% c.uri_for_image( seat.winner.image_id, 'small' ) %]" />
-
-            <b><a href="[% seat.path %]">[% seat.name %]</a></b> 
-            
-            [% IF seat.winner %]
-                was won by <b>[% seat.winner.name | html %]</b>
-                ([% seat.winner.party | html %])
-                <br>
-                with [% seat.winner.votes %] votes of [% seat.total_votes %] cast.
-            [% ELSE %]
-                - no clear winner - it appears to be a draw.
-            [% END %]
-
-            <br clear="both"></br>
-
-        </li>
-    
-    [% END %]
-    
-</ul>
-<br>
-
 [%
     USE pie = URL(
         'http://chart.apis.google.com/chart',
@@ -41,6 +7,15 @@ links there.</p>
         chs  => '800x250',
     );
 
+    progress_pie_chart = pie(
+        chs  => '250x100',
+        chd  => "t:${declared_constituencies.declared},${declared_constituencies.pending}",
+        chl  => "added (${declared_constituencies.declared})|missing (${declared_constituencies.pending})",
+        chds => '0,1000',
+        chco => '00ff00|ff8888',
+        chf  => 'bg,s,FDF5A2',
+    );
+        
     seat_pie_chart = pie(
         chd  => 't:' _ election_results.seat_data.join(','),
         chl  =>        election_results.seat_labels.join('|'),
@@ -56,13 +31,23 @@ links there.</p>
     );
 %]
 
+<div class="boxed" style="width: 300; float: right;">
+    <h2>Progress</h2>
+    <p><a href="/results/add_missing">Add a missing constituency!</a></p>
+    <img src="[% progress_pie_chart %]" >    
+</div>
+
+<h1>2010 General Election Results</h1>
+
+<p>These are the results from the 2010 general election. We are gathering the
+results so that they can be made freely available and for future reference. If
+you'd like to help please use a link on the right.</p>
+
 
 <h2>Breakdown by seats won</h2>
-
 <img src="[% seat_pie_chart %]" width="800" height="250" >
 
 <h2>Breakdown by votes cast</h2>
-
 <img src="[% vote_pie_chart %]" width="800" height="250" >
 
 [% INCLUDE 'chrome/footer.html' %]

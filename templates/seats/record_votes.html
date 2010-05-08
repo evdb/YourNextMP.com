@@ -1,12 +1,26 @@
-[% seat = result %]
-[% INCLUDE 'chrome/header.html', title => "Record votes for ${seat.name}" %]
+[%
+
+    seat = result;
+    
+    INCLUDE 'chrome/header.html', title => "Record votes for ${seat.name}";
+    
+    query = '"' _ seat.name _ '"' | uri;
+    
+    google_url =
+        'http://www.google.co.uk/search?q='
+        _ query
+        _ '%20.gov.uk';
+
+%]
 
     <h1>Record votes for [% seat.name | html %]</h1>
 
-    <p>Please enter the votes for [% seat.name | html %] below.</p>
+    <p>Please enter the votes for [% seat.name | html %] below. You should be
+    able to find the results on the local council website in a document called
+    the 'Declaration of Results'. This <a href="[% google_url | html %]" target="_blank">Google search</a> might
+    help.</p>
 
     [% form.render %]
-
 
 
 [% INCLUDE 'chrome/footer.html' %]
