@@ -98,6 +98,7 @@ requires 'Test::More';
 requires 'Test::WWW::Mechanize';
 requires 'Test::WWW::Mechanize::Catalyst';
 requires 'Text::CSV::Slurp';
+requires 'Text::GenderFromName';
 requires 'Time::HiRes';
 requires 'URI';
 requires 'Web::Scraper';
