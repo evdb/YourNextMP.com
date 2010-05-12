@@ -1,33 +1,15 @@
 [% INCLUDE 'chrome/header.html', title => '2010 General Election Results' %]
 
 [%
-    USE pie = URL(
+    USE progress_pie_chart = URL(
         'http://chart.apis.google.com/chart',
         cht  => 'p',
-        chs  => '800x250',
-    );
-
-    progress_pie_chart = pie(
         chs  => '250x100',
         chd  => "t:${declared_constituencies.declared},${declared_constituencies.pending}",
         chl  => "added (${declared_constituencies.declared})|missing (${declared_constituencies.pending})",
         chds => '0,1000',
         chco => '00ff00|ff8888',
         chf  => 'bg,s,FDF5A2',
-    );
-        
-    seat_pie_chart = pie(
-        chd  => 't:' _ election_results.seat_data.join(','),
-        chl  =>        election_results.seat_labels.join('|'),
-        chds => '0,650',
-        chco => 'FF9900',
-    );
-    
-    vote_pie_chart = pie(
-        chd  => 't:' _ election_results.vote_data.join(','),
-        chl  =>        election_results.vote_labels.join('|'),
-        chds => '0,' _ election_results.total_votes,
-        chco => '5F8FC8',
     );
 %]
 
@@ -45,9 +27,9 @@ you'd like to help please use a link on the right.</p>
 
 
 <h2>Breakdown by seats won</h2>
-<img src="[% seat_pie_chart %]" width="800" height="250" >
+<img src="/results/seat_pie_chart" width="800" height="250" >
 
 <h2>Breakdown by votes cast</h2>
-<img src="[% vote_pie_chart %]" width="800" height="250" >
+<img src="/results/vote_pie_chart" width="800" height="250" >
 
 [% INCLUDE 'chrome/footer.html' %]

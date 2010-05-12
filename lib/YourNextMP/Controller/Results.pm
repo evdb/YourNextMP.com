@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Sort::Key qw(rikeysort);
 use List::Util qw(sum);
+use LWP::UserAgent;
 
 sub index : Path Args(0) {
     my ( $self, $c ) = @_;
@@ -17,7 +18,10 @@ sub index : Path Args(0) {
 sub clear_cache : Private {
     my ( $self, $c ) = @_;
     $c->cache->remove($_)
-      for qw(recent_seats declared_constituencies election_results);
+      for (
+        'recent_seats', 'declared_constituencies', 'election_results',    #
+        'seat_pie_chart', 'vote_pie_chart',
+      );
 }
 
 sub generate_recent_seats : Private {
@@ -177,7 +181,6 @@ sub generate_election_results : Private {
             },
         }
     );
-
 }
 
 sub add_missing : Local {
@@ -190,7 +193,7 @@ sub add_missing : Local {
     my $count = $not_entered_rs->count;
 
     # are we all done - send to results page with a message
-    if ( $count <= 1 ) { # FIXME - hack for delayed seat
+    if ( $count <= 1 ) {    # FIXME - hack for delayed seat
         $c->flash->{message} =
           "Results have been entered for all constituencies.";
         $c->res->redirect( $c->uri_for('/results') );
@@ -209,6 +212,83 @@ sub add_missing : Local {
     # redirect to it
     $c->res->redirect( $c->uri_for( $seat->path, 'record_votes' ) );
     return;
+}
+
+sub seat_pie_chart : Local {
+    my ( $self, $c ) = @_;
+
+    my $content = $c->smart_cache(
+        {
+            key         => 'seat_pie_chart',
+            expires     => 600,
+            ignore_user => 1,
+            code        => sub {
+
+                $c->forward('generate_election_results');
+                my $election_results = $c->stash->{election_results};
+
+                my $args = {
+                    chd => 't:'
+                      . join( ',', @{ $election_results->{seat_data} } ),
+                    chl  => join( '|', @{ $election_results->{seat_labels} } ),
+                    chds => '0,650',
+                    chco => 'FF9900',
+                };
+
+                return get_pie_chart($args);
+            },
+        }
+    );
+
+    $c->res->content_type('image/png');
+    $c->res->body($content);
+
+}
+
+sub vote_pie_chart : Local {
+    my ( $self, $c ) = @_;
+
+    my $content = $c->smart_cache(
+        {
+            key         => 'seat_pie_chart',
+            expires     => 600,
+            ignore_user => 1,
+            code        => sub {
+
+                $c->forward('generate_election_results');
+                my $election_results = $c->stash->{election_results};
+
+                my $args = {
+                    chd => 't:'
+                      . join( ',', @{ $election_results->{vote_data} } ),
+                    chl => join( '|', @{ $election_results->{vote_labels} } ),
+                    chds => '0,' . $election_results->{total_votes},
+                    chco => '5F8FC8',
+                };
+
+                return get_pie_chart($args);
+            },
+        }
+    );
+
+    $c->res->content_type('image/png');
+    $c->res->body($content);
+
+}
+
+sub get_pie_chart {
+    my $args = shift;
+
+    my $post_args = {
+        cht => 'p',
+        chs => '800x250',
+        %$args,
+    };
+
+    my $ua = LWP::UserAgent->new;
+    my $res = $ua->post( 'http://chart.apis.google.com/chart', $post_args );
+
+    return $res->content;
 }
 
 1;

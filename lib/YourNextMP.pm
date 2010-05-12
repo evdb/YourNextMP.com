@@ -396,13 +396,12 @@ sub smart_cache {
     my $expires = $args->{expires} || 3600;
     my $ignore_user = $args->{ignore_user} || 0;
 
-    my $have_user = $c->user_exists;
-    $have_user = 0 if $ignore_user;
+    my $skip_cached_value = $ignore_user ? 0 : $c->user_exists;
 
     # get value from cache
-    my $val = $have_user         # if user is logged in...
-      ? undef                    # ... don't use cache
-      : $c->cache->get($key);    # ... only for anonymous users
+    my $val = $skip_cached_value    # if user is logged in...
+      ? undef                       # ... don't use cache
+      : $c->cache->get($key);       # ... only for anonymous users
 
     # do we have a value from the cache?
     if ( defined $val ) {
