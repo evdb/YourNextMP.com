@@ -1,0 +1,28 @@
+[% INCLUDE 'chrome/header.html', title => 'Set the gender of a candidate' %]
+
+[% IF candidate %]
+
+<img style="float: right" src="[% c.uri_for_image( candidate.image_id, 'medium' ) %]" />
+
+<h1>[% candidate.name | html %]</h1>
+
+<p>[% candidate.party.name | html %]</p>
+
+<p>[% candidate.seat_names | html%]</p>
+
+<form method="post" action="[% c.uri_with({}) | html %]">
+    <input type="hidden" name="id" value="[% candidate.id %]">
+    <input type="submit" name="gender" value="Male">
+    <input type="submit" name="gender" value="Female">
+    <input type="submit" name="skip"   value="Not sure - skip">
+</form>
+
+<p>(There are [% count %] candidates to go!)</p>
+
+[% ELSE %]
+
+<h1>All candidates done</h1>
+
+[% END %]
+
+[% INCLUDE 'chrome/footer.html' %]

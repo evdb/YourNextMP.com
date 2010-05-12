@@ -65,4 +65,16 @@ sub as_data {
     return \@rows;
 }
 
+sub random {
+    my $self = shift;
+
+    my $count = $self->count;
+    return undef unless $count;
+
+    return $self    #
+      ->search( undef, { rows => 1, offset => int( rand $count ) } )    #
+      ->first;
+
+}
+
 1;
