@@ -250,7 +250,7 @@ sub vote_pie_chart : Local {
 
     my $content = $c->smart_cache(
         {
-            key         => 'seat_pie_chart',
+            key         => 'vote_pie_chart',
             expires     => 600,
             ignore_user => 1,
             code        => sub {
