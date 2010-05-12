@@ -17,7 +17,7 @@ sub set_gender : Local {
         $candidate->update( { gender => $gender } );
     }
 
-    my $rs = $c->db('Candidate')->search( { gender => undef } );
+    my $rs = $c->db('Candidate')->standing->search( { gender => undef } );
 
     $c->stash->{candidate} = $rs->random;
     $c->stash->{count}     = $rs->count;
