@@ -1,0 +1,24 @@
+templates:
+
+  remove links to login/logout
+  remove links to suggestions
+  remove edit links
+
+scraper:
+
+  scrape site to html
+  ignore off-site assets
+  
+datafiles:
+
+  change so that the static json / csv is available without logging in or token
+
+s3:
+
+  delete original images
+  delete images not in database
+  
+database:
+
+  archive and drop tables
+

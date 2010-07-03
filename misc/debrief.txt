@@ -1,0 +1,47 @@
+YourNextMP debrief
+
+__went well__
+
+provided data to TWFY for quiz
+public editing and feedback system
+self serve data feeds
+SEO - first result for many smaller candidates
+adoption by smaller candidates
+volunteer contributions - DC game
+
+__went badly__
+
+publicity (big media)
+getting candidates to update their own details
+small amount of vandalism
+some confusion over who page it was
+scraping - used to collect initial data but not to update
+back links from data users
+generating revenue
+crediting individual contributors
+getting complete contact details
+generating buzz regarding data/site
+displaying aggregate statistics
+playing catchup with events
+candidate id
+
+__future changes__
+
+viral tools (dropins for blogs etc)
+support more than one election
+tidy up data schema
+support recording of PR votes
+support all kinds of elections
+less dependance on admin for data entry
+get support from public bodies (Electoral Commission)
+allow candidates to log in
+generate revenue
+crediting volunteers - league table etc
+make data more freely available
+admin interface less clunky
+introduce moderators to maintain the site
+
+email filtering to make work load easier
+sms message sending
+hustings dates and attendances
+
