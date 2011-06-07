@@ -15,10 +15,12 @@ builder {
     # limit access if required
     if ( my $user_and_pass = YourNextMP->config->{'auth_basic_user_pass'} ) {
         my ( $u_wanted, $p_wanted ) = split /:/, $user_and_pass, 2;
-        enable "Plack::Middleware::Auth::Basic", authenticator => sub {
+        enable "Plack::Middleware::Auth::Basic",
+          realm         => YourNextMP->config->{'auth_basic_realm'},
+          authenticator => sub {
             my ( $username, $password ) = @_;
             return $username eq $u_wanted && $password eq $p_wanted;
-        };
+          };
     }
 
     # If request is from localhost then must be from a proxy
