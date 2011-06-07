@@ -29,7 +29,6 @@ use Catalyst (
     'Cache',
     'Unicode',
     'Compress::Gzip',
-    'Static::Simple',
 
     'Authentication',
     'Authorization::Roles',
@@ -41,17 +40,6 @@ use Catalyst (
 use base 'Catalyst';
 
 our $VERSION = '0.01';
-
-use YourNextMP::Schema::YourNextMPDB::ResultSet::Image;
-__PACKAGE__->config(
-    static => {
-        dirs         => [ 'static', 'images' ],
-        include_path => [
-            YourNextMP::Schema::YourNextMPDB::ResultSet::Image->store_dir . '',
-            YourNextMP->path_to("root"),
-        ],
-    },
-);
 
 # Start the application
 __PACKAGE__->setup();
