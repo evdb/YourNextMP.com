@@ -3,6 +3,9 @@
     base_host => die('XXXXX.yournextmp.com'),
     blog_host => die('blog-XXXX.yournextmp.com'),
 
+    # Set a user name and password for the whole site, or comment out to disable
+    auth_basic_user_pass => 'user:password',
+
     email => {
         from        => 'hello@yournextmp.com',
         mailer_args => [

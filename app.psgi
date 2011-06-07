@@ -12,6 +12,15 @@ my $app = sub { YourNextMP->run(@_) };
 
 builder {
 
+    # limit access if required
+    if ( my $user_and_pass = YourNextMP->config->{'auth_basic_user_pass'} ) {
+        my ( $u_wanted, $p_wanted ) = split /:/, $user_and_pass, 2;
+        enable "Plack::Middleware::Auth::Basic", authenticator => sub {
+            my ( $username, $password ) = @_;
+            return $username eq $u_wanted && $password eq $p_wanted;
+        };
+    }
+
     # If request is from localhost then must be from a proxy
     enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1'; }
     "Plack::Middleware::ReverseProxy";

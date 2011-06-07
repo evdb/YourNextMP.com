@@ -88,6 +88,7 @@ requires 'Object::Signature';
 requires 'parent';
 requires 'Path::Class';
 requires 'Plack';
+requires 'Plack::Middleware::Auth::Basic';
 requires 'Plack::Middleware::Deflater';
 requires 'Plack::Middleware::ReverseProxy';
 requires 'Plack::Middleware::Static';
