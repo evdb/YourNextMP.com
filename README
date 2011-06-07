@@ -1,0 +1,3 @@
+This is the uk-2010 branch - set up to capture the state of the codebase for that election.
+
+The master branch is now going to be changed to suit the Kenyan elections (and hopefully have the country specific details ripped out into config).
