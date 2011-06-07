@@ -60,8 +60,6 @@ sub index : Path Args(0) {
         }
     );
 
-$c->forward('/results/generate_declared_constituencies');
-
 }
 
 1;

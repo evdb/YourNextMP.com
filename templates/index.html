@@ -2,7 +2,7 @@
 
 <div class="callout">
 
-    <h1>Who got your vote?</h1>
+    <h1>Who wants your vote?</h1>
     <br>
 
     <form action="/seats/search" method="get">
@@ -59,27 +59,6 @@
 
 <div class="half_column_wrapper">
 <div class="right_column">
-
-    <h2>Election Results</h2>
-
-    <p>Help us gather the <a href="/results">results from this election </a> so
-    that they can be made freely available.</p>
-
-    [%  USE chart_url = url(
-            'http://chart.apis.google.com/chart',
-            cht  => 'p3',
-            chs  => '370x150',
-            chd  => "t:${declared_constituencies.declared},${declared_constituencies.pending}",
-            chl  => "declared (${declared_constituencies.declared})|pending (${declared_constituencies.pending})",
-            chds => '0,1000',
-            chtt => 'Results declared',
-            chco => '00ff00|ff8888',
-        )
-    %]
-
-    <a href="/results"><img src="[% chart_url %]" height="150" width="370"></a>
-
-    <br>
 
     <h2>About us</h2>
 
