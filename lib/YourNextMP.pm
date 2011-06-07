@@ -28,7 +28,6 @@ use Catalyst (
     'ConfigLoader',
     'Cache',
     'Unicode',
-    'Compress::Gzip',
 
     'Authentication',
     'Authorization::Roles',

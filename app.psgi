@@ -4,12 +4,11 @@ use warnings;
 use lib 'lib';
 
 use YourNextMP;
+use YourNextMP::Schema::YourNextMPDB::ResultSet::Image;
 use Plack::Builder;
 
 YourNextMP->setup_engine('PSGI');
 my $app = sub { YourNextMP->run(@_) };
-
-use YourNextMP::Schema::YourNextMPDB::ResultSet::Image;
 
 builder {
 
@@ -20,6 +19,10 @@ builder {
     enable "Plack::Middleware::Static",
       path => qr{^/static/},
       root => 'root/';
+
+    enable "Plack::Middleware::Deflater",
+      content_type    => [ 'text/css', 'text/html', 'application/javascript' ],
+      vary_user_agent => 1;
 
     my $images_root =
       YourNextMP::Schema::YourNextMPDB::ResultSet::Image->store_dir;
