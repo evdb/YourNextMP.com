@@ -1,5 +1,8 @@
 {
 
+    base_host => die('XXXXX.yournextmp.com'),
+    blog_host => die('blog-XXXX.yournextmp.com'),
+
     email => {
         from        => 'hello@yournextmp.com',
         mailer_args => [
@@ -13,7 +16,7 @@
 
     # if there is a Google analytics key here then the analytics gets loaded
     google_analytics_code => '',
-    show_google_ads => 1,
+    show_google_ads       => 1,
 
     javascript_source => 'local',
 

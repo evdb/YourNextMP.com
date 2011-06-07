@@ -201,7 +201,7 @@ sub generate_csv_files {
             'Gender'         => $row->gender,
             'Nomination Confirmed' =>
               ( $first_seat->nominations_entered ? 'yes' : 'no' ),
-            'URL' => "http://www.yournextmp.com" . $row->path,
+            'URL' => 'http://' . YourNextMP->config->{base_host} . $row->path,
         );
 
         # tidy ups

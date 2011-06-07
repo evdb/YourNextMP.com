@@ -12,7 +12,7 @@ use File::Temp;
 use File::Slurp;
 
 
-my $URL_BASE = 'http://www.yournextmp.com';
+my $URL_BASE = 'http://' . YourNextMP->config->{base_host};
 
 my $map = Search::Sitemap->new();
 $map->pretty('nice');
