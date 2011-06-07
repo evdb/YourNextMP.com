@@ -81,6 +81,7 @@ requires 'namespace::autoclean';
 requires 'Net::Amazon::S3';
 requires 'Net::IDN::Encode';
 requires 'Net::OpenID::Consumer';
+requires 'Net::Server::SS::PreFork';
 requires 'Net::SMTP::SSL';
 requires 'Net::SSL';
 requires 'Net::SSLeay';
