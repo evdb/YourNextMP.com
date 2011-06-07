@@ -6,7 +6,7 @@ use warnings;
 use Moose::Role;
 
 with 'YourNextMP::Form::Render::Table' => {    #
-    excludes => [ 'render_field_struct', ]
+    -excludes => [ 'render_field_struct', ]
 };
 
 sub render_field_struct {

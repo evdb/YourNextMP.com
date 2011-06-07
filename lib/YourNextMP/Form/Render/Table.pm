@@ -6,8 +6,11 @@ use warnings;
 use Moose::Role;
 
 with 'HTML::FormHandler::Render::Simple' => {    #
-    excludes =>
-      [ 'render', 'render_field_struct', 'render_end', 'render_start' ]
+    -excludes => [
+        'render',     'render_field_struct',
+        'render_end', 'render_start',
+        'render_upload',
+    ]
 };
 
 sub render {
