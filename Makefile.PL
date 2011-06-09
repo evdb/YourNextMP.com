@@ -105,6 +105,7 @@ requires 'Test::WWW::Mechanize';
 requires 'Test::WWW::Mechanize::Catalyst';
 requires 'Text::CSV::Slurp';
 requires 'Text::GenderFromName';
+requires 'Text::Trim';
 requires 'Time::HiRes';
 requires 'URI';
 requires 'Web::Scraper';

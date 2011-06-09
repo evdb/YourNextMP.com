@@ -21,7 +21,7 @@ my $base_search_page =
 my $parties_rs = YourNextMP->model('Party');
 my $images_rs  = YourNextMP->model('Image');
 
-# create the edge cas parties
+# create the edge case parties
 $parties_rs->find_or_create(
     {
         code => 'independent',

@@ -176,6 +176,23 @@ sub public_fields {
     };
 }
 
+sub new {
+    my $class = shift;
+    my $args  = shift;
+
+    $args->{created} ||= DateTime->now;
+    $args->{updated} ||= DateTime->now;
+
+    if ( my $name = $args->{name} ) {
+        $args->{code} ||= do {
+            my $code = lc $name;
+            $code =~ s{[^a-z]+}{_}g;
+            $code;
+        };
+    }
+    return $class->next::method( $args, @_ );
+}
+
 __PACKAGE__->has_many(
     "link_relations",
     "YourNextMP::Schema::YourNextMPDB::Result::LinkRelation",
