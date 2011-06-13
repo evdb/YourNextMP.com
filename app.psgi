@@ -27,12 +27,16 @@ my $authenticator = sub {
 builder {
 
     mount '/extra' => builder {
-        
+
         enable_if { $user_and_pass } "Plack::Middleware::Auth::Basic",
           realm         => YourNextMP->config->{'auth_basic_realm'},
           authenticator => $authenticator;
 
-          $autocrud_app;
+        # If request is from localhost then must be from a proxy
+        enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1'; }
+        "Plack::Middleware::ReverseProxy";
+
+        $autocrud_app;
     };
 
     mount '/' => builder {
@@ -46,10 +50,6 @@ builder {
           vary_user_agent => 1;
 
         # enable 'Plack::Middleware::Debug';
-
-        # If request is from localhost then must be from a proxy
-        enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1'; }
-        "Plack::Middleware::ReverseProxy";
 
         enable "Plack::Middleware::Static",
           path => qr{^/static/},
