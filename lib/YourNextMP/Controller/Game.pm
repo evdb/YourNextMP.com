@@ -1,4 +1,4 @@
-package YourNextMP::Controller::DemocracyClub;
+package YourNextMP::Controller::Game;
 
 use strict;
 use warnings;
@@ -10,8 +10,13 @@ use LWP::UserAgent;
 
 sub auto : Private {
     my ( $self, $c ) = @_;
-    $c->require_dc_user('Please log in to access this section of the site');
+    $c->require_user('Please log in to access this section of the site');
     return 1;
+}
+
+sub index : Path('') {
+    my ( $self, $c ) = @_;
+    $c->res->redirect( $c->uri_for('bad_details') );
 }
 
 sub bad_details : Local {
@@ -27,10 +32,10 @@ sub bad_details : Local {
         $c->stash->{show_explanation} = 1;
     }
 
-    # get the scoreboard details
-    unless ( $c->session->{dc_points} ) {
-        $c->forward( 'ping_dc', [ {} ] );
-    }
+    # # get the scoreboard details
+    # unless ( $c->session->{dc_points} ) {
+    #     $c->forward( 'ping_dc', [ {} ] );
+    # }
 
     return 1;
 }
@@ -158,37 +163,37 @@ sub process_bad_detail_form : Private {
 sub bad_detail_succesfully_updated : Private {
     my ( $self, $c ) = @_;
 
-    my $bad_detail = $c->stash->{bad_detail};
-    my $form       = $c->stash->{form};
-
-    # Work out how much the user scored
-    my $scores = $c->config->{democracy_club}{bad_detail_values};
-
-    my @values_added = grep { $form->field($_)->value } keys %$scores;
-
-    if (@values_added) {
-
-        my $total_score = 0;
-        $total_score += $scores->{$_} for @values_added;
-
-        # Also put in bounty for this bad detail
-        $total_score += $bad_detail->act_count - 1;
-
-        my $summary = sprintf "%s for %s (%s)", join( ', ', @values_added ),
-          $bad_detail->candidate->name, $bad_detail->candidate->party->name;
-
-        my $dc_args = {
-            points_awarded => $total_score,
-            summary        => $summary,
-            candidate_code => $bad_detail->candidate->code,
-            candidate_id   => $bad_detail->candidate->id,
-            candidate_name => $bad_detail->candidate->name,
-            party_name     => $bad_detail->candidate->party->name,
-            details_added  => join( ',', @values_added ),
-        };
-
-        $c->forward( 'ping_dc', [$dc_args] );
-    }
+    # my $bad_detail = $c->stash->{bad_detail};
+    # my $form       = $c->stash->{form};
+    # 
+    # # Work out how much the user scored
+    # my $scores = $c->config->{democracy_club}{bad_detail_values};
+    # 
+    # my @values_added = grep { $form->field($_)->value } keys %$scores;
+    # 
+    # if (@values_added) {
+    # 
+    #     my $total_score = 0;
+    #     $total_score += $scores->{$_} for @values_added;
+    # 
+    #     # Also put in bounty for this bad detail
+    #     $total_score += $bad_detail->act_count - 1;
+    # 
+    #     my $summary = sprintf "%s for %s (%s)", join( ', ', @values_added ),
+    #       $bad_detail->candidate->name, $bad_detail->candidate->party->name;
+    # 
+    #     my $dc_args = {
+    #         points_awarded => $total_score,
+    #         summary        => $summary,
+    #         candidate_code => $bad_detail->candidate->code,
+    #         candidate_id   => $bad_detail->candidate->id,
+    #         candidate_name => $bad_detail->candidate->name,
+    #         party_name     => $bad_detail->candidate->party->name,
+    #         details_added  => join( ',', @values_added ),
+    #     };
+    # 
+    #     $c->forward( 'ping_dc', [$dc_args] );
+    # }
 
     # Form was good - redirect back to ourselves to pick up a new bad_detail to
     # process
@@ -196,69 +201,69 @@ sub bad_detail_succesfully_updated : Private {
     $c->detach;
 }
 
-sub ping_dc : Private {
-    my ( $self, $c, $args ) = @_;
-
-    # get the arguments together and apply defaults
-    my $dc_args = {
-        dc_user_id     => $c->user->dc_id,
-        points_awarded => 0,
-        summary        => '',
-        task           => 'bad_details',
-        candidate_code => '',
-        candidate_id   => '',
-        candidate_name => '',
-        party_name     => '',
-        details_added  => '',
-
-        %$args
-    };
-
-    # generate the sig
-    my $login_secret = $c->config->{democracy_club}{login_secret}
-      || die "need 'login_secret'";
-    $dc_args->{sig} =
-      md5_hex( $dc_args->{dc_user_id} . $dc_args->{task} . $login_secret );
-
-    # create the URL
-    my $dc_url = URI->new( $c->config->{democracy_club}{points_url} );
-    $dc_url->query_form($dc_args);
-
-    eval {
-        use Time::HiRes qw(time);
-        my $start_time = time;
-
-        # hit the url
-        my $ua = LWP::UserAgent->new(
-            timeout => 10    #quite short
-        );
-        my $res = $ua->get($dc_url);
-        my $content = $res->is_success ? $res->decoded_content : '';
-
-        my $stop_time   = time;
-        my $time_taken  = $stop_time - $start_time;
-        my $req_per_sec = 1 / $time_taken;
-
-        $c->log->debug(
-            sprintf(
-                "DC update: %u %s ( %0.6fs - %0.3f/s )",
-                $res->code, $dc_url, $time_taken, $req_per_sec
-            )
-        );
-
-        # deal with a bad request
-        if ($content) {    # decode content and save data
-            $c->session->{dc_points} = JSON->new->decode($content);
-        }
-        else {
-            warn "No content returned for request to $dc_url";
-        }
-    };
-
-    warn $@ if $@;
-
-    return 1;
-
-}
+# sub ping_dc : Private {
+#     my ( $self, $c, $args ) = @_;
+# 
+#     # get the arguments together and apply defaults
+#     my $dc_args = {
+#         dc_user_id     => $c->user->dc_id,
+#         points_awarded => 0,
+#         summary        => '',
+#         task           => 'bad_details',
+#         candidate_code => '',
+#         candidate_id   => '',
+#         candidate_name => '',
+#         party_name     => '',
+#         details_added  => '',
+#     
+#         %$args
+#     };
+#     
+#     # generate the sig
+#     my $login_secret = $c->config->{democracy_club}{login_secret}
+#       || die "need 'login_secret'";
+#     $dc_args->{sig} =
+#       md5_hex( $dc_args->{dc_user_id} . $dc_args->{task} . $login_secret );
+#     
+#     # create the URL
+#     my $dc_url = URI->new( $c->config->{democracy_club}{points_url} );
+#     $dc_url->query_form($dc_args);
+#     
+#     eval {
+#         use Time::HiRes qw(time);
+#         my $start_time = time;
+#     
+#         # hit the url
+#         my $ua = LWP::UserAgent->new(
+#             timeout => 10    #quite short
+#         );
+#         my $res = $ua->get($dc_url);
+#         my $content = $res->is_success ? $res->decoded_content : '';
+#     
+#         my $stop_time   = time;
+#         my $time_taken  = $stop_time - $start_time;
+#         my $req_per_sec = 1 / $time_taken;
+#     
+#         $c->log->debug(
+#             sprintf(
+#                 "DC update: %u %s ( %0.6fs - %0.3f/s )",
+#                 $res->code, $dc_url, $time_taken, $req_per_sec
+#             )
+#         );
+#     
+#         # deal with a bad request
+#         if ($content) {    # decode content and save data
+#             $c->session->{dc_points} = JSON->new->decode($content);
+#         }
+#         else {
+#             warn "No content returned for request to $dc_url";
+#         }
+#     };
+#     
+#     warn $@ if $@;
+# 
+#     return 1;
+# 
+# }
 
 1;

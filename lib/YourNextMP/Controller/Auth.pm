@@ -246,7 +246,7 @@ sub dc_login : Local {
       || die "Error authenticating after dc login";
 
     # now send the user where they need to go
-    my $url = $c->uri_for( '/democracyclub', $task, $params );
+    my $url = $c->uri_for( '/game', $task, $params );
     $c->res->redirect($url);
     return;
 
