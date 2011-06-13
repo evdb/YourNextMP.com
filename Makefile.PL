@@ -22,6 +22,7 @@ requires 'Catalyst::Model::Adaptor';
 requires 'Catalyst::Model::DBIC::Schema';
 requires 'Catalyst::Plugin::Authentication';
 requires 'Catalyst::Plugin::Authorization::Roles';
+requires 'Catalyst::Plugin::AutoCRUD';
 requires 'Catalyst::Plugin::Cache';
 requires 'Catalyst::Plugin::ConfigLoader';
 requires 'Catalyst::Plugin::Session::State::Cookie';
