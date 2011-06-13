@@ -1,0 +1,3 @@
+link the game to the home page
+
+stop pageglimpse 404s
