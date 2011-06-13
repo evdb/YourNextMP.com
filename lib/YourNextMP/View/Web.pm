@@ -7,7 +7,8 @@ use base 'Catalyst::View::TT';
 
 __PACKAGE__->config(
     INCLUDE_PATH       => [ YourNextMP->path_to('templates'), ],
-    TEMPLATE_EXTENSION => '.html'
+    TEMPLATE_EXTENSION => '.html',
+    render_die         => 1
 );
 
 $Template::Directive::WHILE_MAX = 10_000;

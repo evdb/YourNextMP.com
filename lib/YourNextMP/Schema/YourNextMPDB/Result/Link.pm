@@ -141,6 +141,7 @@ sub new {
     my $args  = shift;
 
     $args->{link_type} ||= 'info';
+    $args->{published} ||= DateTime->now;
 
     return $class->next::method( $args, @_ );
 }

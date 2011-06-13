@@ -23,7 +23,7 @@ sub edit : PathPart('edit') Chained('result_find') Args(0) {
 
     # Get the link we are looking at
     my $link = $c->stash->{result};
-
+    
     # create a form and stick it on the stash
     my $form = YourNextMP::Form::LinkEdit->new( item => $link );
     $c->stash->{form} = $form;
