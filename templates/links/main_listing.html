@@ -3,7 +3,6 @@
 <ul>
     [% FOREACH link IN result.links %]
         <li class="link">
-            <a href="[% link.url %]" title="[% link.url %]"><img class="pageglimpse-small" src="http://images.pageglimpse.com/v1/thumbnails?url=[% link.url | uri %]&amp;size=small&amp;root=no&amp;devkey=26ad767be62243346e33d6115c32f6be" alt="screenshot"></a><br>
             <nobr>
                 [% IF c.user_is_admin %]
                 <a href="[% c.uri_for( '/links', link.id, 'edit' ) %]" title="Edit this link"><img class="icon discreet" src="/static/icons/pencil.png" alt="edit"></img></a>

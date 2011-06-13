@@ -357,18 +357,6 @@ li.link {
     background-color: #eee;
 }
 
-.pageglimpse-small {
-    height: 108px;
-    width:  150px;
-    border: 1px solid #888;
-}
-
-.pageglimpse-medium {
-    height: 202px;
-    width:  280px;
-    border: 1px solid #888;
-}
-
 #candidate_hero_photo {
     float: right;
     margin: 0 0 0.5em 0.5em;

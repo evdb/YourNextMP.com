@@ -37,8 +37,6 @@
         private_bucket_name   => 'yournextmp-private-dev',
     },
 
-    pageglimpse_api_key => die('need pageglimpse api key'),
-
     'Model::DB' => {
         connect_info => {
 
