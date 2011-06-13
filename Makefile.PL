@@ -75,6 +75,7 @@ requires 'JSON';
 requires 'JSON::XS';
 requires 'LWP::Simple';
 requires 'LWP::UserAgent';
+requires 'LWPx::ParanoidAgent';
 requires 'Module::Install::Base';
 requires 'Moose';
 requires 'namespace::autoclean';
