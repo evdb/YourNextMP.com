@@ -49,6 +49,10 @@ builder {
           content_type => [ 'text/css', 'text/html', 'application/javascript' ],
           vary_user_agent => 1;
 
+        # If request is from localhost then must be from a proxy
+        enable_if { $_[0]->{REMOTE_ADDR} eq '127.0.0.1'; }
+        "Plack::Middleware::ReverseProxy";
+
         # enable 'Plack::Middleware::Debug';
 
         enable "Plack::Middleware::Static",

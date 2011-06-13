@@ -4,6 +4,15 @@ use base 'Catalyst';
 use strict;
 use warnings;
 
+# Sillyness to mute warnings about missing hard to fullfil dep
+BEGIN {
+    local $SIG{__WARN__} = sub {
+        warn @_ unless $_[0] =~ m{^Math::BigInt};
+    };
+    eval "use Crypt::DH;";
+    eval "use Crypt::DH::GMP qw(-compat);";
+}
+
 use Catalyst::Runtime;    # 5.80;
 use Catalyst ( 'Unicode', 'AutoCRUD', );
 
