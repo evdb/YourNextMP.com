@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      YourNextMP has been taken offline
+    </title>
+
+    <link rel="stylesheet" href="/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
+
+  </head>
+  <body>
+
+    <section>
+      <h1>
+        YourNextMP has been taken offline
+      </h1>
+      <p>
+        YourNextMP.com has been voluntarily taken offline to encourage other people to provide a similar service for the 2015 UK General Election.
+      </p>
+      <h2>
+        Background
+      </h2>
+      <p>
+        For the 2010 UK General Election YourNextMP.com was a website that initially scraped and then crowdsourced candidate details. These details were made public as HTML pages, JSON equivalents and via a data export into JSON and CSV.
+      </p>
+      <p>
+        Many other sites and organisations made use of this data for several different purposes - e.g. charities to poll candidates on their stances, hot-or-not style fun sites, mobile apps. These were often only possible because the huge task of collecting candidate data had already been started and hence was someone else's problem.
+      </p>
+      <p>
+        It is very hard to be certain without rigorous research, but anecdotally the data was available earlier and was of a higher quality than that provided by the established commercial sources.
+      </p>
+
+      <ul class="screenshots clearfix">
+        <li><img src="/homepage_screenshot.png" alt="Homepage Screenshot"></li>
+        <li><img src="/labour_screenshot.png"   alt="Labour Screenshot"></li>
+        <li><img src="/cameron_screenshot.png"  alt="Cameron Screenshot"></li>
+      </ul>
+
+
+      <h2>
+        Why take the site offline?
+      </h2>
+      <p>
+        In 2010 YourNextMP was the only site attempting to collect and share candidate data. Once one site started doing it, and was readily accepting corrections from others, the motivation to start another was massively undermined (to everyone's benefit).
+      </p>
+      <p>
+        The work involved is significant and I will not doing it again for 2015. I am taking the site down now so that it is absolutely clear that this is the case.
+      </p>
+      <p>
+        Anyone thinking of running a similar project needs to be starting very soon so that their website is sufficiently stable by the time other developers start looking for a data source. Ideally you should be well established 6 months before the election, and that most likely means starting coding mid 2014 at the very latest. Sooner is much better.
+      </p>
+      <p>
+        Note that just storing and sharing the data is not enough. An equally large (if not much larger) task is to gather the data. In 2010 <a href="http://www.democracyclub.org.uk/">Democracy Club</a> did this. Something similar will be needed for 2015.
+      </p>
+      <h2>
+        Code and data
+      </h2>
+      <p>
+        Fear not - even though the site is down all the data and code has been preserved.
+      </p>
+      <h3>
+        Code
+      </h3>
+      <p>
+        All the code is on Github at <a href="https://github.com/evdb/YourNextMP.com">https://github.com/evdb/YourNextMP.com</a>.
+      </p>
+      <p>
+        This code evolved with the election and if I was going to run YourNextMP for 2015 I'd almost certainly start with a clean slate. I'd very much encourage people to store and share the data using <a href="https://github.com/mysociety/popit">PopIt</a> and display it using <a href="http://www.mysociety.org/international/pombola/">Pombola</a>. These are both projects run by the superb <a href="http://www.mysociety.org/">mySociety</a> and I was heavily involved with them whilst working there. The lessons learned running YourNextMP are embodied in those two codebases, and they are under active development so getting better all the time.
+      </p>
+      <h3>
+        Data (publicly released)
+      </h3>
+      <p>
+        The complete dump of candidate data as of when the site was suspended is available:
+      </p>
+      <ul>
+        <li>
+          <a href="/yournextmp-csv_complete-20140124-031004.csv.gz">CSV</a> - suitable for viewing in a spreadsheet (not as complete as full JSON).
+        </li>
+        <li>
+          <a href="/yournextmp-csv_contact_only-20140124-031005.csv.gz">CSV contacts details only</a> - suitable for viewing in a spreadsheet (as above, but only contact details).
+        </li>
+        <li>
+          <a href="/yournextmp-json_main-20140124-030234.json.gz">Candidate JSON</a> - all details on candidates and candidacies etc.
+        </li>
+        <li>
+          <a href="/yournextmp-json_links-20140124-030449.json.gz">Links JSON</a> - links to various web pages for the candidates, constituencies and parties.
+        </li>
+      </ul>
+      <h3>
+        Data (complete database)
+      </h3>
+      <p>
+        The complete database dump contains the full edit history and user login details. I'll not make this available publicly, but am open to sharing it with trusted parties who have a good reason for needing the complete dataset. Contact me.
+      </p>
+      <h2>
+        Can I use the YourNextMP.com domain?
+      </h2>
+      <p>
+        Perhaps. Contact me and convince me you're in a position to do it properly. I very much hope to pass it on for someone to use in 2015 :)
+      </p>
+      <h2>
+        Contact
+      </h2>
+      <p>
+        If you want to contact me use <a href="https://twitter.com/evdb">@evdb</a> or <a href="mailto:hello@yournextmp.com">hello@yournextmp.com</a>.
+      </p>
+    </section>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+      </script>
+      <script type="text/javascript">
+      try {
+      var pageTracker = _gat._getTracker("UA-717506-8");
+      pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+
+  </body>
+</html>

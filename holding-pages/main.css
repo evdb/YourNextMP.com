@@ -1,0 +1,38 @@
+body {
+  max-width: 40em;
+  margin: auto;
+  font-family: Arial;
+}
+
+h1 {
+  font-size: 200%;
+}
+
+h1, h2 {
+  margin-top: 2em;
+}
+
+.screenshots {
+  padding: 0;
+  margin: 0;
+}
+
+.screenshots li {
+  float: left;
+  width: 30%;
+  padding-right: 2%;
+  list-style: none;
+}
+
+.screenshots img {
+  width: 100%;
+  max-width: 320px;
+}
+
+.clearfix:after {
+   content: " "; /* Older browser do not support empty content */
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+}
